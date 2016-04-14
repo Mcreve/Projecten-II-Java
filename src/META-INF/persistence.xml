@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="DidactischeLeermiddelenPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>Domain.Location</class>
+    <class>Domain.Wishlist</class>
+    <class>Domain.User</class>
+    <class>Domain.LearningUtility</class>
+    <class>Domain.Company</class>
+    <class>Domain.Reservation</class>
+    <class>Domain.FieldOfStudy</class>
+    <class>Domain.TargetGroup</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost\sqlexpress;databaseName=Leermiddelen"/>
+      <property name="javax.persistence.jdbc.user" value="ward.vanlerberghe@telenet.be"/>
+      <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+      <property name="javax.persistence.jdbc.password" value="REG21!war"/>
+    </properties>
+  </persistence-unit>
+</persistence>
