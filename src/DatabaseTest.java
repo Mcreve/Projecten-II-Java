@@ -1,4 +1,4 @@
-import Domain.User;
+import domain.LearningUtility;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -14,16 +14,16 @@ import javax.persistence.TypedQuery;
  *
  * @author Ward Vanlerberghe
  */
-public class NewClass {
+public class DatabaseTest {
     
     public static void main (String [] args){
         EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("DidactischeLeermiddelenPU");
         EntityManager manager = managerFactory.createEntityManager();
     
-        TypedQuery<User> findAllUsers = manager.createNamedQuery("User.findAll", User.class);
+        TypedQuery<LearningUtility> findAllUsers = manager.createNamedQuery("LearningUtility.findAll", LearningUtility.class);
         
         findAllUsers.getResultList().stream().forEach((user) -> {
-            System.out.println(user.getFirstName());
+            System.out.println(user.getName());
         });
     
     }

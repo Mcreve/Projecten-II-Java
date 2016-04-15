@@ -16,3 +16,4 @@ hs_err_pid*
 /nbproject/
 /vpproject/
 /build/
+!/sqljdbc_6.0/enu/sqljdbc42.jar
