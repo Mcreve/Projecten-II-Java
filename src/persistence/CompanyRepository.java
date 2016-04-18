@@ -18,6 +18,17 @@ import javax.persistence.TypedQuery;
 public class CompanyRepository {
     
     private EntityManager entityManager = Connection.entityManager();
+    private static CompanyRepository instance;
+    
+    private CompanyRepository(){
+        instance = this;
+    }
+
+    public static CompanyRepository getInstance() {
+        if(instance !=null)
+            return instance;
+        return new CompanyRepository();
+    }
     
     public List<Company> findAll(){
         return entityManager.createNamedQuery("Company.findAll", Company.class).getResultList();

@@ -19,6 +19,8 @@ public class Connection {
     private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("DidactischeLeermiddelenPU");
     private static EntityManager entityManager = entityManagerFactory.createEntityManager();
     
+    private Connection(){}
+    
     public static EntityManager entityManager(){
         if(connection == null){
             connection = new Connection();

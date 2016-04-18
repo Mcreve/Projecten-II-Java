@@ -15,7 +15,18 @@ import javax.persistence.EntityManager;
  */
 public class UserRepository {
     
-    EntityManager entityManager = Connection.entityManager();
+    private EntityManager entityManager = Connection.entityManager();
+    private static UserRepository instance;
+    
+    private UserRepository(){
+        instance = this;
+    }
+    
+    public static UserRepository getInstance(){
+        if(instance != null)
+            return instance;
+        return new UserRepository();
+    }
     
     public List<User> findAll(){
         return entityManager.createNamedQuery("User.findAll", User.class).getResultList();

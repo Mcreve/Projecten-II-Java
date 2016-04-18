@@ -18,6 +18,18 @@ import javax.persistence.TypedQuery;
 public class LearningUtilityRepository {
     
     private EntityManager entityManager = Connection.entityManager();
+    private static LearningUtilityRepository instance;
+    
+    private LearningUtilityRepository(){
+        instance = this;
+    }
+    
+    public static LearningUtilityRepository getInstance(){
+        if(instance != null){
+            return instance;
+        }
+        return new LearningUtilityRepository();
+    }
     
     public List<LearningUtility> findAll(){
         return entityManager.createNamedQuery("LearningUtility.findAll", LearningUtility.class).getResultList();

@@ -16,8 +16,22 @@ import javax.persistence.TypedQuery;
  * @author Ward Vanlerberghe
  */
 public class LocationRepository {
+
+
     
     private EntityManager entityManager = Connection.entityManager();
+    private static LocationRepository instance;
+    
+    private LocationRepository(){
+        instance = this;
+    }
+    
+    public static LocationRepository getInstance() {
+        if(instance != null){
+            return instance;
+        }        
+        return new LocationRepository();
+    }
     
     public List<Location> findAll(){
         return entityManager.createNamedQuery("Location.findAll", Location.class).getResultList();

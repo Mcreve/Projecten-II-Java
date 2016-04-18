@@ -18,6 +18,17 @@ import javax.persistence.TypedQuery;
 public class TargetGroupRepository {
     
     private EntityManager entityManager = Connection.entityManager();
+    private static TargetGroupRepository instance;
+    
+    private TargetGroupRepository(){
+        instance = this;
+    }
+
+    public static TargetGroupRepository getInstance() {
+        if(instance != null)
+            return instance;
+        return new TargetGroupRepository();
+    }
     
     public List<TargetGroup> findAll(){
         return entityManager.createNamedQuery("TargetGroup.findAll", TargetGroup.class).getResultList();

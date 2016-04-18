@@ -18,6 +18,11 @@ import javax.persistence.TypedQuery;
 public class FieldOfStudyRepository {
     
     private EntityManager entityManager = Connection.entityManager();
+    private static FieldOfStudyRepository instance;
+    
+    private FieldOfStudyRepository(){
+        instance = this;
+    }
     
     public List<FieldOfStudy> findAll(){
         return entityManager.createNamedQuery("FieldOfStudy.findAll", FieldOfStudy.class).getResultList();
@@ -44,6 +49,14 @@ public class FieldOfStudyRepository {
     
     public void update(FieldOfStudy fieldOfStudy){
         add(fieldOfStudy);
+    }
+
+    public static FieldOfStudyRepository getInstance() {
+        if(instance != null){
+            return instance;
+        }
+        
+        return new FieldOfStudyRepository();
     }
     
 }
