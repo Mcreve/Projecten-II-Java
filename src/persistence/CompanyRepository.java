@@ -5,7 +5,7 @@
  */
 package persistence;
 
-import domain.LearningUtility;
+import domain.Company;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -15,25 +15,25 @@ import javax.persistence.TypedQuery;
  *
  * @author Ward Vanlerberghe
  */
-public class LearningUtilityRepository {
+public class CompanyRepository {
     
     private EntityManager entityManager = Connection.entityManager();
     
-    public List<LearningUtility> findAll(){
-        return entityManager.createNamedQuery("LearningUtility.findAll", LearningUtility.class).getResultList();
+    public List<Company> findAll(){
+        return entityManager.createNamedQuery("Company.findAll", Company.class).getResultList();
     }
     
-    public LearningUtility findBy(int id){
-        TypedQuery<LearningUtility> query = entityManager.createNamedQuery("LearningUtility.findById", LearningUtility.class);
+    public Company findBy(int id){
+        TypedQuery<Company> query = entityManager.createNamedQuery("Company.findById", Company.class);
         query.setParameter("id", id);
         return query.getSingleResult();
     }
     
-    public void add(LearningUtility learningUtility){
+    public void add(Company company){
         EntityTransaction transaction = entityManager.getTransaction();
         try{
             transaction.begin();
-            entityManager.persist(learningUtility);
+            entityManager.persist(company);
             transaction.commit();
         }
         catch(Exception e){
@@ -42,8 +42,8 @@ public class LearningUtilityRepository {
         }
     }
     
-    public void update(LearningUtility learningUtility){
-        add(learningUtility);
+    public void update(Company company){
+        add(company);
     }
     
 }

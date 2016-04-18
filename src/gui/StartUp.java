@@ -5,6 +5,9 @@
  */
 package gui;
 
+import domain.LearningUtility;
+import domain.Location;
+import java.math.BigDecimal;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,6 +15,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javax.persistence.TypedQuery;
+import persistence.Connection;
 import persistence.LearningUtilityRepository;
 
 /**
@@ -32,7 +37,20 @@ public class StartUp extends Application {
                 
                 LearningUtilityRepository repo = new LearningUtilityRepository();
                 repo.findAll().forEach((utility) -> System.out.println(utility.getName()));
-                System.out.println(repo.findBy(1).getName()); 
+                System.out.println(repo.findBy(1).getName());
+                
+                LearningUtility newUtil = new LearningUtility();
+                newUtil.setAmountInCatalog(5);
+                newUtil.setAmountUnavailable(0);
+                newUtil.setName("Testobject");
+                newUtil.setDescription("Nieuw leermiddel om te testen");
+                newUtil.setPrice(BigDecimal.valueOf(0));
+                
+                TypedQuery<Location> query = Connection.entityManager().createNamedQuery("Location.findById", Location.class);
+                query.setParameter("id", 1);
+                newUtil.setLocationId(query.getSingleResult());
+                
+                repo.add(newUtil);
             }
         });
         
