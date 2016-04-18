@@ -3,13 +3,13 @@
   <persistence-unit name="DidactischeLeermiddelenPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>domain.Company</class>
-    <class>domain.Reservation</class>
-    <class>domain.LearningUtility</class>
-    <class>domain.Location</class>
-    <class>domain.User</class>
-    <class>domain.TargetGroup</class>
-    <class>domain.Wishlist</class>
     <class>domain.FieldOfStudy</class>
+    <class>domain.TargetGroup</class>
+    <class>domain.LearningUtility</class>
+    <class>domain.Reservation</class>
+    <class>domain.User</class>
+    <class>domain.Wishlist</class>
+    <class>domain.Location</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://didactischeleermiddelen03.database.windows.net:1433;databaseName=DidactischeLeermiddelen03_db"/>
       <property name="javax.persistence.jdbc.user" value="tile03@didactischeleermiddelen03"/>

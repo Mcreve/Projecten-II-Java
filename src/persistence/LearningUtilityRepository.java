@@ -9,6 +9,7 @@ import domain.LearningUtility;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -23,7 +24,9 @@ public class LearningUtilityRepository {
     }
     
     public LearningUtility findBy(int id){
-        return entityManager.createNamedQuery("LearningUtility.findById", LearningUtility.class).getSingleResult();
+        TypedQuery<LearningUtility> query = entityManager.createNamedQuery("LearningUtility.findById", LearningUtility.class);
+        query.setParameter("id", id);
+        return query.getSingleResult();
     }
     
     public void add(LearningUtility learningUtility){

@@ -16,7 +16,7 @@ import javax.persistence.Persistence;
 public class Connection {
     
     private static Connection connection;
-    private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("Leermiddelen");
+    private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("DidactischeLeermiddelenPU");
     private static EntityManager entityManager = entityManagerFactory.createEntityManager();
     
     public static EntityManager entityManager(){
