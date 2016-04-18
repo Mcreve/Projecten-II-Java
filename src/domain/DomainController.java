@@ -60,7 +60,9 @@ public class DomainController {
         for(int id: fieldOfStudyId){
             fieldsOfStudy.add(persistenceController.findFieldOfStudyById(id));
         }
-        newItem.setFieldOfStudyList(fieldsOfStudy);        
+        newItem.setFieldOfStudyList(fieldsOfStudy);
+
+        persistenceController.AddLearningUtility(newItem);
     }
     
 }
