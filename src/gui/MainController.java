@@ -48,7 +48,7 @@ public final class MainController{
     {
         try
         {
-            domainController = new DomainController();
+            domainController = DomainController.getInstance();
             createTreeNavigation();
             loadInitialScreen();
             Scene scene = new Scene(mainView);

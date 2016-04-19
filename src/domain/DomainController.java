@@ -22,7 +22,7 @@ public class DomainController {
     private PersistenceController persistenceController = PersistenceController.getInstance();
     public static DomainController instance;
     
-    public DomainController(){
+    private DomainController(){
         instance = this;
     }
     

@@ -7,9 +7,9 @@ package gui;
 
 import domain.DomainController;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -59,6 +59,10 @@ public class AddLearningUtilityController  {
     public AddLearningUtilityController(DomainController domainController) throws IOException
     {
         this.domainController = domainController;
+                
+        int[] targetGroups = {1};
+        int[] fieldsOfStudy = {1};
+        domainController.addLearningUtility("Wereldbol Demo item", "Item voor het demonstreren van het domain en persistentie", BigDecimal.ZERO, true, "tst0001", "/Images/wereldbol.jpg", 5, 1, 1, 1, targetGroups, fieldsOfStudy);
         initView();
        
     }
@@ -71,6 +75,7 @@ public class AddLearningUtilityController  {
         } catch (IOException ex) {
             Logger.getLogger(AddLearningUtilityController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
     
 }
