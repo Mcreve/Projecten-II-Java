@@ -6,32 +6,28 @@
 package gui;
 
 import domain.DomainController;
-import domain.LearningUtility;
-import domain.Location;
-import java.math.BigDecimal;
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javax.persistence.TypedQuery;
-import persistence.Connection;
-import persistence.LearningUtilityRepository;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * FXML Controller class
  *
  * @author Append
  */
-public class AddLearningUtilityController{
-    private DomainController domainController;
-    
+public class AddLearningUtilityController  {
+
+    @FXML
+    public AnchorPane view;
     @FXML
     private TextField txtName;
     @FXML
@@ -58,33 +54,23 @@ public class AddLearningUtilityController{
     private TextArea txtDescription;
     @FXML
     private Button btnReset;
+   private final DomainController domainController;
 
-    /**
-     * Initializes the controller class.
-     */
-    @FXML
-    private void initialize() {
-        try
-        {
-                    
-            domainController.addLearningUtility(txtName.getText(), txtDescription.getText(), new BigDecimal(txtPrice.getText()), chkLoanable.isSelected(), txtArticleNumber.getText(), null, 1, 2, 4, 2,null,null );
-
-        }catch(Exception e)
-        {
-            System.out.println("error:" + e.toString());
-        }
-    }
-    
-    public void AddLearningUtilityController(DomainController domainController)
+    public AddLearningUtilityController(DomainController domainController) throws IOException
     {
         this.domainController = domainController;
-                            btnAdd.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
+        initView();
+       
+    }
+    private void initView() throws IOException 
+    {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(StartUp.class.getResource("AddLearningUtility.fxml"));
+        try {
+            view = (AnchorPane) loader.load();
+        } catch (IOException ex) {
+            Logger.getLogger(AddLearningUtilityController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

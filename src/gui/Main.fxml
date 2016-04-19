@@ -7,9 +7,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="mainView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <left>
-      <TreeView editable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <TreeView fx:id="treeNavigation" editable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </left>
    <top>
       <MenuBar BorderPane.alignment="CENTER">

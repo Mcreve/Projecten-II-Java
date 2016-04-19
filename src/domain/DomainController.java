@@ -20,9 +20,9 @@ import persistence.PersistenceController;
 public class DomainController {
     
     private PersistenceController persistenceController = PersistenceController.getInstance();
-    private static DomainController instance;
+    public static DomainController instance;
     
-    private DomainController(){
+    public DomainController(){
         instance = this;
     }
     

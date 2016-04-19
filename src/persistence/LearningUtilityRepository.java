@@ -20,7 +20,7 @@ public class LearningUtilityRepository {
     private EntityManager entityManager = Connection.entityManager();
     private static LearningUtilityRepository instance;
     
-    private LearningUtilityRepository(){
+    public LearningUtilityRepository(){
         instance = this;
     }
     
