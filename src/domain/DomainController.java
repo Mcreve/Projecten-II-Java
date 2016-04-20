@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import persistence.PersistenceController;
+import persistence.GenericDaoJpa;
 
 /**
  *
@@ -19,17 +19,18 @@ import persistence.PersistenceController;
  */
 public class DomainController {
     
-    private PersistenceController persistenceController = PersistenceController.getInstance();
-    public static DomainController instance;
+    private GenericDaoJpa<LearningUtility> learningUtilities;
+    private GenericDaoJpa<Company> companies;
+    private GenericDaoJpa<FieldOfStudy> fieldsOfStudy;
+    private GenericDaoJpa<TargetGroup> targetGroups;
+    private GenericDaoJpa<Location> locations;
     
-    private DomainController(){
-        instance = this;
-    }
-    
-    public static DomainController getInstance(){
-        if(instance != null)
-            return instance;
-        return new DomainController();
+    public DomainController(){
+        learningUtilities = new GenericDaoJpa<>(LearningUtility.class);
+        companies = new GenericDaoJpa<>(Company.class);
+        fieldsOfStudy = new GenericDaoJpa<>(FieldOfStudy.class);
+        targetGroups = new GenericDaoJpa<>(TargetGroup.class);
+        locations = new GenericDaoJpa<>(Location.class);
     }
     
     public void addLearningUtility(String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image, 
@@ -37,13 +38,15 @@ public class DomainController {
         
         if(name.isEmpty() || amountInstock < 1)
             throw new IllegalArgumentException("De naam en het aantal beschikbaar dient ingevuld te zijn.");
-        if(persistenceController.findAllLearningUtilities().stream().anyMatch(l -> l.getName().equals(name))){
+        if(learningUtilities.findAll().stream().anyMatch(l -> l.getName().equals(name))){
             throw new IllegalArgumentException("Er bestaat al een artikel met de opgegeven naam.");
         }
         
         LearningUtility newItem = createLearningUtility(name, description, price, loanable, articleNumber, image, locationId, amountInstock, AmountUnavailable, companyId, targetGroupId, fieldOfStudyId);
 
-        persistenceController.AddLearningUtility(newItem);
+        GenericDaoJpa.startTransaction();
+        learningUtilities.insert(newItem);
+        GenericDaoJpa.commitTransaction();
     }
 
     private LearningUtility createLearningUtility(String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image, int locationId, int amountInstock, int AmountUnavailable, int companyId, int[] targetGroupId, int[] fieldOfStudyId) {
@@ -56,18 +59,18 @@ public class DomainController {
         newItem.setPicture(image);
         newItem.setAmountInCatalog(amountInstock);
         newItem.setAmountUnavailable(AmountUnavailable);
-        newItem.setCompanyId(persistenceController.findCompanyById(companyId));
-        newItem.setLocationId(persistenceController.findLocationById(locationId));
-        List<TargetGroup> targetGroups = new ArrayList<>();        
+        newItem.setCompanyId(companies.findBy(companyId));
+        newItem.setLocationId(locations.findBy(locationId));
+        List<TargetGroup> targetGroupsList = new ArrayList<>();        
         for(int id : targetGroupId){
-            targetGroups.add(persistenceController.findTargetGroupById(id));
+            targetGroupsList.add(targetGroups.findBy(id));
         }
-        newItem.setTargetGroupList(targetGroups);
-        List<FieldOfStudy> fieldsOfStudy = new ArrayList<>();        
+        newItem.setTargetGroupList(targetGroupsList);
+        List<FieldOfStudy> fieldsOfStudyList = new ArrayList<>();        
         for(int id: fieldOfStudyId){
-            fieldsOfStudy.add(persistenceController.findFieldOfStudyById(id));
+            fieldsOfStudyList.add(fieldsOfStudy.findBy(id));
         }
-        newItem.setFieldOfStudyList(fieldsOfStudy);
+        newItem.setFieldOfStudyList(fieldsOfStudyList);
         return newItem;
     }
     

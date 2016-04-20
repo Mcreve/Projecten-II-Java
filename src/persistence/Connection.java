@@ -29,5 +29,10 @@ public class Connection {
         return entityManager;
     }
     
+    public static void close(){
+        entityManagerFactory.close();
+        entityManager.close();
+    }
+    
     
 }
