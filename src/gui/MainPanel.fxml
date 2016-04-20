@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.BorderPane?>
+
+<fx:root prefHeight="792.0" prefWidth="1210.0" type="BorderPane" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Bestand">
+            <items>
+                  <MenuItem fx:id="menuLogout" mnemonicParsing="false" onAction="#logout" text="Uitloggen" />
+              <MenuItem fx:id="menuClose" mnemonicParsing="false" onAction="#close" text="Afsluiten" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Beheer">
+            <items>
+              <MenuItem fx:id="menuLearningUtilities" mnemonicParsing="false" onAction="#updateTreeview" text="Leermiddelen" />
+                  <MenuItem fx:id="menuReservations" mnemonicParsing="false" onAction="#updateTreeview" text="Reservaties" />
+                  <MenuItem fx:id="menuManagers" mnemonicParsing="false" onAction="#updateTreeview" text="Beheerders" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="About">
+            <items>
+              <MenuItem fx:id="menuAbout" mnemonicParsing="false" onAction="#showAbout" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <left>
+      <TreeView fx:id="treeView" prefHeight="760.0" prefWidth="224.0" BorderPane.alignment="CENTER" />
+   </left>
+</fx:root>
