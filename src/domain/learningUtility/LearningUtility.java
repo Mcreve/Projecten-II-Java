@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain;
+package domain.learningUtility;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -81,11 +81,6 @@ public class LearningUtility implements Serializable {
     private List<TargetGroup> targetGroupList;
     @ManyToMany(mappedBy = "learningUtilityList")
     private List<FieldOfStudy> fieldOfStudyList;
-    @JoinTable(name = "Wishlist_LearningUtility", joinColumns = {
-        @JoinColumn(name = "LearningUtilityId", referencedColumnName = "Id")}, inverseJoinColumns = {
-        @JoinColumn(name = "WishlistId", referencedColumnName = "Id")})
-    @ManyToMany
-    private List<Wishlist> wishlistList;
     @OneToMany(mappedBy = "learningUtilityId")
     private List<Reservation> reservationList;
     @JoinColumn(name = "Company_Id", referencedColumnName = "Id")
@@ -203,15 +198,6 @@ public class LearningUtility implements Serializable {
     }
 
     @XmlTransient
-    public List<Wishlist> getWishlistList() {
-        return wishlistList;
-    }
-
-    public void setWishlistList(List<Wishlist> wishlistList) {
-        this.wishlistList = wishlistList;
-    }
-
-    @XmlTransient
     public List<Reservation> getReservationList() {
         return reservationList;
     }
@@ -246,11 +232,10 @@ public class LearningUtility implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof LearningUtility)) {
+        if (!(object instanceof Integer)) {
             return false;
         }
-        LearningUtility other = (LearningUtility) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.id == null && id != null) || (this.id != null && !this.id.equals(id))) {
             return false;
         }
         return true;

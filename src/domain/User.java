@@ -5,6 +5,7 @@
  */
 package domain;
 
+import domain.learningUtility.Reservation;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -51,9 +52,6 @@ public class User implements Serializable {
     private String discriminator;
     @OneToMany(mappedBy = "userEmailAddress")
     private List<Reservation> reservationList;
-    @JoinColumn(name = "Wishlist_Id", referencedColumnName = "Id")
-    @ManyToOne
-    private Wishlist wishlistId;
 
     public User() {
     }
@@ -110,14 +108,6 @@ public class User implements Serializable {
         this.reservationList = reservationList;
     }
 
-    public Wishlist getWishlistId() {
-        return wishlistId;
-    }
-
-    public void setWishlistId(Wishlist wishlistId) {
-        this.wishlistId = wishlistId;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -128,11 +118,10 @@ public class User implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof User)) {
+        if (!(object instanceof String)) {
             return false;
         }
-        User other = (User) object;
-        if ((this.emailAddress == null && other.emailAddress != null) || (this.emailAddress != null && !this.emailAddress.equals(other.emailAddress))) {
+        if ((this.emailAddress == null && emailAddress != null) || (this.emailAddress != null && !this.emailAddress.equals(emailAddress))) {
             return false;
         }
         return true;

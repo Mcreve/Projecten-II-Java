@@ -10,17 +10,20 @@ import gui.MainPanelController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import persistence.Connection;
 
 /**
  *
  * @author Ward Vanlerberghe
  */
-public class StartUp extends Application {    
+public class StartUp extends Application {
+
+    private DomainController domainController;
     
    @Override
     public void start(Stage primaryStage) {
         
-        DomainController domainController = new DomainController();
+        this.domainController = new DomainController();
         
         Scene scene = new Scene(new MainPanelController(domainController));
         primaryStage.setScene(scene);
@@ -35,5 +38,11 @@ public class StartUp extends Application {
     public static void main(String[] args) 
     {
         launch(args);
+    }
+    
+    @Override
+    public void stop(){
+        domainController.closeConnection();
+        System.out.println("DB connection closed");
     }
 }

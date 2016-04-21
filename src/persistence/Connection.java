@@ -30,8 +30,8 @@ public class Connection {
     }
     
     public static void close(){
-        entityManagerFactory.close();
         entityManager.close();
+        entityManagerFactory.close();        
     }
     
     

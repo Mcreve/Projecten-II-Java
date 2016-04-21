@@ -9,6 +9,7 @@ import domain.DomainController;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -113,6 +114,7 @@ public class MainPanelController extends BorderPane {
 
     @FXML
     private void close(ActionEvent event) {
+        Platform.exit();
     }
 
     @FXML

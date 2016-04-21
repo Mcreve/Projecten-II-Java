@@ -5,13 +5,19 @@
  */
 package domain;
 
+import domain.learningUtility.Company;
+import domain.learningUtility.LearningUtility;
+import domain.learningUtility.FieldOfStudy;
+import domain.learningUtility.Location;
+import domain.learningUtility.TargetGroup;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import persistence.GenericDaoJpa;
+import java.util.stream.Collectors;
+import persistence.Connection;
 
 /**
  *
@@ -19,18 +25,34 @@ import persistence.GenericDaoJpa;
  */
 public class DomainController {
     
-    private GenericDaoJpa<LearningUtility> learningUtilities;
-    private GenericDaoJpa<Company> companies;
-    private GenericDaoJpa<FieldOfStudy> fieldsOfStudy;
-    private GenericDaoJpa<TargetGroup> targetGroups;
-    private GenericDaoJpa<Location> locations;
+    private Catalog<LearningUtility> learningUtilityCatalog;
+    private Catalog<Company> companyCatalog;
+    private Catalog<FieldOfStudy> fieldOfStudyCatalog;
+    private Catalog<TargetGroup> targetGroupCatalog;
+    private Catalog<Location> locationCatalog;
     
     public DomainController(){
-        learningUtilities = new GenericDaoJpa<>(LearningUtility.class);
-        companies = new GenericDaoJpa<>(Company.class);
-        fieldsOfStudy = new GenericDaoJpa<>(FieldOfStudy.class);
-        targetGroups = new GenericDaoJpa<>(TargetGroup.class);
-        locations = new GenericDaoJpa<>(Location.class);
+        learningUtilityCatalog = new Catalog<>(LearningUtility.class);
+        companyCatalog = new Catalog<>(Company.class);
+        fieldOfStudyCatalog = new Catalog<>(FieldOfStudy.class);
+        targetGroupCatalog = new Catalog<>(TargetGroup.class);
+        locationCatalog = new Catalog<>(Location.class);
+    }
+    
+    public List<String> getCompanyNames(){
+        return companyCatalog.getEntities().stream().map(Company::getName).collect(Collectors.toList());
+    }
+    
+    public List<String> getFieldsOfStudy(){
+        return fieldOfStudyCatalog.getEntities().stream().map(FieldOfStudy::getName).collect(Collectors.toList());
+    }
+    
+    public List<String> getTargetGroups(){
+        return targetGroupCatalog.getEntities().stream().map(TargetGroup::getName).collect(Collectors.toList());
+    }
+    
+    public List<String> getLocations(){
+        return locationCatalog.getEntities().stream().map(Location::getName).collect(Collectors.toList());
     }
     
     public void addLearningUtility(String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image, 
@@ -38,15 +60,13 @@ public class DomainController {
         
         if(name.isEmpty() || amountInstock < 1)
             throw new IllegalArgumentException("De naam en het aantal beschikbaar dient ingevuld te zijn.");
-        if(learningUtilities.findAll().stream().anyMatch(l -> l.getName().equals(name))){
+        if(learningUtilityCatalog.getEntities().stream().anyMatch(l -> l.getName().equals(name))){
             throw new IllegalArgumentException("Er bestaat al een artikel met de opgegeven naam.");
         }
         
         LearningUtility newItem = createLearningUtility(name, description, price, loanable, articleNumber, image, locationId, amountInstock, AmountUnavailable, companyId, targetGroupId, fieldOfStudyId);
 
-        GenericDaoJpa.startTransaction();
-        learningUtilities.insert(newItem);
-        GenericDaoJpa.commitTransaction();
+        learningUtilityCatalog.addEntity(newItem);
     }
 
     private LearningUtility createLearningUtility(String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image, int locationId, int amountInstock, int AmountUnavailable, int companyId, int[] targetGroupId, int[] fieldOfStudyId) {
@@ -59,16 +79,16 @@ public class DomainController {
         newItem.setPicture(image);
         newItem.setAmountInCatalog(amountInstock);
         newItem.setAmountUnavailable(AmountUnavailable);
-        newItem.setCompanyId(companies.findBy(companyId));
-        newItem.setLocationId(locations.findBy(locationId));
+        newItem.setCompanyId(companyCatalog.getEntity(companyId));
+        newItem.setLocationId(locationCatalog.getEntity(locationId));
         List<TargetGroup> targetGroupsList = new ArrayList<>();        
         for(int id : targetGroupId){
-            targetGroupsList.add(targetGroups.findBy(id));
+            targetGroupsList.add(targetGroupCatalog.getEntity(id));
         }
         newItem.setTargetGroupList(targetGroupsList);
         List<FieldOfStudy> fieldsOfStudyList = new ArrayList<>();        
         for(int id: fieldOfStudyId){
-            fieldsOfStudyList.add(fieldsOfStudy.findBy(id));
+            fieldsOfStudyList.add(fieldOfStudyCatalog.getEntity(id));
         }
         newItem.setFieldOfStudyList(fieldsOfStudyList);
         return newItem;
@@ -111,4 +131,8 @@ public class DomainController {
  //           LearningUtility item = createLearningUtility()
  //       });
  //   }
+
+    public void closeConnection() {
+        Connection.close();
+    }
 }

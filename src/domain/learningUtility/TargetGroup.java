@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain;
+package domain.learningUtility;
 
 import java.io.Serializable;
 import java.util.List;
@@ -89,11 +89,10 @@ public class TargetGroup implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TargetGroup)) {
+        if (!(object instanceof Integer)) {
             return false;
         }
-        TargetGroup other = (TargetGroup) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.id == null && id != null) || (this.id != null && !this.id.equals(id))) {
             return false;
         }
         return true;

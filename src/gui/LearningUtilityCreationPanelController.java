@@ -8,6 +8,8 @@ package gui;
 import domain.DomainController;
 import java.io.IOException;
 import java.math.BigDecimal;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,11 +30,11 @@ public class LearningUtilityCreationPanelController extends GridPane {
     @FXML
     private TextField txtName;
     @FXML
-    private ComboBox<?> cmbLocation;
+    private ComboBox<String> cmbLocation;
     @FXML
-    private ComboBox<?> cmbTargetGroups;
+    private ComboBox<String> cmbTargetGroups;
     @FXML
-    private ComboBox<?> cmbFieldsOfStudy;
+    private ComboBox<String> cmbFieldsOfStudy;
     @FXML
     private CheckBox chkLoanable;
     @FXML
@@ -57,6 +59,7 @@ public class LearningUtilityCreationPanelController extends GridPane {
     public LearningUtilityCreationPanelController(DomainController domainController){
         this.domainController = domainController;
         initLoader();
+        populateComboboxes();
     }
 
     private void initLoader() throws RuntimeException {
@@ -68,6 +71,14 @@ public class LearningUtilityCreationPanelController extends GridPane {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    private void populateComboboxes(){
+  
+        cmbLocation.setItems(FXCollections.observableArrayList(domainController.getLocations()));
+        cmbFieldsOfStudy.setItems(FXCollections.observableArrayList(domainController.getFieldsOfStudy()));
+        cmbTargetGroups.setItems(FXCollections.observableArrayList(domainController.getTargetGroups()));
+        
     }
     
     @FXML

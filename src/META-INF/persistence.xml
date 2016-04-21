@@ -2,14 +2,14 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="DidactischeLeermiddelenPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>domain.Company</class>
-    <class>domain.FieldOfStudy</class>
-    <class>domain.TargetGroup</class>
-    <class>domain.LearningUtility</class>
-    <class>domain.Reservation</class>
     <class>domain.User</class>
     <class>domain.Wishlist</class>
-    <class>domain.Location</class>
+    <class>domain.learningUtility.TargetGroup</class>
+    <class>domain.learningUtility.Company</class>
+    <class>domain.learningUtility.LearningUtility</class>
+    <class>domain.learningUtility.Location</class>
+    <class>domain.learningUtility.FieldOfStudy</class>
+    <class>domain.learningUtility.Reservation</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://didactischeleermiddelen03.database.windows.net:1433;databaseName=DidactischeLeermiddelen03_db"/>
       <property name="javax.persistence.jdbc.user" value="tile03@didactischeleermiddelen03"/>
