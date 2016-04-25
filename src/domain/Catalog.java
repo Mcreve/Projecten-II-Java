@@ -6,29 +6,30 @@
 package domain;
 
 import java.util.List;
-import persistence.GenericDao;
 import persistence.GenericDaoJpa;
+import persistence.IGenericDao;
 
 /**
  *
  * @author Ward Vanlerberghe
  */
-public class Catalog<T> {
+public class Catalog<T> implements ICatalog<T>{
     
-    private List<T> entities;
-    private GenericDao<T> repository;
-    private final Class<T> type;
+    protected List<T> entities;
+    protected IGenericDao<T> repository;
+    protected final Class<T> type;
     
     public Catalog(Class<T> type){
         this.type = type;
         this.repository = new GenericDaoJpa<>(type);
     }
     
-    public Catalog(GenericDao<T> mock, Class<T> type){
+    public Catalog(IGenericDao<T> mock, Class<T> type){
         this.type = type;
         this.repository = mock;
     }
     
+    @Override
     public void addEntity(T entity){
         loadEntities();
         this.entities.add(entity);
@@ -37,17 +38,18 @@ public class Catalog<T> {
         GenericDaoJpa.commitTransaction();
     }
     
+    @Override
     public <E> T getEntity(E id){
         loadEntities();
         return entities.stream().filter(entity -> entity.equals(id)).findAny().get();
     }
-    
+    @Override
     public List<T> getEntities(){
         loadEntities();
         return entities;
     }
 
-    private void loadEntities() {
+    protected void loadEntities() {
         if(entities == null)
             entities = repository.findAll();
     }

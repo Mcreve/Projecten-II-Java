@@ -25,23 +25,21 @@ import persistence.Connection;
  */
 public class DomainController {
     
-    private Catalog<LearningUtility> learningUtilityCatalog;
-    private Catalog<Company> companyCatalog;
-    private Catalog<FieldOfStudy> fieldOfStudyCatalog;
-    private Catalog<TargetGroup> targetGroupCatalog;
-    private Catalog<Location> locationCatalog;
+    private Catalog<LearningUtility>    learningUtilityCatalog;
+    private CompanyCatalog              companyCatalog;
+    private FieldOfStudyCatalog         fieldOfStudyCatalog;
+    private TargetGroupCatalog          targetGroupCatalog;
+    private LocationCatalog            locationCatalog;
+    
     
     public DomainController(){
-        learningUtilityCatalog = new Catalog<>(LearningUtility.class);
-        companyCatalog = new Catalog<>(Company.class);
-        fieldOfStudyCatalog = new Catalog<>(FieldOfStudy.class);
-        targetGroupCatalog = new Catalog<>(TargetGroup.class);
-        locationCatalog = new Catalog<>(Location.class);
+        learningUtilityCatalog  = new Catalog<>(LearningUtility.class);
+        companyCatalog          = new CompanyCatalog();
+        fieldOfStudyCatalog     = new FieldOfStudyCatalog();
+        targetGroupCatalog      = new TargetGroupCatalog();
+        locationCatalog         = new LocationCatalog();
     }
     
-    public List<String> getCompanyNames(){
-        return companyCatalog.getEntities().stream().map(Company::getName).collect(Collectors.toList());
-    }
     
     public List<String> getFieldsOfStudy(){
         return fieldOfStudyCatalog.getEntities().stream().map(FieldOfStudy::getName).collect(Collectors.toList());
@@ -54,9 +52,12 @@ public class DomainController {
     public List<String> getLocations(){
         return locationCatalog.getEntities().stream().map(Location::getName).collect(Collectors.toList());
     }
+    public List<String> getCompanies(){
+        return companyCatalog.getEntities().stream().map(Company::getName).collect(Collectors.toList());
+    }
     
     public void addLearningUtility(String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image, 
-            int amountInstock, int AmountUnavailable, int companyId, int locationId, int[] targetGroupId, int[] fieldOfStudyId){
+            int amountInstock, int AmountUnavailable, String companyName, String locationName, List<String> targetGroups, List<String> fieldsOfStudy){
         
         if(name.isEmpty() || amountInstock < 1)
             throw new IllegalArgumentException("De naam en het aantal beschikbaar dient ingevuld te zijn.");
@@ -64,12 +65,12 @@ public class DomainController {
             throw new IllegalArgumentException("Er bestaat al een artikel met de opgegeven naam.");
         }
         
-        LearningUtility newItem = createLearningUtility(name, description, price, loanable, articleNumber, image, locationId, amountInstock, AmountUnavailable, companyId, targetGroupId, fieldOfStudyId);
-
+        LearningUtility newItem = createLearningUtility(name, description, price, loanable, articleNumber, image, locationName, amountInstock, AmountUnavailable, companyName, targetGroups, fieldsOfStudy);
+        System.out.println(newItem.toString());
         learningUtilityCatalog.addEntity(newItem);
     }
 
-    private LearningUtility createLearningUtility(String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image, int locationId, int amountInstock, int AmountUnavailable, int companyId, int[] targetGroupId, int[] fieldOfStudyId) {
+    private LearningUtility createLearningUtility(String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image, String locationName, int amountInstock, int AmountUnavailable, String companyName, List<String> targetGroups, List<String> fieldsOfStudy) {
         LearningUtility newItem = new LearningUtility();
         newItem.setName(name);
         newItem.setDescription(description);
@@ -79,18 +80,29 @@ public class DomainController {
         newItem.setPicture(image);
         newItem.setAmountInCatalog(amountInstock);
         newItem.setAmountUnavailable(AmountUnavailable);
-        newItem.setCompanyId(companyCatalog.getEntity(companyId));
-        newItem.setLocationId(locationCatalog.getEntity(locationId));
+        newItem.setCompanyId(companyCatalog.getByName(companyName));
+        newItem.setLocationId(locationCatalog.getByName(locationName));
+        
         List<TargetGroup> targetGroupsList = new ArrayList<>();        
-        for(int id : targetGroupId){
-            targetGroupsList.add(targetGroupCatalog.getEntity(id));
+
+        for(String targetGroupName : targetGroups)
+        {
+            
+            targetGroupsList.add(targetGroupCatalog.getByName(targetGroupName));
+            
         }
         newItem.setTargetGroupList(targetGroupsList);
-        List<FieldOfStudy> fieldsOfStudyList = new ArrayList<>();        
-        for(int id: fieldOfStudyId){
-            fieldsOfStudyList.add(fieldOfStudyCatalog.getEntity(id));
+
+        List<FieldOfStudy> fieldOfStudyList = new ArrayList<>();        
+
+        for(String fieldOfStudyName : fieldsOfStudy)
+        {
+            
+            fieldOfStudyList.add(fieldOfStudyCatalog.getByName(fieldOfStudyName));
+            
         }
-        newItem.setFieldOfStudyList(fieldsOfStudyList);
+        newItem.setFieldOfStudyList(fieldOfStudyList);
+        
         return newItem;
     }
     

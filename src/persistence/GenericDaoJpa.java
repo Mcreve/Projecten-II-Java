@@ -3,8 +3,8 @@ package persistence;
 import java.util.List;
 import javax.persistence.EntityManager;
 
-public class GenericDaoJpa<T> implements GenericDao<T> {
-    private static final EntityManager em = Connection.entityManager();
+public class GenericDaoJpa<T> implements IGenericDao<T> {
+    public static final EntityManager em = Connection.entityManager();
     private final Class<T> type;
     
     public GenericDaoJpa(Class<T> type) {

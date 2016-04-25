@@ -2,7 +2,7 @@ package persistence;
 
 import java.util.List;
 
-public interface GenericDao<T> {
+public interface IGenericDao<T> {
     public List<T> findAll();  
     public <E> T findBy(E id);
     public T update(T object);
