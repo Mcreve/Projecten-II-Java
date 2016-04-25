@@ -18,8 +18,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,20 +30,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "LearningUtility")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "LearningUtility.findAll", query = "SELECT l FROM LearningUtility l"),
-    @NamedQuery(name = "LearningUtility.findById", query = "SELECT l FROM LearningUtility l WHERE l.id = :id"),
-    @NamedQuery(name = "LearningUtility.findByName", query = "SELECT l FROM LearningUtility l WHERE l.name = :name"),
-    @NamedQuery(name = "LearningUtility.findByDescription", query = "SELECT l FROM LearningUtility l WHERE l.description = :description"),
-    @NamedQuery(name = "LearningUtility.findByPrice", query = "SELECT l FROM LearningUtility l WHERE l.price = :price"),
-    @NamedQuery(name = "LearningUtility.findByLoanable", query = "SELECT l FROM LearningUtility l WHERE l.loanable = :loanable"),
-    @NamedQuery(name = "LearningUtility.findByArticleNumber", query = "SELECT l FROM LearningUtility l WHERE l.articleNumber = :articleNumber"),
-    @NamedQuery(name = "LearningUtility.findByPicture", query = "SELECT l FROM LearningUtility l WHERE l.picture = :picture"),
-    @NamedQuery(name = "LearningUtility.findByAmountInCatalog", query = "SELECT l FROM LearningUtility l WHERE l.amountInCatalog = :amountInCatalog"),
-    @NamedQuery(name = "LearningUtility.findByAmountUnavailable", query = "SELECT l FROM LearningUtility l WHERE l.amountUnavailable = :amountUnavailable")})
 public class LearningUtility implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

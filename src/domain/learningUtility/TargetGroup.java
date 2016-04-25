@@ -12,8 +12,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -25,13 +23,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "TargetGroup")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "TargetGroup.findAll", query = "SELECT t FROM TargetGroup t"),
-    @NamedQuery(name = "TargetGroup.findById", query = "SELECT t FROM TargetGroup t WHERE t.id = :id"),
-    @NamedQuery(name = "TargetGroup.findByName", query = "SELECT t FROM TargetGroup t WHERE t.name = :name")})
 public class TargetGroup implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @Column(name = "Id")

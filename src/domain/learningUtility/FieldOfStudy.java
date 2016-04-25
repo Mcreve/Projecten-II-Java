@@ -14,8 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -27,13 +25,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "FieldOfStudy")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "FieldOfStudy.findAll", query = "SELECT f FROM FieldOfStudy f"),
-    @NamedQuery(name = "FieldOfStudy.findById", query = "SELECT f FROM FieldOfStudy f WHERE f.id = :id"),
-    @NamedQuery(name = "FieldOfStudy.findByName", query = "SELECT f FROM FieldOfStudy f WHERE f.name = :name")})
 public class FieldOfStudy implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @Column(name = "Id")

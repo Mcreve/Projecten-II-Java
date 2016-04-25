@@ -14,8 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,16 +26,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "Reservation")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Reservation.findAll", query = "SELECT r FROM Reservation r"),
-    @NamedQuery(name = "Reservation.findById", query = "SELECT r FROM Reservation r WHERE r.id = :id"),
-    @NamedQuery(name = "Reservation.findByDateWanted", query = "SELECT r FROM Reservation r WHERE r.dateWanted = :dateWanted"),
-    @NamedQuery(name = "Reservation.findByAmount", query = "SELECT r FROM Reservation r WHERE r.amount = :amount"),
-    @NamedQuery(name = "Reservation.findByReservationDate", query = "SELECT r FROM Reservation r WHERE r.reservationDate = :reservationDate"),
-    @NamedQuery(name = "Reservation.findByDaysBlocked", query = "SELECT r FROM Reservation r WHERE r.daysBlocked = :daysBlocked")})
 public class Reservation implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @Column(name = "Id")
