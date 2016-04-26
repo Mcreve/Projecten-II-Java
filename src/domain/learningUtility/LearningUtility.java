@@ -232,8 +232,7 @@ public class LearningUtility implements Serializable {
                 "Loanable                : " + this.loanable                    + "\n" +
                 "Location       Id       : " + this.locationId                  + "\n" +
                 "TargetGroups   Id       : " + this.targetGroupList.toString()  + "\n" +
-                "FieldsOfStudy  Id       : " + this.fieldOfStudyList.toString() + "\n" +
-                "Reservations   Id       : " + this.reservationList.toString()  + "\n" ;                              
+                "FieldsOfStudy  Id       : " + this.fieldOfStudyList.toString() + "\n";                              
     }
     
 }
