@@ -6,20 +6,15 @@
 package gui;
 
 import domain.DomainController;
-import domain.learningUtility.TargetGroup;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -77,6 +72,7 @@ public class LearningUtilityCreationPanelController extends GridPane {
         this.domainController = domainController;
         initLoader();
         populateListViews();
+        populateComboBoxes();
         setDefaults();
     } 
     
@@ -91,14 +87,20 @@ public class LearningUtilityCreationPanelController extends GridPane {
         }
     }
     private void populateListViews(){
+        //Set selectionmodes to multiple selection
         lstFieldsOfStudy.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         lstTargetGroups.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-
-        cboLocations.setItems(FXCollections.observableArrayList(domainController.getLocations()));
+        
+        //Actually fill from database
         lstFieldsOfStudy.setItems(FXCollections.observableArrayList(domainController.getFieldsOfStudy()));
         lstTargetGroups.setItems(FXCollections.observableArrayList(domainController.getTargetGroups()));
+    }
+    private void populateComboBoxes()
+    {
+        //Actually fill from database
+        cboLocations.setItems(FXCollections.observableArrayList(domainController.getLocations()));
         cboCompanies.setItems(FXCollections.observableArrayList(domainController.getCompanies()));
+
     }
     
         private void setDefaults()
@@ -133,6 +135,7 @@ public class LearningUtilityCreationPanelController extends GridPane {
         {
             fieldsOfStudyList.add(item);            
         }     
+        System.out.println("Fields of Study selection: " + fieldsOfStudyList.toString());
         try{
          domainController.addLearningUtility(txtName.getText(),
                                             txtDescription.getText(),
@@ -156,6 +159,7 @@ public class LearningUtilityCreationPanelController extends GridPane {
     @FXML
     private void reset(ActionEvent event) {
         populateListViews();
+        populateComboBoxes();
         setDefaults();
     }
     

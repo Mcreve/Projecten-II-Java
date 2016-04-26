@@ -5,6 +5,11 @@
  */
 package domain;
 
+import domain.Catalogs.Catalog;
+import domain.Catalogs.FieldOfStudyCatalog;
+import domain.Catalogs.TargetGroupCatalog;
+import domain.Catalogs.CompanyCatalog;
+import domain.Catalogs.LocationCatalog;
 import domain.learningUtility.Company;
 import domain.learningUtility.LearningUtility;
 import domain.learningUtility.FieldOfStudy;
@@ -29,7 +34,7 @@ public class DomainController {
     private CompanyCatalog              companyCatalog;
     private FieldOfStudyCatalog         fieldOfStudyCatalog;
     private TargetGroupCatalog          targetGroupCatalog;
-    private LocationCatalog            locationCatalog;
+    private LocationCatalog             locationCatalog;
     
     
     public DomainController(){
@@ -56,6 +61,10 @@ public class DomainController {
         return companyCatalog.getEntities().stream().map(Company::getName).collect(Collectors.toList());
     }
     
+    public List<LearningUtility> getUtilities(){
+        return learningUtilityCatalog.getEntities();
+    }
+    
     public void addLearningUtility(String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image, 
             int amountInstock, int AmountUnavailable, String companyName, String locationName, List<String> targetGroups, List<String> fieldsOfStudy){
         
@@ -66,8 +75,13 @@ public class DomainController {
         }
         
         LearningUtility newItem = createLearningUtility(name, description, price, loanable, articleNumber, image, locationName, amountInstock, AmountUnavailable, companyName, targetGroups, fieldsOfStudy);
-        System.out.println(newItem.toString());
         learningUtilityCatalog.addEntity(newItem);
+        System.out.println("--- Printing LU's --- ");
+
+        for(LearningUtility lu : learningUtilityCatalog.getEntities())
+        {
+            System.out.println(lu.toString());
+        }
     }
 
     private LearningUtility createLearningUtility(String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image, String locationName, int amountInstock, int AmountUnavailable, String companyName, List<String> targetGroups, List<String> fieldsOfStudy) {
@@ -92,7 +106,7 @@ public class DomainController {
             
         }
         newItem.setTargetGroupList(targetGroupsList);
-
+        
         List<FieldOfStudy> fieldOfStudyList = new ArrayList<>();        
 
         for(String fieldOfStudyName : fieldsOfStudy)
@@ -101,8 +115,7 @@ public class DomainController {
             fieldOfStudyList.add(fieldOfStudyCatalog.getByName(fieldOfStudyName));
             
         }
-        newItem.setFieldOfStudyList(fieldOfStudyList);
-        
+        newItem.setFieldOfStudyList(fieldOfStudyList);      
         return newItem;
     }
     
