@@ -32,8 +32,6 @@ public class TargetGroup implements Serializable {
     @Basic(optional = false)
     @Column(name = "Name")
     private String name;
-    @ManyToMany(mappedBy = "targetGroupList")
-    private List<LearningUtility> learningUtilityList;
 
     public TargetGroup() {
     }
@@ -61,15 +59,6 @@ public class TargetGroup implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @XmlTransient
-    public List<LearningUtility> getLearningUtilityList() {
-        return learningUtilityList;
-    }
-
-    public void setLearningUtilityList(List<LearningUtility> learningUtilityList) {
-        this.learningUtilityList = learningUtilityList;
     }
 
     @Override

@@ -65,10 +65,11 @@ public class LearningUtility implements Serializable {
         @JoinColumn(name = "TargetGroupId", referencedColumnName = "Id")})
     @ManyToMany
     private List<TargetGroup> targetGroupList;
-    @ManyToMany(mappedBy = "learningUtilityList")
+     @JoinTable(name = "LearningUtility_FieldOfStudy", joinColumns = {
+        @JoinColumn(name = "LearningUtilityId", referencedColumnName = "Id")}, inverseJoinColumns = {
+        @JoinColumn(name = "FieldOfStudyId", referencedColumnName = "Id")})
+    @ManyToMany
     private List<FieldOfStudy> fieldOfStudyList;
-    @OneToMany(mappedBy = "learningUtilityId")
-    private List<Reservation> reservationList;
     @JoinColumn(name = "Company_Id", referencedColumnName = "Id")
     @ManyToOne
     private Company companyId;
@@ -181,15 +182,6 @@ public class LearningUtility implements Serializable {
 
     public void setFieldOfStudyList(List<FieldOfStudy> fieldOfStudyList) {
         this.fieldOfStudyList = fieldOfStudyList;
-    }
-
-    @XmlTransient
-    public List<Reservation> getReservationList() {
-        return reservationList;
-    }
-
-    public void setReservationList(List<Reservation> reservationList) {
-        this.reservationList = reservationList;
     }
 
     public Company getCompanyId() {

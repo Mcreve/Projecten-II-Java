@@ -6,16 +6,12 @@
 package domain.learningUtility;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,8 +29,6 @@ public class Location implements Serializable {
     @Basic(optional = false)
     @Column(name = "Name")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "locationId")
-    private List<LearningUtility> learningUtilityList;
 
     public Location() {
     }
@@ -62,15 +56,6 @@ public class Location implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @XmlTransient
-    public List<LearningUtility> getLearningUtilityList() {
-        return learningUtilityList;
-    }
-
-    public void setLearningUtilityList(List<LearningUtility> learningUtilityList) {
-        this.learningUtilityList = learningUtilityList;
     }
 
     @Override

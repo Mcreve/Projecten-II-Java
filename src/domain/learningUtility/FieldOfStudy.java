@@ -6,17 +6,12 @@
 package domain.learningUtility;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -34,12 +29,7 @@ public class FieldOfStudy implements Serializable {
     @Basic(optional = false)
     @Column(name = "Name")
     private String name;
-    @JoinTable(name = "LearningUtility_FieldOfStudy", joinColumns = {
-        @JoinColumn(name = "FieldOfStudyId", referencedColumnName = "Id")}, inverseJoinColumns = {
-        @JoinColumn(name = "LearningUtilityId", referencedColumnName = "Id")})
-    @ManyToMany
-    private List<LearningUtility> learningUtilityList;
-
+    
     public FieldOfStudy() {
     }
 
@@ -66,15 +56,6 @@ public class FieldOfStudy implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @XmlTransient
-    public List<LearningUtility> getLearningUtilityList() {
-        return learningUtilityList;
-    }
-
-    public void setLearningUtilityList(List<LearningUtility> learningUtilityList) {
-        this.learningUtilityList = learningUtilityList;
     }
 
     @Override

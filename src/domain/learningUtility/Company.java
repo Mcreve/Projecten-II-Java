@@ -6,15 +6,12 @@
 package domain.learningUtility;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -41,8 +38,6 @@ public class Company implements Serializable {
     @Basic(optional = false)
     @Column(name = "EmailAddress")
     private String emailAddress;
-    @OneToMany(mappedBy = "companyId")
-    private List<LearningUtility> learningUtilityList;
 
     public Company() {
     }
@@ -97,15 +92,6 @@ public class Company implements Serializable {
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
-    }
-
-    @XmlTransient
-    public List<LearningUtility> getLearningUtilityList() {
-        return learningUtilityList;
-    }
-
-    public void setLearningUtilityList(List<LearningUtility> learningUtilityList) {
-        this.learningUtilityList = learningUtilityList;
     }
 
     @Override

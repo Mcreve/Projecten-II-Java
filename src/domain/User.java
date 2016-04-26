@@ -39,8 +39,6 @@ public class User implements Serializable {
     @Basic(optional = false)
     @Column(name = "Discriminator")
     private String discriminator;
-    @OneToMany(mappedBy = "userEmailAddress")
-    private List<Reservation> reservationList;
 
     public User() {
     }
@@ -86,15 +84,6 @@ public class User implements Serializable {
 
     public void setDiscriminator(String discriminator) {
         this.discriminator = discriminator;
-    }
-
-    @XmlTransient
-    public List<Reservation> getReservationList() {
-        return reservationList;
-    }
-
-    public void setReservationList(List<Reservation> reservationList) {
-        this.reservationList = reservationList;
     }
 
     @Override
