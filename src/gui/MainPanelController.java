@@ -24,6 +24,15 @@ import javafx.scene.layout.BorderPane;
  * @author Ward Vanlerberghe
  */
 public class MainPanelController extends BorderPane {
+    private static String BRANCH_LEARNINGUTILIES = "Didactische Leermiddelen";
+    private static String BRANCH_RESERVATIONS = "Reservaties";
+    private static String BRANCH_USERS = "Gebruikers";
+    private static String LEAF_MANAGERS = "Beheerders";
+    private static String LEAF_SHOW = "Weergeven";
+    private static String LEAF_ADD = "Toevoegen";
+    private static String LEAF_EDIT = "Aanpassen";
+    private static String LEAF_IMPORT = "Importeren";
+
 
     @FXML
     private MenuItem menuLogout;
@@ -48,7 +57,6 @@ public class MainPanelController extends BorderPane {
         initLoader();
         populateTreeView();
         setInitialScene();
-        
     }
 
     private void initLoader() throws RuntimeException {
@@ -70,28 +78,30 @@ public class MainPanelController extends BorderPane {
         Collection<TreeItem<String>> children = new ArrayList<>();
         
         //populate treeview for LearningUtility operations
-        TreeItem<String> rootLearningUtilities = new TreeItem<>("Didactische Leermiddelen");
-        TreeItem<String> branchAddLearningUtilities = new TreeItem<>("Toevoegen");
+        TreeItem<String> rootLearningUtilities = new TreeItem<>(BRANCH_LEARNINGUTILIES);
+        TreeItem<String> branchAddLearningUtilities = new TreeItem<>(LEAF_ADD);
         children.add(branchAddLearningUtilities);
-        TreeItem<String> branchEditLearningUtilities = new TreeItem<>("Aanpassen");
+        TreeItem<String> branchEditLearningUtilities = new TreeItem<>(LEAF_EDIT);
         children.add(branchEditLearningUtilities);
+        TreeItem<String> branchMassImport = new TreeItem<>(LEAF_IMPORT);
+        children.add(branchMassImport);
         rootLearningUtilities.getChildren().addAll(children);
         rootChildren.add(rootLearningUtilities);
         
         //populate treeview for Reservation operations
         children = new ArrayList<>();
-        TreeItem<String> rootReservations = new TreeItem<>("Reservaties");
-        TreeItem<String> branchEditReservation = new TreeItem<>("Aanpassen");
+        TreeItem<String> rootReservations = new TreeItem<>(BRANCH_RESERVATIONS);
+        TreeItem<String> branchEditReservation = new TreeItem<>(LEAF_EDIT);
         children.add(branchEditReservation);
-        TreeItem<String> branchViewReservation = new TreeItem<>("Weergeven");
+        TreeItem<String> branchViewReservation = new TreeItem<>(LEAF_SHOW);
         children.add(branchViewReservation);
         rootReservations.getChildren().addAll(children);
         rootChildren.add(rootReservations);
         
         //populate treeview for manager operations
         children = new ArrayList<>();
-        TreeItem<String> rootUsers = new TreeItem<>("Gebruikers");
-        TreeItem<String> branchManagers = new TreeItem<>("Beheerders");
+        TreeItem<String> rootUsers = new TreeItem<>(BRANCH_USERS);
+        TreeItem<String> branchManagers = new TreeItem<>(LEAF_MANAGERS);
         children.add(branchManagers);
         rootUsers.getChildren().addAll(children);
         rootChildren.add(rootUsers);
@@ -101,11 +111,15 @@ public class MainPanelController extends BorderPane {
         treeView.setRoot(root);
         treeView.setShowRoot(false);
         
+        treeView.getSelectionModel()
+        .selectedItemProperty()
+        .addListener((observable, oldValue, newValue) -> 
+                setRightScreen(newValue.getParent().getValue(),newValue.getValue()));
+        
     }
     
     private void setInitialScene(){
-        LearningUtilityCreationPanelController creationPanel = new LearningUtilityCreationPanelController(domainController);
-        this.setCenter(creationPanel);
+
     }
 
     @FXML
@@ -118,11 +132,30 @@ public class MainPanelController extends BorderPane {
     }
 
     @FXML
-    private void updateTreeview(ActionEvent event) {
+    private void updateTreeview(ActionEvent event) 
+    {
     }
 
     @FXML
     private void showAbout(ActionEvent event) {
+    }
+
+    private void setRightScreen(String branch, String leaf) {
+
+        if(branch == BRANCH_LEARNINGUTILIES && leaf == LEAF_ADD)
+        {
+        LearningUtilityCreationPanelController creationPanel = new LearningUtilityCreationPanelController(domainController);
+        this.setCenter(creationPanel);
+        }
+        
+        if(branch == BRANCH_LEARNINGUTILIES && leaf == LEAF_IMPORT)
+        {
+        LearningUtilityImportPanelController importPanel = new LearningUtilityImportPanelController(domainController);
+        this.setCenter(importPanel);
+        }    
+        
+        
+        
     }
     
 }
