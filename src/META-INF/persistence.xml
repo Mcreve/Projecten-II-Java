@@ -10,6 +10,9 @@
     <class>domain.learningUtility.FieldOfStudy</class>
     <class>domain.learningUtility.Reservation</class>
     <class>domain.users.User</class>
+    <class>domain.users.Lector</class>
+    <class>domain.users.Manager</class>
+    <class>domain.users.Student</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://didactischeleermiddelen03.database.windows.net:1433;databaseName=DidactischeLeermiddelen03_db"/>
       <property name="javax.persistence.jdbc.user" value="tile03@didactischeleermiddelen03"/>

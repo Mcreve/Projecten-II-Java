@@ -15,6 +15,8 @@ import domain.learningUtility.LearningUtility;
 import domain.learningUtility.FieldOfStudy;
 import domain.learningUtility.Location;
 import domain.learningUtility.TargetGroup;
+import domain.users.Lector;
+import domain.users.User;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Paths;
@@ -35,6 +37,7 @@ public class DomainController {
     private FieldOfStudyCatalog         fieldOfStudyCatalog;
     private TargetGroupCatalog          targetGroupCatalog;
     private LocationCatalog             locationCatalog;
+    private Catalog<User> userCatalog;
     
     
     public DomainController(){
@@ -43,6 +46,7 @@ public class DomainController {
         fieldOfStudyCatalog     = new FieldOfStudyCatalog();
         targetGroupCatalog      = new TargetGroupCatalog();
         locationCatalog         = new LocationCatalog();
+        userCatalog = new Catalog<>(User.class);
     }
     
     

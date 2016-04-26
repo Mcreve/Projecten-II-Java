@@ -5,25 +5,26 @@
  */
 package domain.users;
 
-import domain.learningUtility.Reservation;
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Ward Vanlerberghe
  */
 @Entity
-@Table(name = "User")
+@Table(name = "Users")
 @XmlRootElement
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "Discriminator")
 public class User implements Serializable {
 
     @Id
@@ -36,9 +37,6 @@ public class User implements Serializable {
     @Basic(optional = false)
     @Column(name = "LastName")
     private String lastName;
-    @Basic(optional = false)
-    @Column(name = "Discriminator")
-    private String discriminator;
 
     public User() {
     }
@@ -47,11 +45,10 @@ public class User implements Serializable {
         this.emailAddress = emailAddress;
     }
 
-    public User(String emailAddress, String firstName, String lastName, String discriminator) {
+    public User(String emailAddress, String firstName, String lastName) {
         this.emailAddress = emailAddress;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.discriminator = discriminator;
     }
 
     public String getEmailAddress() {
@@ -78,14 +75,6 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getDiscriminator() {
-        return discriminator;
-    }
-
-    public void setDiscriminator(String discriminator) {
-        this.discriminator = discriminator;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -107,7 +96,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.User[ emailAddress=" + emailAddress + " ]";
+        return "domain.User[ emailAddress=" + emailAddress + " ] " + firstName + " " + lastName;
     }
     
 }

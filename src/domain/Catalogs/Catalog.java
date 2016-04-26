@@ -33,10 +33,10 @@ public class Catalog<T> implements ICatalog<T>{
     @Override
     public void addEntity(T entity){
         loadEntities();
-        this.entities.add(entity);
         GenericDaoJpa.startTransaction();
         repository.insert(entity);
         GenericDaoJpa.commitTransaction();
+        this.entities.add(entity);
     }
     
     @Override
