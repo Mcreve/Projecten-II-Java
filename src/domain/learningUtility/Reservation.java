@@ -5,7 +5,7 @@
  */
 package domain.learningUtility;
 
-import domain.User;
+import domain.users.User;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;

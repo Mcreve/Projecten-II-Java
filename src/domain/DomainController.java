@@ -141,21 +141,21 @@ public class DomainController {
         return items;
     }
     
- //   public void registerItems(List<String[]> items){
- //       items.stream().forEach((String[] i) -> {
- //           String name = i[0];
- //           String description = i[1];
- //           BigDecimal price = BigDecimal.valueOf(Double.parseDouble(i[2]));
- //           Boolean loanable = (i[3] == "true" ? true:false);
- //           String image = i[4];
- //           Location location = persistenceController.findLocationById(Integer.parseInt(i[5]));
- //           int amount = Integer.parseInt(i[6]);
- //           int amountUnavailable = Integer.parseInt(i[7]);
- //           Company company = persistenceController.findCompanyById(Integer.parseInt(i[8]));
- //           List<TargetGroup> targetGroups = persistenceController.findAllTargetGroups().stream().filter(predicate)
- //           LearningUtility item = createLearningUtility()
- //       });
- //   }
+    public void registerItems(List<String[]> items){
+        items.stream().forEach((String[] i) -> {
+            String name = i[0];
+            String description = i[1];
+            BigDecimal price = BigDecimal.valueOf(Double.parseDouble(i[2]));
+            Boolean loanable = (i[3] == "true" ? true:false);
+            String image = i[4];
+            Location location = locationCatalog.getByName(i[5]);
+            int amount = Integer.parseInt(i[6]);
+            int amountUnavailable = Integer.parseInt(i[7]);
+            Company company = companyCatalog.getByName(i[8]);
+            List<TargetGroup> targetGroups = targetGroupCatalog.getEntities().stream().filter(entity -> entity.getName().contains(i[9])).collect(Collectors.toList());
+            //LearningUtility item = createLearningUtility()
+        });
+    }
 
     public void closeConnection() {
         Connection.close();
