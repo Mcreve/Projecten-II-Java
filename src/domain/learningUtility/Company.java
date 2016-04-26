@@ -115,7 +115,12 @@ public class Company implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Company[ id=" + id + " ]";
+        return "Company                : " + this.id                + "\n" +
+               "Name                   : " + this.name              + "\n" +
+               "E-mail Adres           : " + this.emailAddress      + "\n" +
+               "Contactpersoon         : " + this.contactPersonName + "\n" +
+               "Website                : " + this.website           + "\n" ;
+
     }
     
 }
