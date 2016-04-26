@@ -3,24 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain;
-import domain.learningUtility.FieldOfStudy;
+package domain.Catalogs;
+
+import domain.Interfaces.ITargetGroupCatalog;
+import domain.learningUtility.TargetGroup;
 
 /**
  *
  * @author Append
  */
-public class FieldOfStudyCatalog extends Catalog<FieldOfStudy> implements IFieldOfStudyCatalog
+public class TargetGroupCatalog extends Catalog<TargetGroup> implements ITargetGroupCatalog  
 {
-    public FieldOfStudyCatalog() {
-        super(FieldOfStudy.class);
+
+    public TargetGroupCatalog() {
+        super(TargetGroup.class);
     }
 
     @Override
-    public FieldOfStudy getByName(String name) {
+    public TargetGroup getByName(String name) {
         loadEntities();
         return entities.stream().filter(entity -> entity.getName().contains(name)).findFirst().get();
     }
 
-    
 }
+    

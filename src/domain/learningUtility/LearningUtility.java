@@ -229,7 +229,19 @@ public class LearningUtility implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.LearningUtility[ id=" + id + " ]";
+        return  "LearningUtility         : " + this.id                          + "\n" +
+                "Name                    : " + this.name                        + "\n" +
+                "Article Number          : " + this.articleNumber               + "\n" +
+                "Description             : " + this.description                 + "\n" +
+                "Picture URL             : " + this.picture                     + "\n" +
+                "Amount In Catalog       : " + this.amountInCatalog             + "\n" +   
+                "Amount Unavailable      : " + this.amountUnavailable           + "\n" +
+                "Company        Id       : " + this.companyId                   + "\n" +
+                "Loanable                : " + this.loanable                    + "\n" +
+                "Location       Id       : " + this.locationId                  + "\n" +
+                "TargetGroups   Id       : " + this.targetGroupList.toString()  + "\n" +
+                "FieldsOfStudy  Id       : " + this.fieldOfStudyList.toString() + "\n" +
+                "Reservations   Id       : " + this.reservationList.toString()  + "\n" ;                              
     }
     
 }

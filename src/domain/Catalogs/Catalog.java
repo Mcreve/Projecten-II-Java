@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain;
+package domain.Catalogs;
 
+import domain.Interfaces.ICatalog;
 import java.util.List;
 import persistence.GenericDaoJpa;
 import persistence.IGenericDao;

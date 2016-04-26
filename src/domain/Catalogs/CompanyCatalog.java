@@ -3,26 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain;
-
-import domain.learningUtility.TargetGroup;
+package domain.Catalogs;
+import domain.Interfaces.ICompanyCatalog;
+import domain.learningUtility.Company;
 
 /**
  *
  * @author Append
  */
-public class TargetGroupCatalog extends Catalog<TargetGroup> implements ITargetGroupCatalog  
+public class CompanyCatalog extends Catalog<Company> implements ICompanyCatalog
 {
-
-    public TargetGroupCatalog() {
-        super(TargetGroup.class);
+    public CompanyCatalog() 
+    {
+        super(Company.class);
     }
 
     @Override
-    public TargetGroup getByName(String name) {
+    public Company getByName(String name) {
         loadEntities();
         return entities.stream().filter(entity -> entity.getName().contains(name)).findFirst().get();
     }
 
 }
-    
