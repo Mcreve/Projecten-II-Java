@@ -15,7 +15,6 @@ import domain.learningUtility.LearningUtility;
 import domain.learningUtility.FieldOfStudy;
 import domain.learningUtility.Location;
 import domain.learningUtility.TargetGroup;
-import domain.users.Lector;
 import domain.users.User;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -32,20 +31,20 @@ import persistence.Connection;
  */
 public class DomainController {
     
-    private Catalog<LearningUtility>    learningUtilityCatalog;
-    private CompanyCatalog              companyCatalog;
-    private FieldOfStudyCatalog         fieldOfStudyCatalog;
-    private TargetGroupCatalog          targetGroupCatalog;
-    private LocationCatalog             locationCatalog;
+    private Catalog<LearningUtility> learningUtilityCatalog;
+    private CompanyCatalog companyCatalog;
+    private FieldOfStudyCatalog fieldOfStudyCatalog;
+    private TargetGroupCatalog targetGroupCatalog;
+    private LocationCatalog locationCatalog;
     private Catalog<User> userCatalog;
     
     
     public DomainController(){
-        learningUtilityCatalog  = new Catalog<>(LearningUtility.class);
-        companyCatalog          = new CompanyCatalog();
-        fieldOfStudyCatalog     = new FieldOfStudyCatalog();
-        targetGroupCatalog      = new TargetGroupCatalog();
-        locationCatalog         = new LocationCatalog();
+        learningUtilityCatalog = new Catalog<>(LearningUtility.class);
+        companyCatalog = new CompanyCatalog();
+        fieldOfStudyCatalog = new FieldOfStudyCatalog();
+        targetGroupCatalog = new TargetGroupCatalog();
+        locationCatalog = new LocationCatalog();
         userCatalog = new Catalog<>(User.class);
     }
     
