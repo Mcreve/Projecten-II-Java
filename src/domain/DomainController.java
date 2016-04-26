@@ -15,6 +15,7 @@ import domain.learningUtility.LearningUtility;
 import domain.learningUtility.FieldOfStudy;
 import domain.learningUtility.Location;
 import domain.learningUtility.TargetGroup;
+import domain.users.Lector;
 import domain.users.User;
 import java.io.IOException;
 import java.math.BigDecimal;
