@@ -141,7 +141,14 @@ public class Reservation implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Reservation[ id=" + id + " ]";
+        return  "Reservation            : " + this.id                + "\n" +
+                "User Email             : " + this.userEmailAddress  + "\n" +
+                "LearningUtility Id     : " + this.learningUtilityId + "\n" +
+                "Amount                 : " + this.amount            + "\n" +
+                "Date Wanted            : " + this.dateWanted        + "\n" +
+                "Reservation Date       : " + this.reservationDate   + "\n" +
+                "Days Blocked           : " + this.daysBlocked       + "\n" ;
+                
     }
     
 }

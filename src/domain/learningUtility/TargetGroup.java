@@ -82,7 +82,8 @@ public class TargetGroup implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.TargetGroup[ id=" + id + " ]";
+        return  "Target Group           : " + this.id                + "\n" +
+                "Name                   : " + this.name              + "\n" ;
     }
     
 }

@@ -79,7 +79,8 @@ public class Location implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Location[ id=" + id + " ]";
+        return  "Location               : " + this.id      + "\n" +
+                "Name                   : " + this.name    + "\n" ;
     }
     
 }

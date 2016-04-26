@@ -5,11 +5,11 @@
  */
 package domain;
 
-import domain.Catalogs.Catalog;
-import domain.Catalogs.FieldOfStudyCatalog;
-import domain.Catalogs.TargetGroupCatalog;
-import domain.Catalogs.CompanyCatalog;
-import domain.Catalogs.LocationCatalog;
+import domain.catalogs.Catalog;
+import domain.catalogs.FieldOfStudyCatalog;
+import domain.catalogs.TargetGroupCatalog;
+import domain.catalogs.CompanyCatalog;
+import domain.catalogs.LocationCatalog;
 import domain.learningUtility.Company;
 import domain.learningUtility.LearningUtility;
 import domain.learningUtility.FieldOfStudy;
