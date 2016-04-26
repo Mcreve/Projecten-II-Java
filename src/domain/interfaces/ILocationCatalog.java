@@ -3,14 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.Interfaces;
-import domain.learningUtility.TargetGroup;
+package domain.interfaces;
+import domain.learningUtility.Location;
 
 /**
  *
  * @author Append
  */
-public interface ITargetGroupCatalog extends ICatalog<TargetGroup>{
-        public TargetGroup getByName(String name);
+public interface ILocationCatalog extends ICatalog<Location> 
+{
+    public Location getByName(String name);
 
 }

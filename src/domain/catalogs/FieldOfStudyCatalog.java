@@ -3,23 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.Catalogs;
-import domain.Interfaces.ILocationCatalog;
-import domain.learningUtility.Location;
+package domain.catalogs;
+import domain.interfaces.IFieldOfStudyCatalog;
+import domain.learningUtility.FieldOfStudy;
 
 /**
  *
  * @author Append
  */
-public class LocationCatalog extends Catalog<Location> implements ILocationCatalog  {
-    public LocationCatalog() 
-    {
-        super(Location.class);
+public class FieldOfStudyCatalog extends Catalog<FieldOfStudy> implements IFieldOfStudyCatalog
+{
+    public FieldOfStudyCatalog() {
+        super(FieldOfStudy.class);
     }
 
     @Override
-    public Location getByName(String name) {
+    public FieldOfStudy getByName(String name) {
         loadEntities();
         return entities.stream().filter(entity -> entity.getName().contains(name)).findFirst().get();
     }
+
+    
 }

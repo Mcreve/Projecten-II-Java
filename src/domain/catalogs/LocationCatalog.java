@@ -3,27 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.Catalogs;
-
-import domain.Interfaces.ITargetGroupCatalog;
-import domain.learningUtility.TargetGroup;
+package domain.catalogs;
+import domain.interfaces.ILocationCatalog;
+import domain.learningUtility.Location;
 
 /**
  *
  * @author Append
  */
-public class TargetGroupCatalog extends Catalog<TargetGroup> implements ITargetGroupCatalog  
-{
-
-    public TargetGroupCatalog() {
-        super(TargetGroup.class);
+public class LocationCatalog extends Catalog<Location> implements ILocationCatalog  {
+    public LocationCatalog() 
+    {
+        super(Location.class);
     }
 
     @Override
-    public TargetGroup getByName(String name) {
+    public Location getByName(String name) {
         loadEntities();
         return entities.stream().filter(entity -> entity.getName().contains(name)).findFirst().get();
     }
-
 }
-    
