@@ -162,5 +162,13 @@
             <Insets right="15.0" />
          </padding>
       </ComboBox>
+      <Label fx:id="lblInfo" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="8" GridPane.valignment="CENTER">
+         <opaqueInsets>
+            <Insets right="15.0" />
+         </opaqueInsets>
+         <GridPane.margin>
+            <Insets left="15.0" />
+         </GridPane.margin>
+      </Label>
    </children>
 </fx:root>

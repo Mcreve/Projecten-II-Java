@@ -72,20 +72,14 @@ public class DomainController {
     public void addLearningUtility(String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image, 
             int amountInstock, int AmountUnavailable, String companyName, String locationName, List<String> targetGroups, List<String> fieldsOfStudy){
         
-        if(name.isEmpty() || amountInstock < 1)
-            throw new IllegalArgumentException("De naam en het aantal beschikbaar dient ingevuld te zijn.");
+        if(amountInstock < 1)
+            throw new IllegalArgumentException("Aantal in stock moet meer zijn dan één.");
         if(learningUtilityCatalog.getEntities().stream().anyMatch(l -> l.getName().equals(name))){
             throw new IllegalArgumentException("Er bestaat al een artikel met de opgegeven naam.");
         }
         
         LearningUtility newItem = createLearningUtility(name, description, price, loanable, articleNumber, image, locationName, amountInstock, AmountUnavailable, companyName, targetGroups, fieldsOfStudy);
         learningUtilityCatalog.addEntity(newItem);
-        System.out.println("--- Printing LU's --- ");
-
-        for(LearningUtility lu : learningUtilityCatalog.getEntities())
-        {
-            System.out.println(lu.toString());
-        }
     }
 
     private LearningUtility createLearningUtility(String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image, String locationName, int amountInstock, int AmountUnavailable, String companyName, List<String> targetGroups, List<String> fieldsOfStudy) {

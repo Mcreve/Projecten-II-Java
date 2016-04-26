@@ -18,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;
@@ -65,6 +66,8 @@ public class LearningUtilityCreationPanelController extends GridPane {
     private static final double ZERO_DOUBLE = 0.00;
     private static final int ZERO_INTEGER = 0;
     private static final String DEFAULT_HTTP = "Http://";
+    @FXML
+    private Label lblInfo;
 
 
     
@@ -114,46 +117,70 @@ public class LearningUtilityCreationPanelController extends GridPane {
         chkLoanable.setSelected(true);
         txtPrice.setText(String.valueOf(ZERO_DOUBLE));
         
-        cboLocations.getSelectionModel().clearSelection();
-        lstFieldsOfStudy.getSelectionModel().clearSelection();
-        lstTargetGroups.getSelectionModel().clearSelection();
-        cboCompanies.getSelectionModel().clearSelection();
+        cboLocations.getSelectionModel().select(ZERO_INTEGER);
+        lstFieldsOfStudy.getSelectionModel().select(ZERO_INTEGER);
+        lstTargetGroups.getSelectionModel().select(ZERO_INTEGER);
+        cboCompanies.getSelectionModel().select(ZERO_INTEGER);
+        lblInfo.setText(EMPTY_STRING);
     }
     @FXML
-    private void add(ActionEvent event) {
-        List<String> targetGroupsList = new ArrayList<>();        
-        List<String> fieldsOfStudyList = new ArrayList<>();        
-        
-        ObservableList<String> targetGroupsObservers = lstTargetGroups.getSelectionModel().getSelectedItems();
-        ObservableList<String> fieldsOfStudyObservers = lstFieldsOfStudy.getSelectionModel().getSelectedItems();
-        
-        for(String item : targetGroupsObservers )
+    private void add(ActionEvent event) throws IllegalArgumentException 
+    {
+        String infoMessage = validateFields();
+                
+        if(infoMessage != EMPTY_STRING)
         {
-            targetGroupsList.add(item);            
+           lblInfo.setText(infoMessage);
+           return;
         }
-        for(String item : fieldsOfStudyObservers )
+        
+        String name = txtName.getText();
+        String description = txtDescription.getText();
+        BigDecimal price = new BigDecimal(txtPrice.getText());
+        Boolean loanable = chkLoanable.isSelected();
+        String articleNumber = txtArticleNumber.getText();
+        String imageUrl = txtImage.getText();
+        Integer amountInStock = Integer.valueOf(txtAmountInStock.getText());
+        Integer amountUnavailable = Integer.valueOf(txtAmountUnavailable.getText());
+        String company = cboCompanies.getSelectionModel().getSelectedItem().toString();
+        String location = cboLocations.getSelectionModel().getSelectedItem().toString();
+
+       List<String> targetGroupsList = new ArrayList<>();        
+       List<String> fieldsOfStudyList = new ArrayList<>();        
+
+       ObservableList<String> targetGroupsObservers = lstTargetGroups.getSelectionModel().getSelectedItems();
+       ObservableList<String> fieldsOfStudyObservers = lstFieldsOfStudy.getSelectionModel().getSelectedItems();
+
+       for(String item : targetGroupsObservers )
+       {
+           targetGroupsList.add(item);            
+       }
+       for(String item : fieldsOfStudyObservers )
+       {
+           fieldsOfStudyList.add(item);  
+       }
+        try
         {
-            fieldsOfStudyList.add(item);            
-        }     
-        System.out.println("Fields of Study selection: " + fieldsOfStudyList.toString());
-        try{
-         domainController.addLearningUtility(txtName.getText(),
-                                            txtDescription.getText(),
-                                            new BigDecimal(txtPrice.getText()),
-                                            chkLoanable.isSelected(),
-                                            txtArticleNumber.getText(),
-                                            txtImage.getText(),
-                                            Integer.valueOf(txtAmountInStock.getText()),
-                                            Integer.valueOf(txtAmountUnavailable.getText()),
-                                            cboCompanies.getSelectionModel().getSelectedItem().toString(),
-                                            cboLocations.getSelectionModel().getSelectedItem(),
+            domainController.addLearningUtility(
+                                            name,
+                                            description,
+                                            price,
+                                            loanable,
+                                            articleNumber,
+                                            imageUrl,
+                                            amountInStock,
+                                            amountUnavailable,
+                                            company,
+                                            location,
                                             targetGroupsList,
-                                            fieldsOfStudyList);           
+                                            fieldsOfStudyList);   
+            
+        lblInfo.setText(name + " werd succesvol toegevoegd.");
+
         }catch(Exception e)
         {
-            System.out.println(e);
+            lblInfo.setText(e.getMessage());
         }
-
     }
 
     @FXML
@@ -163,4 +190,23 @@ public class LearningUtilityCreationPanelController extends GridPane {
         setDefaults();
     }
     
+    private String validateFields()
+    {
+        if(txtName.getText() == null ? EMPTY_STRING == null : txtName.getText().equals(EMPTY_STRING))
+            return "Gelieve de Naam in te vullen.";
+        
+        if(!txtAmountInStock.getText().matches("[0-9]+?"))
+            return "Aantal in stock moet een numerisch getal zijn.";
+        
+        if(Integer.valueOf(txtAmountInStock.getText()) < 1)
+            return "Aantal in stock moet meer dan 1 zijn."; 
+        
+        if(!txtAmountUnavailable.getText().matches("[0-9]+?"))
+            return "Aantal onbeschikbaar moet een numerisch getal zijn.";
+        
+        if(!txtPrice.getText().matches("[0-9]+(\\.[0-9][0-9]?)?"))
+            return "De prijs moet een numerisch getal zijn, met een '.' voor decimalen."; 
+        
+        return EMPTY_STRING;
+    }
 }
