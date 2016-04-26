@@ -117,10 +117,10 @@ public class LearningUtilityCreationPanelController extends GridPane {
         chkLoanable.setSelected(true);
         txtPrice.setText(String.valueOf(ZERO_DOUBLE));
         
-        cboLocations.getSelectionModel().select(ZERO_INTEGER);
-        lstFieldsOfStudy.getSelectionModel().select(ZERO_INTEGER);
-        lstTargetGroups.getSelectionModel().select(ZERO_INTEGER);
-        cboCompanies.getSelectionModel().select(ZERO_INTEGER);
+        cboLocations.getSelectionModel().clearSelection();
+        lstFieldsOfStudy.getSelectionModel().clearSelection();
+        lstTargetGroups.getSelectionModel().clearSelection();
+        cboCompanies.getSelectionModel().clearSelection();
         lblInfo.setText(EMPTY_STRING);
     }
     @FXML
@@ -142,23 +142,33 @@ public class LearningUtilityCreationPanelController extends GridPane {
         String imageUrl = txtImage.getText();
         Integer amountInStock = Integer.valueOf(txtAmountInStock.getText());
         Integer amountUnavailable = Integer.valueOf(txtAmountUnavailable.getText());
-        String company = cboCompanies.getSelectionModel().getSelectedItem().toString();
-        String location = cboLocations.getSelectionModel().getSelectedItem().toString();
-
-       List<String> targetGroupsList = new ArrayList<>();        
-       List<String> fieldsOfStudyList = new ArrayList<>();        
-
-       ObservableList<String> targetGroupsObservers = lstTargetGroups.getSelectionModel().getSelectedItems();
-       ObservableList<String> fieldsOfStudyObservers = lstFieldsOfStudy.getSelectionModel().getSelectedItems();
-
-       for(String item : targetGroupsObservers )
-       {
-           targetGroupsList.add(item);            
-       }
-       for(String item : fieldsOfStudyObservers )
-       {
-           fieldsOfStudyList.add(item);  
-       }
+        String company = cboCompanies.getSelectionModel().getSelectedIndex() == -1 ? "Onbekend" : cboCompanies.getSelectionModel().getSelectedItem();
+        String location = cboLocations.getSelectionModel().getSelectedIndex() == -1 ? "Onbekend" : cboLocations.getSelectionModel().getSelectedItem();
+        
+        
+        
+        List<String> targetGroupsList = new ArrayList<>();        
+        List<String> fieldsOfStudyList = new ArrayList<>();        
+        if (lstTargetGroups.getSelectionModel().getSelectedItems() == null)
+        {
+            targetGroupsList.add("Onbekend");
+        }else
+        {
+            lstTargetGroups.getSelectionModel().getSelectedItems().stream().forEach((item) -> {
+                targetGroupsList.add(item);
+            });
+        }
+        
+        if(lstFieldsOfStudy.getSelectionModel().getSelectedItems() == null)
+        {
+            fieldsOfStudyList.add("Onbekend");
+        }else
+        {
+            lstFieldsOfStudy.getSelectionModel().getSelectedItems().stream().forEach((item) -> {
+                fieldsOfStudyList.add(item);
+            });
+        }
+        
         try
         {
             domainController.addLearningUtility(
