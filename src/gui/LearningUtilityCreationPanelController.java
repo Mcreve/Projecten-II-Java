@@ -66,6 +66,8 @@ public class LearningUtilityCreationPanelController extends GridPane {
     private static final double ZERO_DOUBLE = 0.00;
     private static final int ZERO_INTEGER = 0;
     private static final String DEFAULT_HTTP = "Http://";
+    private static final String UNKNOWN = "Onbekend";
+    
     @FXML
     private Label lblInfo;
 
@@ -142,16 +144,24 @@ public class LearningUtilityCreationPanelController extends GridPane {
         String imageUrl = txtImage.getText();
         Integer amountInStock = Integer.valueOf(txtAmountInStock.getText());
         Integer amountUnavailable = Integer.valueOf(txtAmountUnavailable.getText());
-        String company = cboCompanies.getSelectionModel().getSelectedIndex()  == -1 ? "Onbekend"  : cboCompanies.getSelectionModel().getSelectedItem();
-        String location = cboLocations.getSelectionModel().getSelectedIndex() == -1 ? "Onbekend" : cboLocations.getSelectionModel().getSelectedItem();
+        String company = cboCompanies.getSelectionModel().getSelectedIndex()  == -1 ? UNKNOWN  : cboCompanies.getSelectionModel().getSelectedItem();
+        String location = cboLocations.getSelectionModel().getSelectedIndex() == -1 ? UNKNOWN : cboLocations.getSelectionModel().getSelectedItem();
         
+        if(description.isEmpty())
+            description = UNKNOWN;  
         
+        if(articleNumber.isEmpty())
+            articleNumber = UNKNOWN;  
+        
+         if(imageUrl.isEmpty())
+            imageUrl = UNKNOWN;        
+  
         
         List<String> targetGroupsList = new ArrayList<>();        
         List<String> fieldsOfStudyList = new ArrayList<>();        
         if (lstTargetGroups.getSelectionModel().getSelectedIndex()== -1)
         {
-            targetGroupsList.add("Onbekend");
+            targetGroupsList.add(UNKNOWN);
         }else
         {
             lstTargetGroups.getSelectionModel().getSelectedItems().stream().forEach((item) -> {
@@ -161,7 +171,7 @@ public class LearningUtilityCreationPanelController extends GridPane {
         
         if(lstFieldsOfStudy.getSelectionModel().getSelectedIndex()== -1)
         {
-            fieldsOfStudyList.add("Onbekend");
+            fieldsOfStudyList.add(UNKNOWN);
         }else
         {
             lstFieldsOfStudy.getSelectionModel().getSelectedItems().stream().forEach((item) -> {

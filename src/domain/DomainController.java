@@ -72,6 +72,8 @@ public class DomainController {
         }
         
         LearningUtility newItem = createLearningUtility(name, description, price, loanable, articleNumber, image, locationName, amountInstock, AmountUnavailable, companyName, targetGroups, fieldsOfStudy);
+        System.out.println(newItem.toString());
+        
         learningUtilityCatalog.addEntity(newItem);
     }
 
