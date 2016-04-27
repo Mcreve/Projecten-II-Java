@@ -11,9 +11,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -35,6 +37,8 @@ public class LearningUtilityImportPanelController extends GridPane {
     private TableView<?> tableView;
     private DomainController domainController;
     private String fileLocation;
+    @FXML
+    private Button btnImport;
     
 
 public LearningUtilityImportPanelController(DomainController domainController)
@@ -55,6 +59,7 @@ private void initLoader() throws RuntimeException
         {
             throw new RuntimeException(e);
         }
+        
         try
         {
             fileLocation = getFileLocation();
@@ -65,7 +70,9 @@ private void initLoader() throws RuntimeException
         {
             lblInfo.setText(ex.getMessage());
         }
-            setLayoutForTableView();
+        lblInfo.setText("Bestand succesvol ingeladen.");
+
+        setLayoutForTableView();
     }  
 
     private String getFileLocation() throws FileNotFoundException 
@@ -78,7 +85,7 @@ private void initLoader() throws RuntimeException
         );        
         
         File file = fileChooser.showOpenDialog(null);
-        if(file != null || !file.exists())
+        if(file == null || !file.exists())
         {
             throw new FileNotFoundException("Bestand niet gevonden");
         }
@@ -103,5 +110,9 @@ private void initLoader() throws RuntimeException
        //     tableView.setItems(domainController.readCsvFile(fileLocation));
 
      }
+
+    @FXML
+    private void importAndLoadDatabase(ActionEvent event) {
+    }
     
 }
