@@ -142,14 +142,14 @@ public class LearningUtilityCreationPanelController extends GridPane {
         String imageUrl = txtImage.getText();
         Integer amountInStock = Integer.valueOf(txtAmountInStock.getText());
         Integer amountUnavailable = Integer.valueOf(txtAmountUnavailable.getText());
-        String company = cboCompanies.getSelectionModel().getSelectedIndex() == -1 ? "Onbekend" : cboCompanies.getSelectionModel().getSelectedItem();
+        String company = cboCompanies.getSelectionModel().getSelectedIndex()  == -1 ? "Onbekend"  : cboCompanies.getSelectionModel().getSelectedItem();
         String location = cboLocations.getSelectionModel().getSelectedIndex() == -1 ? "Onbekend" : cboLocations.getSelectionModel().getSelectedItem();
         
         
         
         List<String> targetGroupsList = new ArrayList<>();        
         List<String> fieldsOfStudyList = new ArrayList<>();        
-        if (lstTargetGroups.getSelectionModel().getSelectedItems() == null)
+        if (lstTargetGroups.getSelectionModel().getSelectedIndex()== -1)
         {
             targetGroupsList.add("Onbekend");
         }else
@@ -159,7 +159,7 @@ public class LearningUtilityCreationPanelController extends GridPane {
             });
         }
         
-        if(lstFieldsOfStudy.getSelectionModel().getSelectedItems() == null)
+        if(lstFieldsOfStudy.getSelectionModel().getSelectedIndex()== -1)
         {
             fieldsOfStudyList.add("Onbekend");
         }else

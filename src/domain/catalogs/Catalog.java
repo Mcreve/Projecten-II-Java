@@ -6,6 +6,9 @@
 package domain.catalogs;
 
 import domain.interfaces.ICatalog;
+import domain.learningUtility.Company;
+import domain.learningUtility.*;
+import domain.users.User;
 import java.util.List;
 import persistence.GenericDaoJpa;
 import persistence.IGenericDao;
@@ -49,7 +52,8 @@ public class Catalog<T> implements ICatalog<T>{
         loadEntities();
         return entities;
     }
-
+    
+    
     protected void loadEntities() {
         if(entities == null)
             entities = repository.findAll();

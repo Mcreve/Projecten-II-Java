@@ -5,6 +5,7 @@
  */
 package domain.users;
 
+import domain.interfaces.ISearchableByName;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -25,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "Discriminator")
-public class User implements Serializable {
+public class User implements Serializable, ISearchableByName {
 
     @Id
     @Basic(optional = false)
@@ -73,6 +74,12 @@ public class User implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+    
+    @Override
+    public String getName()
+    {
+        return this.lastName + " " + this.firstName;
     }
 
     @Override

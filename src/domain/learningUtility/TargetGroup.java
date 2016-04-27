@@ -5,6 +5,7 @@
  */
 package domain.learningUtility;
 
+import domain.interfaces.ISearchableByName;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -20,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "TargetGroup")
 @XmlRootElement
-public class TargetGroup implements Serializable {
+public class TargetGroup implements Serializable, ISearchableByName {
 
     @Id
     @Basic(optional = false)
@@ -50,6 +51,7 @@ public class TargetGroup implements Serializable {
         this.id = id;
     }
 
+    @Override
     public String getName() {
         return name;
     }

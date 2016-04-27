@@ -9,20 +9,15 @@ import domain.DomainController;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -62,7 +57,11 @@ private void initLoader() throws RuntimeException
         
         try
         {
-            fileLocation = getFileLocation();
+            domainController.readCsvFile(fileLocation = getFileLocation());
+            setLayoutForTableView();
+            lblInfo.setText("Bestand succesvol ingeladen.");
+
+
         }catch(FileNotFoundException ex)
         {
             lblInfo.setText(ex.getMessage());
@@ -70,9 +69,7 @@ private void initLoader() throws RuntimeException
         {
             lblInfo.setText(ex.getMessage());
         }
-        lblInfo.setText("Bestand succesvol ingeladen.");
 
-        setLayoutForTableView();
     }  
 
     private String getFileLocation() throws FileNotFoundException 
@@ -107,8 +104,7 @@ private void initLoader() throws RuntimeException
                 name, description, Price,
                 loanable, articleNumber, picture
         );
-       //     tableView.setItems(domainController.readCsvFile(fileLocation));
-
+            
      }
 
     @FXML

@@ -4,14 +4,13 @@
  * and open the template in the editor.
  */
 package domain.interfaces;
-import domain.learningUtility.Location;
 
 /**
  *
  * @author Append
  */
-public interface ILocationCatalog extends ICatalog<Location> 
-{
-    public Location getByName(String name);
-
+public interface IAdvancedCatalog<T> extends ICatalog<T> 
+{   
+    public T getByName(String name);
+    
 }

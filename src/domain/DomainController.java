@@ -5,17 +5,9 @@
  */
 package domain;
 
-import domain.catalogs.Catalog;
-import domain.catalogs.FieldOfStudyCatalog;
-import domain.catalogs.TargetGroupCatalog;
-import domain.catalogs.CompanyCatalog;
-import domain.catalogs.LocationCatalog;
-import domain.learningUtility.Company;
-import domain.learningUtility.LearningUtility;
-import domain.learningUtility.FieldOfStudy;
-import domain.learningUtility.Location;
-import domain.learningUtility.TargetGroup;
-import domain.users.User;
+import domain.catalogs.*;
+import domain.learningUtility.*;
+import domain.users.*;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Paths;
@@ -23,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import persistence.Connection;
 
 /**
@@ -31,21 +25,21 @@ import persistence.Connection;
  */
 public class DomainController {
     
-    private Catalog<LearningUtility> learningUtilityCatalog;
-    private CompanyCatalog companyCatalog;
-    private FieldOfStudyCatalog fieldOfStudyCatalog;
-    private TargetGroupCatalog targetGroupCatalog;
-    private LocationCatalog locationCatalog;
-    private Catalog<User> userCatalog;
+    private AdvancedCatalog<LearningUtility>    learningUtilityCatalog;
+    private AdvancedCatalog<Company>            companyCatalog;
+    private AdvancedCatalog<FieldOfStudy>       fieldOfStudyCatalog;
+    private AdvancedCatalog<TargetGroup>        targetGroupCatalog;
+    private AdvancedCatalog<Location>           locationCatalog;
+    private AdvancedCatalog<User>               userCatalog;
     
     
     public DomainController(){
-        learningUtilityCatalog = new Catalog<>(LearningUtility.class);
-        companyCatalog = new CompanyCatalog();
-        fieldOfStudyCatalog = new FieldOfStudyCatalog();
-        targetGroupCatalog = new TargetGroupCatalog();
-        locationCatalog = new LocationCatalog();
-        userCatalog = new Catalog<>(User.class);
+        learningUtilityCatalog = new AdvancedCatalog<>(LearningUtility.class);    
+        companyCatalog         = new AdvancedCatalog<>(Company.class);
+        fieldOfStudyCatalog    = new AdvancedCatalog<>(FieldOfStudy.class);
+        targetGroupCatalog     = new AdvancedCatalog<>(TargetGroup.class);
+        locationCatalog        = new AdvancedCatalog<>(Location.class);
+        userCatalog            = new AdvancedCatalog<>(User.class);
     }
     
     
@@ -116,23 +110,23 @@ public class DomainController {
         return newItem;
     }
     
-    public List<String[]> readCsvFile(String file){
+    public List<String[]> readCsvFile(String file) throws IOException{
         if(!file.endsWith(".csv"))
             throw new IllegalArgumentException("Ongeldige extentie. Het bestand moet van type \".csv\" zijn.");
-        
-        List<String[]> items = new ArrayList<>();
+
+        ObservableList<String[]> items = FXCollections.observableArrayList();
+
         
         try{
             Scanner sc = new Scanner(Paths.get(file));
-            
             while(sc.hasNext()){
-                String[] tokens = sc.nextLine().split(";");
+                String[] tokens = sc.nextLine().split(";");               
                 if(tokens.length != 12)
                     throw new IllegalStateException("Het opgegeven bestand is verkeerd ingedeeld. Per regel moeten er exact 12 waarden zijn gescheiden door een \";\".");
                 items.add(tokens);         
             }
         } catch(IOException e){
-            
+            throw new IOException("Fout bij het lezen van bestand.");
         }
         
         return items;

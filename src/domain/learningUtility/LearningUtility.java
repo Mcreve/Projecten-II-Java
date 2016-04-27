@@ -5,6 +5,7 @@
  */
 package domain.learningUtility;
 
+import domain.interfaces.ISearchableByName;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -29,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "LearningUtility")
 @XmlRootElement
-public class LearningUtility implements Serializable {
+public class LearningUtility implements Serializable, ISearchableByName {
 
     @Id
     @Basic(optional = false)
@@ -101,6 +102,7 @@ public class LearningUtility implements Serializable {
         this.id = id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
