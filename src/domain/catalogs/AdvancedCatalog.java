@@ -7,7 +7,7 @@ package domain.catalogs;
 
 import domain.interfaces.IAdvancedCatalog;
 import domain.interfaces.ISearchableByName;
-import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  *
@@ -25,7 +25,11 @@ public class AdvancedCatalog<T extends ISearchableByName> extends Catalog<T> imp
     @Override
     public T getByName(String name) {
         loadEntities();
-        return entities.stream().filter(entity -> entity.getName().contains(name)).findFirst().get();    }
-    
+        try{
+            return entities.stream().filter(entity -> entity.getName().equals(name)).findFirst().get();    
+        } catch(NoSuchElementException e){
+            return null;
+        }
+    }
     
 }

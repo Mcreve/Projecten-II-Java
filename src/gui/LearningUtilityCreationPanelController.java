@@ -11,10 +11,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -24,6 +24,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -70,6 +71,14 @@ public class LearningUtilityCreationPanelController extends GridPane {
     
     @FXML
     private Label lblInfo;
+    @FXML
+    private Button btnNewTargetGroup;
+    @FXML
+    private Button btnNewFieldOfStudy;
+    @FXML
+    private Button btnNewLocation;
+    @FXML
+    private Button btnNewCompany;
 
 
     
@@ -130,7 +139,7 @@ public class LearningUtilityCreationPanelController extends GridPane {
     {
         String infoMessage = validateFields();
                 
-        if(infoMessage != EMPTY_STRING)
+        if(!infoMessage.equals(EMPTY_STRING))
         {
            lblInfo.setText(infoMessage);
            return;
@@ -228,5 +237,27 @@ public class LearningUtilityCreationPanelController extends GridPane {
             return "De prijs moet een numerisch getal zijn, met een '.' voor decimalen."; 
         
         return EMPTY_STRING;
+    }
+
+    @FXML
+    private void showNewTargetGroupDialog(ActionEvent event) {
+    }
+
+    @FXML
+    private void showNewFieldOfStudyDialog(ActionEvent event) {
+    }
+
+    @FXML
+    private void showNewLocationDialog(ActionEvent event) {
+    }
+
+    @FXML
+    private void showNewCompanyDialog(ActionEvent event) {
+        
+        Stage stage = new Stage();
+        stage.setTitle("Nieuw bedrijf toevoegen");
+        stage.setScene(new Scene (new CompanyCreationPanelController(domainController)));
+        stage.show();
+        
     }
 }

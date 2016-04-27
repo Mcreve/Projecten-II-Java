@@ -149,6 +149,57 @@ public class DomainController {
             //LearningUtility item = createLearningUtility()
         });
     }
+    
+    public void createCompany(String name, String website, String contactPerson, String email){
+        if(name.isEmpty() || website.isEmpty()|| contactPerson.isEmpty() || email.isEmpty())
+            throw new IllegalArgumentException("Alle velden moeten ingevuld worden.");
+        Company c = companyCatalog.getByName(name);
+        if(c != null)
+            throw new IllegalArgumentException("Dit bedrijf bestaat reeds in het systeem.");
+        
+        c = new Company();
+        c.setName(name);
+        c.setWebsite(website);
+        c.setContactPersonName(contactPerson);
+        c.setEmailAddress(email);
+        companyCatalog.addEntity(c);
+    }
+    
+    public void createLocation(String name){
+        if(name.isEmpty())
+            throw new IllegalArgumentException("Gelieve een naam op te geven voor de nieuwe locatie");
+        Location l = locationCatalog.getByName(name);
+        if(l != null)
+            throw new IllegalArgumentException("De opgegeven locatie bestaat reeds in het systeem");
+        
+        l = new Location();
+        l.setName(name);
+        locationCatalog.addEntity(l);
+    }
+    
+    public void createFieldOfStudy(String name){
+        if(name.isEmpty())
+            throw new IllegalArgumentException("Gelieve een naam op te geven voor het nieuwe leergebied.");
+        FieldOfStudy f = fieldOfStudyCatalog.getByName(name);
+        if(f != null)
+            throw new IllegalArgumentException("Het opgegeven leergebied bestaat reeds in het systeem.");
+        
+        f = new FieldOfStudy();
+        f.setName(name);
+        fieldOfStudyCatalog.addEntity(f);
+    }
+    
+    public void createTargetGroup(String name) {
+        if(name.isEmpty())
+            throw new IllegalArgumentException("Gelieve een naam op te geven voor de nieuwe doelgroep.");
+        TargetGroup t = targetGroupCatalog.getByName(name);
+        if(t != null)
+            throw new IllegalArgumentException("De opgegeven doelgroep bestaat reeds in het systeem");
+        
+        t = new TargetGroup();
+        t.setName(name);
+        targetGroupCatalog.addEntity(t);
+    }
 
     public void closeConnection() {
         Connection.close();
