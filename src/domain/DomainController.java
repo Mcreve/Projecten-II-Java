@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observer;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
@@ -199,6 +200,22 @@ public class DomainController {
         t = new TargetGroup();
         t.setName(name);
         targetGroupCatalog.addEntity(t);
+    }
+    
+    public void addCompanyObserver(Observer o){
+        companyCatalog.addObserver(o);
+    }
+    
+    public void addFieldOfStudyObserver(Observer o){
+        fieldOfStudyCatalog.addObserver(o);
+    }
+    
+    public void addTargetGroupObserver(Observer o){
+        targetGroupCatalog.addObserver(o);
+    }
+    
+    public void addLocationObserver(Observer o){
+        locationCatalog.addObserver(o);
     }
 
     public void closeConnection() {

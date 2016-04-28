@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,7 +33,7 @@ import javafx.stage.Stage;
  *
  * @author Append
  */
-public class LearningUtilityCreationPanelController extends GridPane {
+public class LearningUtilityCreationPanelController extends GridPane implements Observer {
 
     @FXML
     private TextField txtName;
@@ -84,11 +86,19 @@ public class LearningUtilityCreationPanelController extends GridPane {
     
     public LearningUtilityCreationPanelController(DomainController domainController){
         this.domainController = domainController;
+        registerAsObserver();
         initLoader();
         populateListViews();
         populateComboBoxes();
         setDefaults();
     } 
+
+    private void registerAsObserver() {
+        domainController.addCompanyObserver(this);
+        domainController.addFieldOfStudyObserver(this);
+        domainController.addTargetGroupObserver(this);
+        domainController.addLocationObserver(this);
+    }
     
     private void initLoader() throws RuntimeException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("LearningUtilityCreationPanel.fxml"));
@@ -259,5 +269,11 @@ public class LearningUtilityCreationPanelController extends GridPane {
         stage.setScene(new Scene (new CompanyCreationPanelController(domainController)));
         stage.show();
         
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        populateComboBoxes();
+        populateListViews();
     }
 }

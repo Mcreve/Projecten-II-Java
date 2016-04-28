@@ -6,10 +6,8 @@
 package domain.catalogs;
 
 import domain.interfaces.ICatalog;
-import domain.learningUtility.Company;
-import domain.learningUtility.*;
-import domain.users.User;
 import java.util.List;
+import java.util.Observable;
 import persistence.GenericDaoJpa;
 import persistence.IGenericDao;
 
@@ -17,7 +15,7 @@ import persistence.IGenericDao;
  *
  * @author Ward Vanlerberghe
  */
-public class Catalog<T> implements ICatalog<T>{
+public class Catalog<T> extends Observable implements ICatalog<T>{
     
     protected List<T> entities;
     protected IGenericDao<T> repository;
@@ -40,6 +38,9 @@ public class Catalog<T> implements ICatalog<T>{
         repository.insert(entity);
         GenericDaoJpa.commitTransaction();
         this.entities.add(entity);
+        setChanged();
+        notifyObservers();
+        clearChanged();
     }
     
     @Override
