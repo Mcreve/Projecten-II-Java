@@ -70,17 +70,17 @@ public class DomainControllerTest {
     public void AddLearningUtilityTest(){
         
        LearningUtility testUtility = new LearningUtility(2, "name", "description", BigDecimal.ONE, true, 2, 0);
-        
+       learningUtilityCatalog.addEntity(testUtility);
             Mockito.when(
             daoMock.findBy(testUtility.getId())).thenReturn(testUtility);
            
  
         domainController.addLearningUtility("testName", "description", BigDecimal.ONE, true, "5", "", 3, 0, "companyName", "locationName", testTargetGroups, testFieldsOfStudy);
-        LearningUtility LearningUtility1 = learningUtilityCatalog.getByName("name");
+        LearningUtility LearningUtility1 = learningUtilityCatalog.getByName("testName");
         
-        //Mockito.verify(daoMock).findBy(LearningUtility1.getId());
+       // Mockito.verify(daoMock).findBy(LearningUtility1.getId());
 
-        assertEquals("name", LearningUtility1.getName());
+        assertEquals("testName", LearningUtility1.getName());
 
  }
     }
