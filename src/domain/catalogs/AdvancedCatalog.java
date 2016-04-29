@@ -8,28 +8,32 @@ package domain.catalogs;
 import domain.interfaces.IAdvancedCatalog;
 import domain.interfaces.ISearchableByName;
 import java.util.NoSuchElementException;
+import persistence.IGenericDao;
 
 /**
  *
  * @author Append
  * @param <T>
  */
-
 public class AdvancedCatalog<T extends ISearchableByName> extends Catalog<T> implements IAdvancedCatalog<T> {
 
-    public AdvancedCatalog(Class <T> type )
-    {
+    public AdvancedCatalog(Class<T> type) {
         super(type);
     }
-    
+
+    public AdvancedCatalog(IGenericDao<T> mock, Class<T> type) {
+
+        super(mock, type);
+    }
+
     @Override
     public T getByName(String name) {
         loadEntities();
-        try{
-            return entities.stream().filter(entity -> entity.getName().equals(name)).findFirst().get();    
-        } catch(NoSuchElementException e){
+        try {
+            return entities.stream().filter(entity -> entity.getName().equals(name)).findFirst().get();
+        } catch (NoSuchElementException e) {
             return null;
         }
     }
-    
+
 }

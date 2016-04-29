@@ -107,7 +107,7 @@ public class LearningUtilityTest {
             initialLearningUtility.setTargetGroupList(initialTargetGroups);
             
       
-          assertEquals(initialFieldOfStudyList.size(),initialLearningUtility.getFieldOfStudyList().size());
+          assertEquals(initialTargetGroups.size(),initialLearningUtility.getTargetGroupList().size());
            
         }
 }

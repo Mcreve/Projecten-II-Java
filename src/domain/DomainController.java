@@ -34,6 +34,12 @@ public class DomainController {
     private AdvancedCatalog<User>               userCatalog;
     
     
+    
+   
+    public DomainController(String test){
+        
+    }
+    
     public DomainController(){
         learningUtilityCatalog = new AdvancedCatalog<>(LearningUtility.class);    
         companyCatalog         = new AdvancedCatalog<>(Company.class);
@@ -48,20 +54,44 @@ public class DomainController {
         return fieldOfStudyCatalog.getEntities().stream().map(FieldOfStudy::getName).sorted().collect(Collectors.toList());
     }
     
+    public void setFieldsOfStudy(AdvancedCatalog<FieldOfStudy> fieldOfStudyCatalog){
+        this.fieldOfStudyCatalog = fieldOfStudyCatalog;
+    }
+    
     public List<String> getTargetGroups(){
         return targetGroupCatalog.getEntities().stream().map(TargetGroup::getName).sorted().collect(Collectors.toList());
+    }
+    
+     public void setTargetGroups(AdvancedCatalog<TargetGroup> targetGroupCatalog){
+        this.targetGroupCatalog = targetGroupCatalog;
     }
     
     public List<String> getLocations(){
         return locationCatalog.getEntities().stream().map(Location::getName).sorted().collect(Collectors.toList());
     }
+    public void setLocations(AdvancedCatalog<Location> locationCatalog){
+        this.locationCatalog = locationCatalog;
+    }
     public List<String> getCompanies(){
         return companyCatalog.getEntities().stream().map(Company::getName).sorted().collect(Collectors.toList());
+    }
+    
+     public void setCompanies(AdvancedCatalog<Company> companyCatalog){
+        this.companyCatalog = companyCatalog;
     }
     
     public List<LearningUtility> getUtilities(){
         return learningUtilityCatalog.getEntities();
     }
+    
+    public void setUtilities(AdvancedCatalog<LearningUtility> learningUtilityCatalog){
+        this.learningUtilityCatalog = learningUtilityCatalog;
+    }
+    public void setUsers(AdvancedCatalog<User> userCatalog){
+        this.userCatalog = userCatalog;
+    }
+    
+   
     
     public void addLearningUtility(String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image, 
             int amountInstock, int AmountUnavailable, String companyName, String locationName, List<String> targetGroups, List<String> fieldsOfStudy){
@@ -76,6 +106,7 @@ public class DomainController {
         System.out.println(newItem.toString());
         
         learningUtilityCatalog.addEntity(newItem);
+    
     }
 
     private LearningUtility createLearningUtility(String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image, String locationName, int amountInstock, int AmountUnavailable, String companyName, List<String> targetGroups, List<String> fieldsOfStudy) {
