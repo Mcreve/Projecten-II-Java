@@ -21,33 +21,25 @@ import javafx.stage.Stage;
  *
  * @author Ward Vanlerberghe
  */
-public class CompanyCreationPanelController extends GridPane {
+public class TargetGroupCreationPanelController extends GridPane {
 
     @FXML
-    private TextField txtName;
+    private TextField txtTargetGroup;
     @FXML
-    private TextField txtWebsite;
-    @FXML
-    private TextField txtContactPerson;
-    @FXML
-    private Button btnReset;
+    private Button btnCancel;
     @FXML
     private Button btnAdd;
     @FXML
     private Label lblMessage;
-    @FXML
-    private TextField txtEmail;
     private DomainController domainController;
-    @FXML
-    private Button btnCancel;
     
-    public CompanyCreationPanelController(DomainController domainController){
+    public TargetGroupCreationPanelController(DomainController domainController){
         this.domainController = domainController;
         initLoader();
     }
-
+    
     private void initLoader() throws RuntimeException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("CompanyCreationPanel.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("TargetGroupCreationPanel.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         try{
@@ -58,18 +50,14 @@ public class CompanyCreationPanelController extends GridPane {
     }
 
     @FXML
-    private void resetFields(ActionEvent event) {
-        txtName.setText("");
-        txtWebsite.setText("");
-        txtContactPerson.setText("");
-        txtEmail.setText("");
-        lblMessage.setText("");
+    private void cancel(ActionEvent event) {
+        closeThisStage();
     }
 
     @FXML
-    private void addCompany(ActionEvent event) {
+    private void addTargetGroup(ActionEvent event) {
         try{
-            domainController.createCompany(txtName.getText().trim(), txtWebsite.getText().trim(), txtContactPerson.getText().trim(), txtEmail.getText().trim());
+            domainController.createTargetGroup(txtTargetGroup.getText().trim());
             closeThisStage();
         } catch(IllegalArgumentException e){
             lblMessage.setText(e.getMessage());
@@ -77,13 +65,8 @@ public class CompanyCreationPanelController extends GridPane {
     }
 
     private void closeThisStage() {
-        Stage stage = (Stage) btnAdd.getScene().getWindow();
+        Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
-    }
-
-    @FXML
-    private void cancel(ActionEvent event) {
-        closeThisStage();
     }
     
 }

@@ -21,33 +21,25 @@ import javafx.stage.Stage;
  *
  * @author Ward Vanlerberghe
  */
-public class CompanyCreationPanelController extends GridPane {
+public class FieldOfStudyCreationPanelController extends GridPane {
 
     @FXML
-    private TextField txtName;
-    @FXML
-    private TextField txtWebsite;
-    @FXML
-    private TextField txtContactPerson;
-    @FXML
-    private Button btnReset;
+    private TextField txtFieldOfStudy;
     @FXML
     private Button btnAdd;
     @FXML
-    private Label lblMessage;
-    @FXML
-    private TextField txtEmail;
-    private DomainController domainController;
-    @FXML
     private Button btnCancel;
+    @FXML
+    private Label lblMessage;
+    private DomainController domainController;
     
-    public CompanyCreationPanelController(DomainController domainController){
+    public FieldOfStudyCreationPanelController(DomainController domainController){
         this.domainController = domainController;
         initLoader();
     }
-
+    
     private void initLoader() throws RuntimeException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("CompanyCreationPanel.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FieldOfStudyCreationPanel.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         try{
@@ -58,32 +50,23 @@ public class CompanyCreationPanelController extends GridPane {
     }
 
     @FXML
-    private void resetFields(ActionEvent event) {
-        txtName.setText("");
-        txtWebsite.setText("");
-        txtContactPerson.setText("");
-        txtEmail.setText("");
-        lblMessage.setText("");
-    }
-
-    @FXML
-    private void addCompany(ActionEvent event) {
+    private void addFieldOfStudy(ActionEvent event) {
         try{
-            domainController.createCompany(txtName.getText().trim(), txtWebsite.getText().trim(), txtContactPerson.getText().trim(), txtEmail.getText().trim());
+            domainController.createFieldOfStudy(txtFieldOfStudy.getText().trim());
             closeThisStage();
         } catch(IllegalArgumentException e){
             lblMessage.setText(e.getMessage());
         }
     }
 
-    private void closeThisStage() {
-        Stage stage = (Stage) btnAdd.getScene().getWindow();
-        stage.close();
-    }
-
     @FXML
     private void cancel(ActionEvent event) {
         closeThisStage();
+    }
+    
+    private void closeThisStage(){
+        Stage stage = (Stage) btnCancel.getScene().getWindow();
+        stage.close();
     }
     
 }

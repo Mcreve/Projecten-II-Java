@@ -110,6 +110,7 @@ public class LearningUtilityCreationPanelController extends GridPane implements 
             throw new RuntimeException(e);
         }
     }
+    
     private void populateListViews(){
         //Set selectionmodes to multiple selection
         lstFieldsOfStudy.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -250,30 +251,35 @@ public class LearningUtilityCreationPanelController extends GridPane implements 
     }
 
     @FXML
-    private void showNewTargetGroupDialog(ActionEvent event) {
+    private void showNewTargetGroupDialog(ActionEvent event) {        
+        createNewStageAndShow("Doelgroep toevoegen", new Scene(new TargetGroupCreationPanelController(domainController)));
     }
 
     @FXML
     private void showNewFieldOfStudyDialog(ActionEvent event) {
+        createNewStageAndShow("Doelgroep toevoegen", new Scene(new FieldOfStudyCreationPanelController(domainController)));
     }
 
     @FXML
     private void showNewLocationDialog(ActionEvent event) {
+        createNewStageAndShow("Locatie toevoegen", new Scene(new LocationCreationPanelController(domainController)));
     }
 
     @FXML
-    private void showNewCompanyDialog(ActionEvent event) {
-        
-        Stage stage = new Stage();
-        stage.setTitle("Nieuw bedrijf toevoegen");
-        stage.setScene(new Scene (new CompanyCreationPanelController(domainController)));
-        stage.show();
-        
+    private void showNewCompanyDialog(ActionEvent event) {        
+        createNewStageAndShow("Bedrijf toevoegen", new Scene(new CompanyCreationPanelController(domainController)));        
     }
 
     @Override
     public void update(Observable o, Object arg) {
         populateComboBoxes();
         populateListViews();
+    }
+    
+    private void createNewStageAndShow(String title, Scene scene){
+        Stage stage = new Stage();
+        stage.setTitle(title);
+        stage.setScene(scene);
+        stage.show();
     }
 }

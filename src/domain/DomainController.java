@@ -45,18 +45,18 @@ public class DomainController {
     
     
     public List<String> getFieldsOfStudy(){
-        return fieldOfStudyCatalog.getEntities().stream().map(FieldOfStudy::getName).collect(Collectors.toList());
+        return fieldOfStudyCatalog.getEntities().stream().map(FieldOfStudy::getName).sorted().collect(Collectors.toList());
     }
     
     public List<String> getTargetGroups(){
-        return targetGroupCatalog.getEntities().stream().map(TargetGroup::getName).collect(Collectors.toList());
+        return targetGroupCatalog.getEntities().stream().map(TargetGroup::getName).sorted().collect(Collectors.toList());
     }
     
     public List<String> getLocations(){
-        return locationCatalog.getEntities().stream().map(Location::getName).collect(Collectors.toList());
+        return locationCatalog.getEntities().stream().map(Location::getName).sorted().collect(Collectors.toList());
     }
     public List<String> getCompanies(){
-        return companyCatalog.getEntities().stream().map(Company::getName).collect(Collectors.toList());
+        return companyCatalog.getEntities().stream().map(Company::getName).sorted().collect(Collectors.toList());
     }
     
     public List<LearningUtility> getUtilities(){
