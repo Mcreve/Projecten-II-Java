@@ -5,6 +5,7 @@
  */
 package gui;
 
+import gui.creationPanels.LearningUtilityCreationPanelController;
 import domain.DomainController;
 import java.io.IOException;
 import java.util.ArrayList;

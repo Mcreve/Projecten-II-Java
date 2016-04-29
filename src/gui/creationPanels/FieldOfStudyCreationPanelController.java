@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package gui.creationPanels;
 
 import domain.DomainController;
 import java.io.IOException;
@@ -21,25 +21,25 @@ import javafx.stage.Stage;
  *
  * @author Ward Vanlerberghe
  */
-public class LocationCreationPanelController extends GridPane {
+public class FieldOfStudyCreationPanelController extends GridPane {
 
     @FXML
-    private TextField txtLocation;
+    private TextField txtFieldOfStudy;
     @FXML
     private Button btnAdd;
     @FXML
     private Button btnCancel;
-    private DomainController domainController;
     @FXML
     private Label lblMessage;
+    private DomainController domainController;
     
-    public LocationCreationPanelController(DomainController domainController){
+    public FieldOfStudyCreationPanelController(DomainController domainController){
         this.domainController = domainController;
         initLoader();
     }
     
     private void initLoader() throws RuntimeException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("LocationCreationPanel.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FieldOfStudyCreationPanel.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         try{
@@ -50,9 +50,9 @@ public class LocationCreationPanelController extends GridPane {
     }
 
     @FXML
-    private void addLocation(ActionEvent event) {
+    private void addFieldOfStudy(ActionEvent event) {
         try{
-            domainController.createLocation(txtLocation.getText().trim());
+            domainController.createFieldOfStudy(txtFieldOfStudy.getText().trim());
             closeThisStage();
         } catch(IllegalArgumentException e){
             lblMessage.setText(e.getMessage());
