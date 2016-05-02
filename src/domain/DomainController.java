@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Observer;
 import java.util.Scanner;
@@ -33,6 +34,19 @@ public class DomainController {
     private AdvancedCatalog<Location>           locationCatalog;
     private AdvancedCatalog<User>               userCatalog;
     
+    private static int IX_Name_Column               = 0;
+    private static int IX_Description_Column        = 1;
+    private static int IX_Loanable_Column           = 2;
+    private static int IX_Article_No_Column          = 3;
+    private static int IX_Photo_URL_Column          = 4;
+    private static int IX_Price_Column              = 5;
+    private static int IX_AmountInStock_Column      = 6;
+    private static int IX_AmountUnavailable_Column  = 7;
+    private static int IX_Location_Column           = 8;
+    private static int IX_Company_Column            = 9;
+    private static int IX_TargetGroups_Column       = 10;
+    private static int IX_FieldsOfStudy_Column      = 11;
+    private String[] header;
     
     
    
@@ -148,20 +162,22 @@ public class DomainController {
         return newItem;
     }
     
-    public List<String[]> readCsvFile(String file) throws IOException{
+    public ObservableList<LearningUtility> readCsvFile(String file) throws IOException{
         if(!file.endsWith(".csv"))
             throw new IllegalArgumentException("Ongeldige extentie. Het bestand moet van type \".csv\" zijn.");
 
-        ObservableList<String[]> items = FXCollections.observableArrayList();
+        ObservableList<LearningUtility> items = FXCollections.observableArrayList();
 
         
         try{
             Scanner sc = new Scanner(Paths.get(file));
+            header = sc.nextLine().split(";");
             while(sc.hasNext()){
-                String[] tokens = sc.nextLine().split(";");               
+                String[] tokens = sc.nextLine().split(";");
                 if(tokens.length != 12)
                     throw new IllegalStateException("Het opgegeven bestand is verkeerd ingedeeld. Per regel moeten er exact 12 waarden zijn gescheiden door een \";\".");
-                items.add(tokens);         
+                LearningUtility learningUtility = parseCsvLine(tokens);
+                items.add(learningUtility);         
             }
         } catch(IOException e){
             throw new IOException("Fout bij het lezen van bestand.");
@@ -255,5 +271,39 @@ public class DomainController {
 
     public void closeConnection() {
         Connection.close();
+    }
+
+    private LearningUtility parseCsvLine(String[] tokens) 
+    {
+        String name                     = tokens[IX_Name_Column];
+        String description              = tokens[IX_Description_Column];
+        Double price                    = Double.parseDouble(tokens[IX_Price_Column]);       
+        String loanableString           = tokens[IX_Loanable_Column];
+        Boolean loanable                = loanableString.equalsIgnoreCase("Ja");
+        String articleNumber            = tokens[IX_Article_No_Column];
+        String image                    = tokens[IX_Photo_URL_Column];
+        String locationName             = tokens[IX_Location_Column];
+        int amountInstock               = Integer.parseInt(tokens[IX_AmountInStock_Column]);
+        int AmountUnavailable           = Integer.parseInt(tokens[IX_AmountUnavailable_Column]);
+        String companyName              = tokens[IX_Company_Column];
+        List<String> targetGroupsList   = new ArrayList<>(); 
+        List<String> fieldsOfStudyList  = new ArrayList<>();
+        
+        targetGroupsList  = Arrays.asList(tokens[IX_TargetGroups_Column].split(";"));
+        fieldsOfStudyList = Arrays.asList(tokens[IX_FieldsOfStudy_Column].split(";"));
+        
+        
+        return createLearningUtility(  name,
+                                description,
+                                BigDecimal.valueOf(price),
+                                loanable,
+                                articleNumber,
+                                image,
+                                locationName,
+                                amountInstock,
+                                AmountUnavailable,
+                                companyName,
+                                targetGroupsList, fieldsOfStudyList);
+                
     }
 }

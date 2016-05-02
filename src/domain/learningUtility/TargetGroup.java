@@ -84,8 +84,7 @@ public class TargetGroup implements Serializable, ISearchableByName {
 
     @Override
     public String toString() {
-        return  "Target Group           : " + this.id                + "\n" +
-                "Name                   : " + this.name              + "\n" ;
+        return  this.name;
     }
     
 }

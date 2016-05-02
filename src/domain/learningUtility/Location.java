@@ -84,8 +84,7 @@ public class Location implements Serializable, ISearchableByName {
 
     @Override
     public String toString() {
-        return  "Location               : " + this.id      + "\n" +
-                "Name                   : " + this.name    + "\n" ;
+        return  this.name;
     }
     
 }

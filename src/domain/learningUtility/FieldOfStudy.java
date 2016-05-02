@@ -84,8 +84,7 @@ public class FieldOfStudy implements Serializable, ISearchableByName {
 
     @Override
     public String toString() {
-        return  "Field Of Study         : " + this.id                + "\n" +
-                "Name                   : " + this.name              + "\n" ;
+        return  this.name;
     }
     
 }

@@ -120,11 +120,7 @@ public class Company implements Serializable, ISearchableByName {
 
     @Override
     public String toString() {
-        return "Company                : " + this.id                + "\n" +
-               "Name                   : " + this.name              + "\n" +
-               "E-mail Adres           : " + this.emailAddress      + "\n" +
-               "Contactpersoon         : " + this.contactPersonName + "\n" +
-               "Website                : " + this.website           + "\n" ;
+        return this.name;
 
     }
     
