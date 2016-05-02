@@ -98,6 +98,10 @@ public class DomainController {
         
         if(amountInstock < 1)
             throw new IllegalArgumentException("Aantal in stock moet meer zijn dan één.");
+        if(name == null || name == "")
+        {
+            throw new IllegalArgumentException("Gelieve een naam op te geven.");
+        }
         if(learningUtilityCatalog.getEntities().stream().anyMatch(l -> l.getName().equals(name))){
             throw new IllegalArgumentException("Er bestaat al een artikel met de opgegeven naam.");
         }
