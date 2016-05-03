@@ -1,2 +1,5 @@
-Petrischaaltjes;Schaaltjes voor gebruik van chemische proefjes;false;0;petri.jpg;15;10;2;petri001;Hasbro;lager;ontspanning;
-Pincettenset;Set met verschillende soorten pincetten;true;0;petri.jpg;;10;;petri001;Hasbro;lager;ontspanning;;
+Naam;Omschrijving;Uitleenbaar;Artikel Nummer;Foto Url;Prijs;Aantal in stock;Aantal onbeschikbaar;Locatie;Bedrijf;Doelgroepen;Leergebieden
+Item 1;Omschrijving 123;Ja;123-ART-NR;http://google.com;10;10;0;GLEDE 1.011;Wolters;Kleuter;Aardrijkskunde
+Item 2;Omschrijving 234;Neen;234-ART-NR;http://google.com;20;20;2;GLEDE 1.011;Wolters;Lager;Ontspanning
+Item 3;Omschrijving 345;Ja;345-ART-NR;http://google.com;30;30;3;Preparatie;Hasbro;Middelbaar;Wiskunde
+Item 4;Omschrijving 456;Neen;456-ART-NR;http://google.com;40;40;4;GLEDE 1.011;Hasbro;Lager, Middelbaar;Aardrijkskunde, Wiskunde
