@@ -9,16 +9,27 @@ import domain.catalogs.*;
 import domain.learningUtility.*;
 import domain.users.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Observer;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import persistence.Connection;
 
 /**
@@ -305,5 +316,41 @@ public class DomainController {
                                 companyName,
                                 targetGroupsList, fieldsOfStudyList);
                 
+    }
+    
+    public void login(String username, String password){
+        
+        MessageDigest digest;
+        byte[] hash;
+        
+        Manager man = new Manager();
+        man.setEmailAddress(username);
+        
+        try {
+            digest = MessageDigest.getInstance("SHA-256");
+            hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+            URL url = new URL("https://studservice.hogent.be/auth/"+ username + "/" + String.format("%064x", new java.math.BigInteger(1, hash)));
+            
+            try(InputStream stream = url.openStream();
+                   JsonReader r = Json.createReader(stream)){
+                
+                JsonObject o = r.readObject();
+                if(o.getString("TYPE").equals("personeel")){
+                    User user = userCatalog.getEntity(o.getString("EMAIL"));
+                    if(user instanceof Lector){
+                        return;
+                    }
+                    throw new IllegalArgumentException("Niet voldoende rechten");
+                }
+                
+                throw new IllegalArgumentException("Foute login");
+                
+            } catch (IOException ex) {
+                Logger.getLogger(DomainController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (NoSuchAlgorithmException | MalformedURLException ex) {
+            Logger.getLogger(DomainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 }

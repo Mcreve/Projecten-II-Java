@@ -6,7 +6,7 @@
 package main;
 
 import domain.DomainController;
-import gui.MainPanelController;
+import gui.LoginPanelController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -24,7 +24,7 @@ public class StartUp extends Application {
         
         this.domainController = new DomainController();
         
-        Scene scene = new Scene(new MainPanelController(domainController));
+        Scene scene = new Scene(new LoginPanelController(domainController));
         primaryStage.setScene(scene);
         primaryStage.setTitle("Didactische Leermiddelen - Beheer");
         primaryStage.show();

@@ -46,7 +46,7 @@ public class Catalog<T> extends Observable implements ICatalog<T>{
     @Override
     public <E> T getEntity(E id){
         loadEntities();
-        return entities.stream().filter(entity -> entity.equals(id)).findAny().get();
+        return entities.stream().filter(entity -> entity.equals(id)).findFirst().get();
     }
     @Override
     public List<T> getEntities(){

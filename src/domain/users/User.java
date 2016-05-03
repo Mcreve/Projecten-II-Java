@@ -95,7 +95,8 @@ public class User implements Serializable, ISearchableByName {
         if (!(object instanceof String)) {
             return false;
         }
-        if ((this.emailAddress == null && emailAddress != null) || (this.emailAddress != null && !this.emailAddress.equals(emailAddress))) {
+        String emailAddress = (String) object;
+        if ((this.emailAddress == null && emailAddress != null) || (this.emailAddress != null && !this.emailAddress.toLowerCase().equals(emailAddress.toLowerCase()))) {
             return false;
         }
         return true;
