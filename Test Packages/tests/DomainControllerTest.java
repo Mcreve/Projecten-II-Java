@@ -40,9 +40,8 @@ public class DomainControllerTest {
     private AdvancedCatalog<User> userCatalog;
     private List<String> testTargetGroups;
     private List<String> testFieldsOfStudy;
-    private ObservableList<String[]> csvLines;
-    
 
+   
     @Mock
     private IGenericDao daoMock;
 
@@ -72,15 +71,12 @@ public class DomainControllerTest {
        learningUtilityCatalog.addEntity(testUtility);
             Mockito.when(
             daoMock.findBy(testUtility.getId())).thenReturn(testUtility);
-            csvLines =  FXCollections.observableArrayList();
-            String [] line1 = {"Petrischaaltjes", "Schaaltjes voor gebruik van chemische proefjes","0", "false", "petri001", "petri.jpg","15","0", "Hasbro","lager","ontspanning"};
-            csvLines.add(line1);
-
+  
     }
 
     // Adding Single Item
     @Test
-    public void AddLearningUtilityTest(){
+    public void addLearningUtilityTest(){
 
 
         domainController.addLearningUtility("testName", "description", BigDecimal.ONE, true, "5", "", 3, 0, "companyName", "locationName", testTargetGroups, testFieldsOfStudy);
@@ -88,26 +84,26 @@ public class DomainControllerTest {
         
        // Mockito.verify(daoMock).findBy(LearningUtility1.getId());
 
-        assertEquals("testName", LearningUtility1.getName());
+        assertEquals("description", LearningUtility1.getDescription());
 
  }
     
     @Test (expected = IllegalArgumentException.class)
-    public void AddLearningUtilityWithNoAmountInStock(){
+    public void addLearningUtilityWithNoAmountInStock(){
         
            
         domainController.addLearningUtility("testName", null , null, true, null, null, 0, 0, null, null, null, null);
     }
     
      @Test (expected = IllegalArgumentException.class)
-    public void AddLearningUtilityWithExistingName(){
+    public void addLearningUtilityWithExistingName(){
         
            
         domainController.addLearningUtility("name", null , null, true, null, null, 2, 0, null, null, null, null);
     }
     
      @Test (expected = IllegalArgumentException.class)
-    public void AddLearningUtilityWithNameNull(){
+    public void addLearningUtilityWithNameNull(){
         
            
         domainController.addLearningUtility(null, null , null, true, null, null, 2, 0, null, null, null, null);
@@ -121,38 +117,40 @@ public class DomainControllerTest {
         domainController.readCsvFile("test.exe");
     }
     @Test
-    public void ReadFile() throws IOException{
+    public void readFile() throws IOException{
        
+        ObservableList<LearningUtility> TestList = domainController.readCsvFile("leermiddelen.csv");
         
-        assertEquals(12,(domainController.readCsvFile("C:/Users/Maxim/Documents/NetBeansProjects/tile03Java/Test Packages/tests.csvFiles/leermiddelen.csv")).get(0).length);
-        assertEquals(csvLines.get(0)[3],(domainController.readCsvFile("C:/Users/Maxim/Documents/NetBeansProjects/tile03Java/Test Packages/tests.csvFiles/leermiddelen.csv")).get(0)[3]);
+        assertEquals(10,TestList.get(0).getAmountInCatalog());
+        assertEquals(10,TestList.get(1).getAmountInCatalog());
+     
         
     }
     @Test (expected = IllegalArgumentException.class)
-    public void WriteFileDuplicateName() throws IOException{
+    public void readFileDuplicateName() throws IOException{
        
-        //Afhankelijk of deze controle op de read of write methode gebeurt?
+        domainController.readCsvFile("leermiddelenDuplicateName.csv");
     
     }
     
     @Test (expected = IllegalArgumentException.class)
-    public void WriteFileNegativeAmount() throws IOException{
+    public void readFileNegativeAmountAvailable() throws IOException{
        
-        //Afhankelijk of deze controle op de read of write methode gebeurt?
+         domainController.readCsvFile("leermiddelenNegativeAmountAvailable.csv");
     
     }
     
     @Test (expected = IllegalArgumentException.class)
-    public void WriteFileNegativeAmountUnavailable() throws IOException{
+    public void readFileNegativeAmountUnavailable() throws IOException{
        
-        //Afhankelijk of deze controle op de read of write methode gebeurt?
+         domainController.readCsvFile("leermiddelenNegativeAmountUnavailable.csv");
     
     }
     
      @Test (expected = IllegalArgumentException.class)
-    public void WriteFileNegativePrice() throws IOException{
+    public void readFileNegativePrice() throws IOException{
        
-        //Afhankelijk of deze controle op de read of write methode gebeurt?
+        domainController.readCsvFile("leermiddelenNegativePrice.csv");
     
     }
 }
