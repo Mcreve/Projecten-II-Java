@@ -367,19 +367,19 @@ public class DomainController {
                 JsonObject o = r.readObject();
                 if(o.getString("TYPE").equals("personeel")){
                     User user = userCatalog.getEntity(o.getString("EMAIL"));
-                    if(user instanceof Lector){
+                    if(user instanceof Manager){
                         return;
                     }
-                    throw new IllegalArgumentException("Niet voldoende rechten");
+                    throw new IllegalArgumentException("Aanmelden mislukt, probeert u het opnieuw.");
                 }
                 
-                throw new IllegalArgumentException("Foute login");
+                throw new IllegalArgumentException("Aanmelden mislukt, probeert u het opnieuw.");
                 
             } catch (IOException ex) {
-                Logger.getLogger(DomainController.class.getName()).log(Level.SEVERE, null, ex);
+                throw new IllegalArgumentException("Aanmelden mislukt, probeert u het opnieuw.");
             }
         } catch (NoSuchAlgorithmException | MalformedURLException ex) {
-            Logger.getLogger(DomainController.class.getName()).log(Level.SEVERE, null, ex);
+            throw new IllegalArgumentException("Aanmelden mislukt, probeert u het opnieuw.");
         }
         
     }

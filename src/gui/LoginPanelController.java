@@ -33,6 +33,8 @@ public class LoginPanelController extends GridPane {
     private DomainController domainController;
     @FXML
     private Label lblMessage;
+    @FXML
+    private Button btnCancel;
     
     public LoginPanelController(DomainController domainController){
         this.domainController = domainController;
@@ -55,20 +57,27 @@ public class LoginPanelController extends GridPane {
     @FXML
     private void login(ActionEvent event) {
         try{
-            domainController.login(txtUsername.getText(), txtPassword.getText());
+            //Uncomment following line to enable login
+            //domainController.login(txtUsername.getText(), txtPassword.getText());
             Scene scene = new Scene(new MainPanelController(domainController));
             Stage stage = (Stage) btnLogin.getScene().getWindow();
             stage.setScene(scene);
+            stage.setMaximized(true);
             stage.show();
         } catch (IllegalArgumentException e){
             lblMessage.setText(e.getMessage());
-        }
+        } 
         
     }
     
     private void closeThisStage(){
         Stage stage = (Stage) btnLogin.getScene().getWindow();
         stage.close();
+    }
+
+    @FXML
+    private void cancel(ActionEvent event) {
+        closeThisStage();
     }
     
 }
