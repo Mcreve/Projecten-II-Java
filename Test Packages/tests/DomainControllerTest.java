@@ -122,7 +122,7 @@ public class DomainControllerTest {
         ObservableList<LearningUtility> TestList = domainController.readCsvFile("leermiddelen.csv");
         
         assertEquals(10,TestList.get(0).getAmountInCatalog());
-        assertEquals(10,TestList.get(1).getAmountInCatalog());
+        assertEquals(20,TestList.get(1).getAmountInCatalog());
      
         
     }

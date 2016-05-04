@@ -178,7 +178,7 @@ public class DomainController {
 
         try {
             Scanner sc = new Scanner(Paths.get(file));
-            //header = sc.nextLine().split(";");
+            header = sc.nextLine().split(";");
             ArrayList learningUtilityNames = new ArrayList();
             while (sc.hasNext()) {
                 String[] tokens = sc.nextLine().split(";");
@@ -188,13 +188,13 @@ public class DomainController {
                 if ((learningUtilityNames.contains(tokens[IX_Name_Column]))) {
                     throw new IllegalArgumentException("Het bestand bevat lijnen die geen unieke naam hebben");
                 }
-                if ((!tokens[IX_AmountInStock_Column].equals("")) && Integer.parseInt(tokens[IX_AmountInStock_Column]) < 0) {
+                if ((tokens[IX_AmountInStock_Column].equals("")) || Integer.parseInt(tokens[IX_AmountInStock_Column]) < 0) {
                     throw new IllegalArgumentException("Het bestand bevat een lijn met een negatief aantal beschikbaar");
                 }
-                if ((!tokens[IX_AmountUnavailable_Column].equals("")) && Integer.parseInt(tokens[IX_AmountUnavailable_Column]) <= 0) {
+                if ((tokens[IX_AmountUnavailable_Column].equals("")) || Integer.parseInt(tokens[IX_AmountUnavailable_Column]) < 0) {
                     throw new IllegalArgumentException("Het bestand bevat een lijn met een negatief aantal onbeschikbaar");
                 }
-                if ((!tokens[IX_Price_Column].equals("")) && Integer.parseInt(tokens[IX_Price_Column]) < 0) {
+                if ((tokens[IX_Price_Column].equals("")) || Integer.parseInt(tokens[IX_Price_Column]) < 0) {
                     throw new IllegalArgumentException("Het bestand bevat een lijn met een negatieve prijs");
                 }
                 LearningUtility learningUtility = parseCsvLine(tokens);
