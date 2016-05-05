@@ -6,6 +6,7 @@
 package gui.creationPanels;
 
 import domain.DomainController;
+import domain.learningUtility.LearningUtility;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -145,6 +146,8 @@ public class LearningUtilityCreationPanelController extends GridPane implements 
         cboCompanies.getSelectionModel().clearSelection();
         lblInfo.setText(EMPTY_STRING);
     }
+  
+    
     @FXML
     private void add(ActionEvent event) throws IllegalArgumentException 
     {

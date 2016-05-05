@@ -30,7 +30,7 @@
                   <Insets top="5.0" />
                </HBox.margin>
             </Label>
-            <TextField fx:id="SearchBar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyTyped="#SearchForKeywords" prefHeight="30.0" prefWidth="248.0">
+            <TextField fx:id="searchBar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyTyped="#SearchForKeywords" prefHeight="30.0" prefWidth="248.0">
                <HBox.margin>
                   <Insets top="5.0" />
                </HBox.margin>

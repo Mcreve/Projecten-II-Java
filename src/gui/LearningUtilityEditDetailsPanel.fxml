@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<fx:root prefHeight="486.0" prefWidth="823.0" type="GridPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="376.0" minWidth="10.0" prefWidth="209.0" />
+      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="376.0" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+      <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="162.0" minHeight="10.0" prefHeight="162.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="81.0" minHeight="40.0" prefHeight="62.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="40.0" minHeight="11.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+      <RowConstraints vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Label text="Naam" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </Label>
+      <TextField fx:id="txtName" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </TextField>
+      <Label text="Beschrijving" GridPane.rowIndex="2" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets right="15.0" top="5.0" />
+         </GridPane.margin>
+      </Label>
+      <Label text="Prijs" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets left="60.0" right="15.0" />
+         </GridPane.margin>
+      </Label>
+      <Label text="Uitleenbaar" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </Label>
+      <Label text="Artikelnummer" GridPane.rowIndex="6">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </Label>
+      <Label text="Afbeelding" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </Label>
+      <Label text="Doelgroep(en)" GridPane.rowIndex="4" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets bottom="15.0" right="15.0" />
+         </GridPane.margin>
+      </Label>
+      <Label text="Leergebied(en)" GridPane.columnIndex="2" GridPane.rowIndex="4" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </Label>
+      <Label text="Locatie" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets right="15.0" top="10.0" />
+         </GridPane.margin>
+      </Label>
+      <CheckBox fx:id="chkLoanable" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <TextField fx:id="txtPrice" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets left="100.0" right="15.0" />
+         </GridPane.margin>
+      </TextField>
+      <TextField fx:id="txtArticleNumber" GridPane.columnIndex="1" GridPane.rowIndex="6">
+         <GridPane.margin>
+            <Insets right="150.0" />
+         </GridPane.margin>
+      </TextField>
+      <Label text="Aantal in stock" GridPane.rowIndex="7">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </Label>
+      <Label text="Aantal onbeschikbaar" GridPane.columnIndex="2" GridPane.rowIndex="7">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </Label>
+      <TextField fx:id="txtAmountInStock" GridPane.columnIndex="1" GridPane.rowIndex="7">
+         <GridPane.margin>
+            <Insets right="150.0" />
+         </GridPane.margin>
+      </TextField>
+      <TextField fx:id="txtAmountUnavailable" GridPane.columnIndex="3" GridPane.rowIndex="7">
+         <GridPane.margin>
+            <Insets right="150.0" />
+         </GridPane.margin>
+      </TextField>
+      <TextArea fx:id="txtDescription" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </TextArea>
+      <TextField fx:id="txtImage" GridPane.columnIndex="3" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets right="5.0" />
+         </GridPane.margin>
+      </TextField>
+      <Button fx:id="btnEdit" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#edit" text="Wijzigen" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </Button>
+      <Button fx:id="btnReset" mnemonicParsing="false" onAction="#reset" text="Reset" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
+         <GridPane.margin>
+            <Insets right="120.0" />
+         </GridPane.margin></Button>
+      <ListView fx:id="lstTargetGroups" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.rowSpan="2">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </ListView>
+      <ListView fx:id="lstFieldsOfStudy" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" GridPane.rowSpan="2">
+         <GridPane.margin>
+            <Insets right="5.0" />
+         </GridPane.margin>
+      </ListView>
+      <Label text="Bedrijf" GridPane.columnIndex="2" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </Label>
+      <ComboBox fx:id="cboCompanies" maxWidth="250.0" prefWidth="250.0" promptText="Selecteer" GridPane.columnIndex="3" GridPane.rowIndex="3">
+         <opaqueInsets>
+            <Insets right="15.0" />
+         </opaqueInsets>
+         <GridPane.margin>
+            <Insets right="5.0" />
+         </GridPane.margin>
+      </ComboBox>
+      <ComboBox fx:id="cboLocations" prefWidth="250.0" promptText="Selecteer" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets right="5.0" top="5.0" />
+         </GridPane.margin>
+      </ComboBox>
+      <Label fx:id="lblInfo" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="8" GridPane.valignment="CENTER">
+         <opaqueInsets>
+            <Insets right="15.0" />
+         </opaqueInsets>
+         <GridPane.margin>
+            <Insets left="15.0" />
+         </GridPane.margin>
+      </Label>
+      <Button fx:id="btnNewTargetGroup" mnemonicParsing="false" onAction="#showNewTargetGroupDialog" text="Nieuw..." GridPane.rowIndex="4">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </Button>
+      <Button fx:id="btnNewFieldOfStudy" mnemonicParsing="false" onAction="#showNewFieldOfStudyDialog" text="Nieuw..." GridPane.columnIndex="2" GridPane.rowIndex="4">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </Button>
+      <Button fx:id="btnNewLocation" mnemonicParsing="false" onAction="#showNewLocationDialog" text="Nieuw..." GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets top="5.0" />
+         </GridPane.margin>
+      </Button>
+      <Button fx:id="btnNewCompany" mnemonicParsing="false" onAction="#showNewCompanyDialog" text="Nieuw..." GridPane.columnIndex="4" GridPane.rowIndex="3" />
+      <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#delete" text="Verwijder" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+   </children>
+</fx:root>

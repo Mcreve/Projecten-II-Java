@@ -62,6 +62,7 @@ public class DomainController {
     private String[] header;
     private ObservableList<LearningUtility> LearningUtilityList;
     private FilteredList<LearningUtility> filteredLearningUtilityList;
+    private LearningUtility selectedLearningUtility;
 
     public DomainController(String test) {
 
@@ -130,6 +131,14 @@ public class DomainController {
         this.userCatalog = userCatalog;
     }
 
+    public void setSelectedLearningUtility(LearningUtility learningUtility) {
+        this.selectedLearningUtility = learningUtility;
+    }
+
+    public LearningUtility getSelectedLearningUtility() {
+        return this.selectedLearningUtility;
+    }
+
     public void addLearningUtility(String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image,
             int amountInstock, int AmountUnavailable, String companyName, String locationName, List<String> targetGroups, List<String> fieldsOfStudy) {
 
@@ -148,6 +157,39 @@ public class DomainController {
 
         learningUtilityCatalog.addEntity(newItem);
 
+    }
+
+    public void editLearningUtility(LearningUtility learningUtility, String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image,
+            int amountInStock, int amountUnavailable, String companyName, String locationName, List<String> targetGroups, List<String> fieldsOfStudy) {
+        learningUtility.setName(name);
+        learningUtility.setDescription(description);
+        learningUtility.setPrice(price);
+        learningUtility.setLoanable(loanable);
+        learningUtility.setArticleNumber(articleNumber);
+        learningUtility.setPicture(image);
+        learningUtility.setAmountInCatalog(amountInStock);
+        learningUtility.setAmountUnavailable(amountUnavailable);
+        learningUtility.setCompanyId(companyCatalog.getByName(companyName));
+        learningUtility.setLocationId(locationCatalog.getByName(locationName));
+        List<TargetGroup> targetGroupsList = new ArrayList<>();
+
+        for (String targetGroupName : targetGroups) {
+
+            targetGroupsList.add(targetGroupCatalog.getByName(targetGroupName));
+
+        }
+        learningUtility.setTargetGroupList(targetGroupsList);
+
+        List<FieldOfStudy> fieldOfStudyList = new ArrayList<>();
+
+        for (String fieldOfStudyName : fieldsOfStudy) {
+
+            fieldOfStudyList.add(fieldOfStudyCatalog.getByName(fieldOfStudyName));
+
+        }
+        learningUtility.setFieldOfStudyList(fieldOfStudyList);
+        
+        learningUtilityCatalog.notifyAll();
     }
 
     private LearningUtility createLearningUtility(String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image, String locationName, int amountInstock, int AmountUnavailable, String companyName, List<String> targetGroups, List<String> fieldsOfStudy) {
@@ -202,22 +244,22 @@ public class DomainController {
                 if ((learningUtilityNames.contains(tokens[IX_Name_Column]))) {
                     throw new IllegalArgumentException("Het bestand bevat lijnen die geen unieke naam hebben");
                 }
-                if (!(tokens[IX_AmountInStock_Column].equals(""))){
-                    if(Integer.parseInt(tokens[IX_AmountInStock_Column]) < 0){
-                       
-                    throw new IllegalArgumentException("Het bestand bevat een lijn met een negatief aantal beschikbaar");
+                if (!(tokens[IX_AmountInStock_Column].equals(""))) {
+                    if (Integer.parseInt(tokens[IX_AmountInStock_Column]) < 0) {
+
+                        throw new IllegalArgumentException("Het bestand bevat een lijn met een negatief aantal beschikbaar");
                     }
                 }
                 if (!(tokens[IX_AmountUnavailable_Column].equals(""))) {
-                   if( Integer.parseInt(tokens[IX_AmountUnavailable_Column]) < 0 ){
-                      
-                    throw new IllegalArgumentException("Het bestand bevat een lijn met een negatief aantal onbeschikbaar");
-                   }
+                    if (Integer.parseInt(tokens[IX_AmountUnavailable_Column]) < 0) {
+
+                        throw new IllegalArgumentException("Het bestand bevat een lijn met een negatief aantal onbeschikbaar");
+                    }
                 }
-                if (!(tokens[IX_Price_Column].equals(""))){
-                        if(Integer.parseInt(tokens[IX_Price_Column]) < 0) {
-                    throw new IllegalArgumentException("Het bestand bevat een lijn met een negatieve prijs");
-                        }
+                if (!(tokens[IX_Price_Column].equals(""))) {
+                    if (Integer.parseInt(tokens[IX_Price_Column]) < 0) {
+                        throw new IllegalArgumentException("Het bestand bevat een lijn met een negatieve prijs");
+                    }
                 }
                 LearningUtility learningUtility = parseCsvLine(tokens);
                 items.add(learningUtility);
@@ -419,7 +461,7 @@ public class DomainController {
                 return true; // Filter matches articlenumber.
             } else if (learningUtility.getDescription().toLowerCase().contains(lowerCaseFilter)) {
                 return true; //Filter matches description 
-               
+
             }
 
             return false; // Does not match.
