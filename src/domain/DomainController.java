@@ -5,6 +5,7 @@
  */
 package domain;
 
+import com.sun.xml.rpc.processor.util.StringUtils;
 import domain.catalogs.*;
 import domain.learningUtility.*;
 import domain.users.*;
@@ -27,6 +28,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
@@ -58,6 +60,8 @@ public class DomainController {
     private static int IX_TargetGroups_Column = 10;
     private static int IX_FieldsOfStudy_Column = 11;
     private String[] header;
+    private ObservableList<LearningUtility> LearningUtilityList;
+    private FilteredList<LearningUtility> filteredLearningUtilityList;
 
     public DomainController(String test) {
 
@@ -70,6 +74,8 @@ public class DomainController {
         targetGroupCatalog = new AdvancedCatalog<>(TargetGroup.class);
         locationCatalog = new AdvancedCatalog<>(Location.class);
         userCatalog = new AdvancedCatalog<>(User.class);
+        LearningUtilityList = FXCollections.observableArrayList(learningUtilityCatalog.getEntities());
+        filteredLearningUtilityList = new FilteredList<>(LearningUtilityList, p -> true);
     }
 
     public List<String> getFieldsOfStudy() {
@@ -106,6 +112,14 @@ public class DomainController {
 
     public List<LearningUtility> getUtilities() {
         return learningUtilityCatalog.getEntities();
+    }
+
+    public ObservableList<LearningUtility> getObservableLearningUtilityList() {
+        return FXCollections.unmodifiableObservableList(LearningUtilityList);
+    }
+
+    public FilteredList<LearningUtility> getFilteredLearningUtilityList() {
+        return filteredLearningUtilityList;
     }
 
     public void setUtilities(AdvancedCatalog<LearningUtility> learningUtilityCatalog) {
@@ -188,14 +202,22 @@ public class DomainController {
                 if ((learningUtilityNames.contains(tokens[IX_Name_Column]))) {
                     throw new IllegalArgumentException("Het bestand bevat lijnen die geen unieke naam hebben");
                 }
-                if ((tokens[IX_AmountInStock_Column].equals("")) || Integer.parseInt(tokens[IX_AmountInStock_Column]) < 0) {
+                if (!(tokens[IX_AmountInStock_Column].equals(""))){
+                    if(Integer.parseInt(tokens[IX_AmountInStock_Column]) < 0){
+                       
                     throw new IllegalArgumentException("Het bestand bevat een lijn met een negatief aantal beschikbaar");
+                    }
                 }
-                if ((tokens[IX_AmountUnavailable_Column].equals("")) || Integer.parseInt(tokens[IX_AmountUnavailable_Column]) < 0) {
+                if (!(tokens[IX_AmountUnavailable_Column].equals(""))) {
+                   if( Integer.parseInt(tokens[IX_AmountUnavailable_Column]) < 0 ){
+                      
                     throw new IllegalArgumentException("Het bestand bevat een lijn met een negatief aantal onbeschikbaar");
+                   }
                 }
-                if ((tokens[IX_Price_Column].equals("")) || Integer.parseInt(tokens[IX_Price_Column]) < 0) {
+                if (!(tokens[IX_Price_Column].equals(""))){
+                        if(Integer.parseInt(tokens[IX_Price_Column]) < 0) {
                     throw new IllegalArgumentException("Het bestand bevat een lijn met een negatieve prijs");
+                        }
                 }
                 LearningUtility learningUtility = parseCsvLine(tokens);
                 items.add(learningUtility);
@@ -347,40 +369,60 @@ public class DomainController {
                 targetGroupsList, fieldsOfStudyList);
 
     }
-    
-    public void login(String username, String password){
-        
+
+    public void login(String username, String password) {
+
         MessageDigest digest;
         byte[] hash;
-        
+
         Manager man = new Manager();
         man.setEmailAddress(username);
-        
+
         try {
             digest = MessageDigest.getInstance("SHA-256");
             hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-            URL url = new URL("https://studservice.hogent.be/auth/"+ username + "/" + String.format("%064x", new java.math.BigInteger(1, hash)));
-            
-            try(InputStream stream = url.openStream();
-                   JsonReader r = Json.createReader(stream)){
-                
+            URL url = new URL("https://studservice.hogent.be/auth/" + username + "/" + String.format("%064x", new java.math.BigInteger(1, hash)));
+
+            try (InputStream stream = url.openStream();
+                    JsonReader r = Json.createReader(stream)) {
+
                 JsonObject o = r.readObject();
-                if(o.getString("TYPE").equals("personeel")){
+                if (o.getString("TYPE").equals("personeel")) {
                     User user = userCatalog.getEntity(o.getString("EMAIL"));
-                    if(user instanceof Manager){
+                    if (user instanceof Manager) {
                         return;
                     }
                     throw new IllegalArgumentException("Aanmelden mislukt, probeert u het opnieuw.");
                 }
-                
+
                 throw new IllegalArgumentException("Aanmelden mislukt, probeert u het opnieuw.");
-                
+
             } catch (IOException ex) {
                 throw new IllegalArgumentException("Aanmelden mislukt, probeert u het opnieuw.");
             }
         } catch (NoSuchAlgorithmException | MalformedURLException ex) {
             throw new IllegalArgumentException("Aanmelden mislukt, probeert u het opnieuw.");
         }
-        
+    }
+
+    public void changeFilter(String filterValue) {
+        filteredLearningUtilityList.setPredicate(learningUtility -> {
+            // If filter text is empty, display all LearningUtilities.
+            if (filterValue == null || filterValue.isEmpty()) {
+                return true;
+            }
+            // Compare the attributes of every learningUtility per with filter text.
+            String lowerCaseFilter = filterValue.toLowerCase();
+            if (learningUtility.getName().toLowerCase().contains(lowerCaseFilter)) {
+                return true; // Filter matches name.
+            } else if (learningUtility.getArticleNumber().toLowerCase().contains(lowerCaseFilter)) {
+                return true; // Filter matches articlenumber.
+            } else if (learningUtility.getDescription().toLowerCase().contains(lowerCaseFilter)) {
+                return true; //Filter matches description 
+               
+            }
+
+            return false; // Does not match.
+        });
     }
 }

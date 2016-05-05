@@ -155,6 +155,11 @@ public class MainPanelController extends BorderPane {
         LearningUtilityImportPanelController importPanel = new LearningUtilityImportPanelController(domainController);
         this.setCenter(importPanel);
         }    
+         if(branch == BRANCH_LEARNINGUTILIES && leaf == LEAF_EDIT)
+        {
+        LearningUtilityEditPanelController editPanel = new LearningUtilityEditPanelController(domainController);
+        this.setCenter(editPanel);
+        }    
         
         
         
