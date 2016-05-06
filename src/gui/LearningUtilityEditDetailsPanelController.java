@@ -6,20 +6,17 @@
 package gui;
 
 import domain.DomainController;
+import domain.interfaces.IObserver;
 import domain.learningUtility.LearningUtility;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
-import java.util.Observer;
-import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -35,7 +32,7 @@ import javafx.scene.layout.GridPane;
  *
  * @author Maxim
  */
-public class LearningUtilityEditDetailsPanelController extends GridPane implements Observer {
+public class LearningUtilityEditDetailsPanelController extends GridPane implements IObserver {
 
     @FXML
     private TextField txtName;
@@ -249,8 +246,9 @@ public class LearningUtilityEditDetailsPanelController extends GridPane implemen
 }
 
     @Override
-    public void update(Observable o, Object arg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void update() {
+        populateComboBoxes();
+        populateListViews();
     }
    
     

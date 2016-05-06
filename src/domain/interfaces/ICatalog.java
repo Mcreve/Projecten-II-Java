@@ -11,8 +11,10 @@ import java.util.List;
  *
  * @author Benjamin Vertonghen
  */
-public interface ICatalog<T> {
+public interface ICatalog<T> extends IObservable{
     public void addEntity(T entity);
     public <E> T getEntity(E id);
     public List<T> getEntities();
+    public Class getType();
+    public void updateEntity(T entity);
 }

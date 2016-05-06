@@ -93,6 +93,11 @@ public class LearningUtility implements Serializable, ISearchableByName {
         this.amountInCatalog = amountInCatalog;
         this.amountUnavailable = amountUnavailable;
     }
+    
+    public LearningUtility(Integer id, String name, String description, BigDecimal price, boolean loanable, int amountInCatalog, int amountUnavailable, String articleNumber){
+        this(id, name, description, price, loanable, amountInCatalog, amountUnavailable);
+        this.articleNumber = articleNumber;
+    }
 
     public Integer getId() {
         return id;

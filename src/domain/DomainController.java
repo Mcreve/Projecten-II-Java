@@ -5,8 +5,10 @@
  */
 package domain;
 
-import com.sun.xml.rpc.processor.util.StringUtils;
 import domain.catalogs.*;
+import domain.interfaces.IAdvancedCatalog;
+import domain.interfaces.ICatalog;
+import domain.interfaces.IObserver;
 import domain.learningUtility.*;
 import domain.users.*;
 import java.io.IOException;
@@ -21,10 +23,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Observer;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -40,12 +39,12 @@ import persistence.Connection;
  */
 public class DomainController {
 
-    private AdvancedCatalog<LearningUtility> learningUtilityCatalog;
-    private AdvancedCatalog<Company> companyCatalog;
-    private AdvancedCatalog<FieldOfStudy> fieldOfStudyCatalog;
-    private AdvancedCatalog<TargetGroup> targetGroupCatalog;
-    private AdvancedCatalog<Location> locationCatalog;
-    private AdvancedCatalog<User> userCatalog;
+    private IAdvancedCatalog<LearningUtility> learningUtilityCatalog;
+    private IAdvancedCatalog<Company> companyCatalog;
+    private IAdvancedCatalog<FieldOfStudy> fieldOfStudyCatalog;
+    private IAdvancedCatalog<TargetGroup> targetGroupCatalog;
+    private IAdvancedCatalog<Location> locationCatalog;
+    private IAdvancedCatalog<User> userCatalog;
 
     private static int IX_Name_Column = 0;
     private static int IX_Description_Column = 1;
@@ -67,6 +66,10 @@ public class DomainController {
     public DomainController(String test) {
 
     }
+    
+    public <E>DomainController(IAdvancedCatalog<E> catalogMock){
+        setCatalog(catalogMock);
+    }
 
     public DomainController() {
         learningUtilityCatalog = new AdvancedCatalog<>(LearningUtility.class);
@@ -83,7 +86,7 @@ public class DomainController {
         return fieldOfStudyCatalog.getEntities().stream().map(FieldOfStudy::getName).sorted().collect(Collectors.toList());
     }
 
-    public void setFieldsOfStudy(AdvancedCatalog<FieldOfStudy> fieldOfStudyCatalog) {
+    public void setFieldsOfStudy(IAdvancedCatalog<FieldOfStudy> fieldOfStudyCatalog) {
         this.fieldOfStudyCatalog = fieldOfStudyCatalog;
     }
 
@@ -91,7 +94,7 @@ public class DomainController {
         return targetGroupCatalog.getEntities().stream().map(TargetGroup::getName).sorted().collect(Collectors.toList());
     }
 
-    public void setTargetGroups(AdvancedCatalog<TargetGroup> targetGroupCatalog) {
+    public void setTargetGroups(IAdvancedCatalog<TargetGroup> targetGroupCatalog) {
         this.targetGroupCatalog = targetGroupCatalog;
     }
 
@@ -99,7 +102,7 @@ public class DomainController {
         return locationCatalog.getEntities().stream().map(Location::getName).sorted().collect(Collectors.toList());
     }
 
-    public void setLocations(AdvancedCatalog<Location> locationCatalog) {
+    public void setLocations(IAdvancedCatalog<Location> locationCatalog) {
         this.locationCatalog = locationCatalog;
     }
 
@@ -107,7 +110,7 @@ public class DomainController {
         return companyCatalog.getEntities().stream().map(Company::getName).sorted().collect(Collectors.toList());
     }
 
-    public void setCompanies(AdvancedCatalog<Company> companyCatalog) {
+    public void setCompanies(IAdvancedCatalog<Company> companyCatalog) {
         this.companyCatalog = companyCatalog;
     }
 
@@ -123,11 +126,11 @@ public class DomainController {
         return filteredLearningUtilityList;
     }
 
-    public void setUtilities(AdvancedCatalog<LearningUtility> learningUtilityCatalog) {
+    public void setUtilities(IAdvancedCatalog<LearningUtility> learningUtilityCatalog) {
         this.learningUtilityCatalog = learningUtilityCatalog;
     }
 
-    public void setUsers(AdvancedCatalog<User> userCatalog) {
+    public void setUsers(IAdvancedCatalog<User> userCatalog) {
         this.userCatalog = userCatalog;
     }
 
@@ -188,8 +191,9 @@ public class DomainController {
 
         }
         learningUtility.setFieldOfStudyList(fieldOfStudyList);
+        learningUtilityCatalog.updateEntity(learningUtility);
         
-        learningUtilityCatalog.notifyAll();
+        //learningUtilityCatalog.notifyAll();
     }
 
     private LearningUtility createLearningUtility(String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image, String locationName, int amountInstock, int AmountUnavailable, String companyName, List<String> targetGroups, List<String> fieldsOfStudy) {
@@ -348,19 +352,41 @@ public class DomainController {
         targetGroupCatalog.addEntity(t);
     }
 
-    public void addCompanyObserver(Observer o) {
+    public void addObserverToCatalog(IObserver o, Class type){
+        switch(type.getSimpleName().toLowerCase()){
+            case "learningutility":
+                learningUtilityCatalog.addObserver(o);
+                break;
+            case "company":
+                companyCatalog.addObserver(o);
+                break;
+            case "fieldofstudy":
+                fieldOfStudyCatalog.addObserver(o);
+                break;
+            case "targetgroup":
+                targetGroupCatalog.addObserver(o);
+                break;
+            case "location":
+                locationCatalog.addObserver(o);
+                break;
+            case "user":
+                userCatalog.addObserver(o);
+                break;
+        }
+    }
+    public void addCompanyObserver(IObserver o) {
         companyCatalog.addObserver(o);
     }
 
-    public void addFieldOfStudyObserver(Observer o) {
+    public void addFieldOfStudyObserver(IObserver o) {
         fieldOfStudyCatalog.addObserver(o);
     }
 
-    public void addTargetGroupObserver(Observer o) {
+    public void addTargetGroupObserver(IObserver o) {
         targetGroupCatalog.addObserver(o);
     }
 
-    public void addLocationObserver(Observer o) {
+    public void addLocationObserver(IObserver o) {
         locationCatalog.addObserver(o);
     }
 
@@ -466,5 +492,27 @@ public class DomainController {
 
             return false; // Does not match.
         });
+    }
+    
+    public <E> void setCatalog(ICatalog<E> catalogMock){
+        Class type = catalogMock.getType();
+        switch(type.getSimpleName().toLowerCase()){
+            case "learningutility":
+                this.learningUtilityCatalog = (IAdvancedCatalog<LearningUtility>) catalogMock;
+                LearningUtilityList = FXCollections.observableArrayList(learningUtilityCatalog.getEntities());
+                filteredLearningUtilityList = new FilteredList<>(LearningUtilityList, p -> true);
+                break;
+            case "company":
+                this.companyCatalog = (IAdvancedCatalog<Company>) catalogMock;
+                break;
+            case "fieldofstudy":
+                this.fieldOfStudyCatalog = (IAdvancedCatalog<FieldOfStudy>) catalogMock;
+                break;
+            case "targetgroup":
+                this.targetGroupCatalog = (IAdvancedCatalog<TargetGroup>) catalogMock;
+                break;
+            case "location":
+                this.locationCatalog = (IAdvancedCatalog<Location>) catalogMock;
+        }
     }
 }

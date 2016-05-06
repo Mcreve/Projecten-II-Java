@@ -6,13 +6,12 @@
 package gui.creationPanels;
 
 import domain.DomainController;
-import domain.learningUtility.LearningUtility;
+import domain.interfaces.IObserver;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
-import java.util.Observer;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,7 +33,7 @@ import javafx.stage.Stage;
  *
  * @author Append
  */
-public class LearningUtilityCreationPanelController extends GridPane implements Observer {
+public class LearningUtilityCreationPanelController extends GridPane implements IObserver {
 
     @FXML
     private TextField txtName;
@@ -274,7 +273,7 @@ public class LearningUtilityCreationPanelController extends GridPane implements 
     }
 
     @Override
-    public void update(Observable o, Object arg) {
+    public void update() {
         populateComboBoxes();
         populateListViews();
     }

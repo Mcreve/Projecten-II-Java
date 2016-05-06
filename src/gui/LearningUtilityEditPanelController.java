@@ -6,17 +6,13 @@
 package gui;
 
 import domain.DomainController;
+import domain.interfaces.IObserver;
 import domain.learningUtility.LearningUtility;
-import gui.creationPanels.LearningUtilityCreationPanelController;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -32,7 +28,7 @@ import javafx.stage.Stage;
  *
  * @author Maxim
  */
-public class LearningUtilityEditPanelController extends GridPane {
+public class LearningUtilityEditPanelController extends GridPane implements IObserver {
 
     @FXML
     private TableView<LearningUtility> tableView;
@@ -46,6 +42,7 @@ public class LearningUtilityEditPanelController extends GridPane {
     public LearningUtilityEditPanelController(DomainController domainController) {
         this.domainController = domainController;
         initLoader();
+        domainController.addObserverToCatalog(this, LearningUtility.class);
     }
 
     private void initLoader() throws RuntimeException {
@@ -58,6 +55,11 @@ public class LearningUtilityEditPanelController extends GridPane {
             throw new RuntimeException(e);
         }
 
+        populateTable();
+
+    }
+
+    private void populateTable() {
         try {
             setLayoutForTableView();
             tableView.setItems(domainController.getFilteredLearningUtilityList());
@@ -83,7 +85,6 @@ public class LearningUtilityEditPanelController extends GridPane {
         } catch (Exception ex) {
             lblInfo.setText(ex.getMessage());
         }
-
     }
 
     private void setLayoutForTableView() throws IOException {
@@ -150,6 +151,11 @@ public class LearningUtilityEditPanelController extends GridPane {
 
         String newValue = searchBar.getText() + event.getCharacter().trim();
         domainController.changeFilter(newValue);
+    }
+
+    @Override
+    public void update() {
+        tableView.refresh();
     }
 
 }
