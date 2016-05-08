@@ -14,8 +14,10 @@ import gui.creationPanels.LocationCreationPanelController;
 import gui.creationPanels.TargetGroupCreationPanelController;
 import java.io.IOException;
 import java.math.BigDecimal;
+import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -94,6 +96,7 @@ public class LearningUtilityEditDetailsPanelController extends GridPane implemen
 
 
          private void initLoader() throws RuntimeException {
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("LearningUtilityEditDetailsPanel.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -143,6 +146,10 @@ public class LearningUtilityEditDetailsPanelController extends GridPane implemen
     private void edit(ActionEvent event) {
         
         LearningUtility currentLearningUtility = domainController.getSelectedLearningUtility();
+        Stage stage = (Stage) btnEdit.getScene().getWindow();
+        PauseTransition delay = new PauseTransition(Duration.millis(4000));
+        delay.setOnFinished( ev -> stage.close() );
+        delay.play();
         
         String infoMessage = validateFields();
                 
@@ -254,8 +261,12 @@ public class LearningUtilityEditDetailsPanelController extends GridPane implemen
     @FXML
     private void delete(ActionEvent event) {
         
-         LearningUtility currentLearningUtility = domainController.getSelectedLearningUtility();
-         domainController.removeLearningUtility(currentLearningUtility);
+        LearningUtility currentLearningUtility = domainController.getSelectedLearningUtility();
+        domainController.removeLearningUtility(currentLearningUtility);
+        Stage stage = (Stage) btnDelete.getScene().getWindow();
+        PauseTransition delay = new PauseTransition(Duration.millis(4000));
+        delay.setOnFinished( ev -> stage.close() );
+        delay.play();
         
     }
 

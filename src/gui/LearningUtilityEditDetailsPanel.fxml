@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<fx:root prefHeight="486.0" prefWidth="823.0" type="GridPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="850.0" type="GridPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="376.0" minWidth="10.0" prefWidth="209.0" />
@@ -32,8 +32,8 @@
     <RowConstraints maxHeight="81.0" minHeight="40.0" prefHeight="62.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="40.0" minHeight="11.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-      <RowConstraints vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="40.0" minHeight="22.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="50.0" minHeight="31.0" prefHeight="37.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <Label text="Naam" GridPane.rowIndex="1">
@@ -102,7 +102,7 @@
             <Insets right="15.0" />
          </GridPane.margin>
       </Label>
-      <Label text="Aantal onbeschikbaar" GridPane.columnIndex="2" GridPane.rowIndex="7">
+      <Label text="Aantal onbeschikbaar" GridPane.columnIndex="2" GridPane.rowIndex="6">
          <GridPane.margin>
             <Insets right="15.0" />
          </GridPane.margin>
@@ -112,7 +112,7 @@
             <Insets right="150.0" />
          </GridPane.margin>
       </TextField>
-      <TextField fx:id="txtAmountUnavailable" GridPane.columnIndex="3" GridPane.rowIndex="7">
+      <TextField fx:id="txtAmountUnavailable" GridPane.columnIndex="3" GridPane.rowIndex="6">
          <GridPane.margin>
             <Insets right="150.0" />
          </GridPane.margin>
@@ -127,14 +127,9 @@
             <Insets right="5.0" />
          </GridPane.margin>
       </TextField>
-      <Button fx:id="btnEdit" alignment="CENTER_RIGHT" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#edit" prefHeight="25.0" prefWidth="75.0" text="Wijzigen" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
+      <Button fx:id="btnReset" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#reset" prefHeight="25.0" prefWidth="75.0" text="Reset" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
          <GridPane.margin>
-            <Insets />
-         </GridPane.margin>
-      </Button>
-      <Button fx:id="btnReset" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#reset" prefHeight="25.0" prefWidth="75.0" text="Reset" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="8">
-         <GridPane.margin>
-            <Insets />
+            <Insets right="20.0" />
          </GridPane.margin></Button>
       <ListView fx:id="lstTargetGroups" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.rowSpan="2">
          <GridPane.margin>
@@ -174,12 +169,12 @@
       </Label>
       <Button fx:id="btnNewTargetGroup" mnemonicParsing="false" onAction="#showNewTargetGroupDialog" text="Nieuw..." GridPane.rowIndex="4">
          <GridPane.margin>
-            <Insets right="15.0" />
+            <Insets right="15.0" top="15.0" />
          </GridPane.margin>
       </Button>
       <Button fx:id="btnNewFieldOfStudy" mnemonicParsing="false" onAction="#showNewFieldOfStudyDialog" text="Nieuw..." GridPane.columnIndex="2" GridPane.rowIndex="4">
          <GridPane.margin>
-            <Insets right="15.0" />
+            <Insets right="15.0" top="15.0" />
          </GridPane.margin>
       </Button>
       <Button fx:id="btnNewLocation" mnemonicParsing="false" onAction="#showNewLocationDialog" text="Nieuw..." GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.valignment="TOP">
@@ -188,6 +183,10 @@
          </GridPane.margin>
       </Button>
       <Button fx:id="btnNewCompany" mnemonicParsing="false" onAction="#showNewCompanyDialog" text="Nieuw..." GridPane.columnIndex="4" GridPane.rowIndex="3" />
-      <Button fx:id="btnDelete" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="75.0" text="Verwijder" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+      <Button fx:id="btnDelete" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="75.0" text="Verwijder" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
+         <GridPane.margin>
+            <Insets right="115.0" />
+         </GridPane.margin></Button>
+      <Button fx:id="btnEdit" layoutX="612.0" layoutY="471.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#edit" prefHeight="25.0" prefWidth="75.0" text="Opslaan" GridPane.columnIndex="4" GridPane.rowIndex="8" />
    </children>
 </fx:root>
