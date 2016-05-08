@@ -34,10 +34,11 @@ import javax.json.JsonReader;
 import persistence.Connection;
 
 /**
- * Interface for GUI -> Domain interaction.
- * This class is the only domain class that should be instantiated in the GUI layer, 
- * it hides the complexity from the domain from the GUI layer.
- * Only the DomainControllers methods should be called from the GUI layer.
+ * Interface for GUI -> Domain interaction. This class is the only domain class
+ * that should be instantiated in the GUI layer, it hides the complexity from
+ * the domain from the GUI layer. Only the DomainControllers methods should be
+ * called from the GUI layer.
+ *
  * @author Ward Vanlerberghe
  */
 public class DomainController {
@@ -68,25 +69,32 @@ public class DomainController {
 
     /**
      * @param test useless information
-     * @deprecated Faulty use of setterInjection, use {@link #DomainController(ICatalog) DomainController(ICatalog)} or use the defaultConstructor and then set
-     * the catalog mocks with the {@link #setCatalog(ICatalog) setCatalog(ICatalog)} method.
+     * @deprecated Faulty use of setterInjection, use
+     * {@link #DomainController(ICatalog) DomainController(ICatalog)} or use the
+     * defaultConstructor and then set the catalog mocks with the
+     * {@link #setCatalog(ICatalog) setCatalog(ICatalog)} method.
      */
     public DomainController(String test) {
 
     }
-    
+
     /**
-     * Constructor that takes one parameter, this constructor is used for testing purposes.
-     * @param <E> The type of the catalog, eg: {@link LearningUtility}, {@link Company} or any other entity class
-     * @param catalogMock The actual {@link ICatalog} instance that should be injected for mocking purpose.
+     * Constructor that takes one parameter, this constructor is used for
+     * testing purposes.
+     *
+     * @param <E> The type of the catalog, eg:
+     * {@link LearningUtility}, {@link Company} or any other entity class
+     * @param catalogMock The actual {@link ICatalog} instance that should be
+     * injected for mocking purpose.
      */
-    public <E> DomainController(ICatalog<E> catalogMock){
+    public <E> DomainController(ICatalog<E> catalogMock) {
         setCatalog(catalogMock);
     }
 
     /**
-     * Default constructor. Should be used during application setup. The constructor provides
-     * all instantiations of the classes needed to run the domain.
+     * Default constructor. Should be used during application setup. The
+     * constructor provides all instantiations of the classes needed to run the
+     * domain.
      */
     public DomainController() {
         learningUtilityCatalog = new AdvancedCatalog<>(LearningUtility.class);
@@ -100,15 +108,18 @@ public class DomainController {
     }
 
     /**
-     * Returns a list with the name field values of all known {@link FieldOfStudy} instances.
-     * @return a list with the name field values of all known {@link FieldOfStudy} instances.
+     * Returns a list with the name field values of all known
+     * {@link FieldOfStudy} instances.
+     *
+     * @return a list with the name field values of all known
+     * {@link FieldOfStudy} instances.
      */
     public List<String> getFieldsOfStudy() {
         return fieldOfStudyCatalog.getEntities().stream().map(FieldOfStudy::getName).sorted().collect(Collectors.toList());
     }
 
     /**
-     * @param fieldOfStudyCatalog 
+     * @param fieldOfStudyCatalog
      * @deprecated please use the method {@link #setCatalog(ICatalog) }
      */
     public void setFieldsOfStudy(IAdvancedCatalog<FieldOfStudy> fieldOfStudyCatalog) {
@@ -116,16 +127,19 @@ public class DomainController {
     }
 
     /**
-     * Returns a list with the name field values of all known {@link TargetGroup} instances.
-     * @return a list with the name field values of all known {@link TargetGroup} instances.
+     * Returns a list with the name field values of all known
+     * {@link TargetGroup} instances.
+     *
+     * @return a list with the name field values of all known
+     * {@link TargetGroup} instances.
      */
     public List<String> getTargetGroups() {
         return targetGroupCatalog.getEntities().stream().map(TargetGroup::getName).sorted().collect(Collectors.toList());
     }
 
     /**
-     * 
-     * @param targetGroupCatalog  
+     *
+     * @param targetGroupCatalog
      * @deprecated please use the method {@link #setCatalog(ICatalog) }
      */
     public void setTargetGroups(IAdvancedCatalog<TargetGroup> targetGroupCatalog) {
@@ -133,16 +147,19 @@ public class DomainController {
     }
 
     /**
-     * Returns a list with the name field values of all known {@link Location} instances.
-     * @return a list with the name field values of all known {@link Location} instances.
+     * Returns a list with the name field values of all known {@link Location}
+     * instances.
+     *
+     * @return a list with the name field values of all known {@link Location}
+     * instances.
      */
     public List<String> getLocations() {
         return locationCatalog.getEntities().stream().map(Location::getName).sorted().collect(Collectors.toList());
     }
 
     /**
-     * 
-     * @param locationCatalog  
+     *
+     * @param locationCatalog
      * @deprecated please use the method {@link #setCatalog(ICatalog) }
      */
     public void setLocations(IAdvancedCatalog<Location> locationCatalog) {
@@ -150,16 +167,19 @@ public class DomainController {
     }
 
     /**
-     * Returns a list with the name field values of all known {@link Company} instances.
-     * @return a list with the name field values of all known {@link Company} instances.
+     * Returns a list with the name field values of all known {@link Company}
+     * instances.
+     *
+     * @return a list with the name field values of all known {@link Company}
+     * instances.
      */
     public List<String> getCompanies() {
         return companyCatalog.getEntities().stream().map(Company::getName).sorted().collect(Collectors.toList());
     }
 
     /**
-     * 
-     * @param companyCatalog  
+     *
+     * @param companyCatalog
      * @deprecated please use the method {@link #setCatalog(ICatalog) }
      */
     public void setCompanies(IAdvancedCatalog<Company> companyCatalog) {
@@ -168,6 +188,7 @@ public class DomainController {
 
     /**
      * Returns a list with all known {@link LearningUtility} instances.
+     *
      * @return a list with all known {@link LearningUtility} instances.
      */
     public List<LearningUtility> getLearningUtilities() {
@@ -175,8 +196,11 @@ public class DomainController {
     }
 
     /**
-     * Returns an observable list with all known {@link LearningUtility} instances.
-     * @return an observable list with all known {@link LearningUtility} instances.
+     * Returns an observable list with all known {@link LearningUtility}
+     * instances.
+     *
+     * @return an observable list with all known {@link LearningUtility}
+     * instances.
      */
     public ObservableList<LearningUtility> getObservableLearningUtilityList() {
         return FXCollections.unmodifiableObservableList(learningUtilityList);
@@ -184,6 +208,7 @@ public class DomainController {
 
     /**
      * Returns the filtered list of {@link LearningUtility} instances.
+     *
      * @return the filtered list of {@link LearningUtility} instances.
      */
     public FilteredList<LearningUtility> getFilteredLearningUtilityList() {
@@ -191,8 +216,8 @@ public class DomainController {
     }
 
     /**
-     * 
-     * @param learningUtilityCatalog  
+     *
+     * @param learningUtilityCatalog
      * @deprecated please use the method {@link #setCatalog(ICatalog) }
      */
     public void setUtilities(IAdvancedCatalog<LearningUtility> learningUtilityCatalog) {
@@ -200,8 +225,8 @@ public class DomainController {
     }
 
     /**
-     * 
-     * @param userCatalog  
+     *
+     * @param userCatalog
      * @deprecated please use the method {@link #setCatalog(ICatalog) }
      */
     public void setUsers(IAdvancedCatalog<User> userCatalog) {
@@ -210,7 +235,9 @@ public class DomainController {
 
     /**
      * Sets the {@link LearningUtility} as selected.
-     * @param learningUtility The {@link LearningUtility} that needs to be marked as selected 
+     *
+     * @param learningUtility The {@link LearningUtility} that needs to be
+     * marked as selected
      */
     public void setSelectedLearningUtility(LearningUtility learningUtility) {
         this.selectedLearningUtility = learningUtility;
@@ -218,16 +245,19 @@ public class DomainController {
 
     /**
      * Gets the {@link LearningUtility} that is marked as selected
-     * @return 
+     *
+     * @return
      */
     public LearningUtility getSelectedLearningUtility() {
         return this.selectedLearningUtility;
     }
 
     /**
-     * This method checks if all paramaters are correct and then creates a new 
-     * instance of {@link LearningUtility} with provided parameters.
-     * Following on creation, the instance is added to the {@link #learningUtilityCatalog} for persistence.
+     * This method checks if all paramaters are correct and then creates a new
+     * instance of {@link LearningUtility} with provided parameters. Following
+     * on creation, the instance is added to the {@link #learningUtilityCatalog}
+     * for persistence.
+     *
      * @param name The name of the item
      * @param description The description of the item
      * @param price The price of the item
@@ -262,9 +292,11 @@ public class DomainController {
     }
 
     /**
-     * This method updates the fields of an {@link LearningUtility} instance and then persists
-     * the changes made.
-     * @param learningUtility The {@link LearningUtility} that needs to be updated
+     * This method updates the fields of an {@link LearningUtility} instance and
+     * then persists the changes made.
+     *
+     * @param learningUtility The {@link LearningUtility} that needs to be
+     * updated
      * @param name The name of the item
      * @param description The description of the item
      * @param price The price of the item
@@ -280,9 +312,19 @@ public class DomainController {
      */
     public void editLearningUtility(LearningUtility learningUtility, String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image,
             int amountInStock, int amountUnavailable, String companyName, String locationName, List<String> targetGroups, List<String> fieldsOfStudy) {
-        learningUtility.setName(name);
+
+        if (name == null || name == "" || learningUtilityCatalog.getEntities().stream().anyMatch(l -> l.getName().equals(name))) {
+            throw new IllegalArgumentException("Er bestaat reeds een item met deze naam");
+        } else {
+            learningUtility.setName(name);
+        }
         learningUtility.setDescription(description);
-        learningUtility.setPrice(price);
+        if (price.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("De prijs kan niet negatief zijn");
+
+        } else {
+            learningUtility.setPrice(price);
+        }
         learningUtility.setLoanable(loanable);
         learningUtility.setArticleNumber(articleNumber);
         learningUtility.setPicture(image);
@@ -308,13 +350,19 @@ public class DomainController {
         }
         learningUtility.setFieldOfStudyList(fieldOfStudyList);
         learningUtilityCatalog.updateEntity(learningUtility);
-        
+
         //learningUtilityCatalog.notifyAll();
+    }
+    
+    public void removeLearningUtility(LearningUtility learningUtility)
+    {
+        learningUtilityCatalog.deleteEntity(learningUtility);
     }
 
     /**
-     * This method creates a new {@link LearningUtility} instance and sets its fields
-     * with the parameters provided. Then returns the instance.
+     * This method creates a new {@link LearningUtility} instance and sets its
+     * fields with the parameters provided. Then returns the instance.
+     *
      * @param name The name of the item
      * @param description The description of the item
      * @param price The price of the item
@@ -327,8 +375,8 @@ public class DomainController {
      * @param locationName The location of wich the item is in
      * @param targetGroups A list with the names of the target groups
      * @param fieldsOfStudy A list with the names of the fields of study
-     * @return A new instance of {@link LearningUtility} with its fields set with
-     * the provided parameters
+     * @return A new instance of {@link LearningUtility} with its fields set
+     * with the provided parameters
      */
     private LearningUtility createLearningUtility(String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image, String locationName, int amountInstock, int amountUnavailable, String companyName, List<String> targetGroups, List<String> fieldsOfStudy) {
         LearningUtility newItem = new LearningUtility();
@@ -364,12 +412,15 @@ public class DomainController {
     }
 
     /**
-     * This method takes string as a parameter. The string represents a file. The
-     * method checks if the file has the right extention (.csv) and checks if the file is
-     * correctly formatted. If all conditions are met, the method parses the file and
-     * returns the {@link LearningUtility} instances parsed from the file.
+     * This method takes string as a parameter. The string represents a file.
+     * The method checks if the file has the right extention (.csv) and checks
+     * if the file is correctly formatted. If all conditions are met, the method
+     * parses the file and returns the {@link LearningUtility} instances parsed
+     * from the file.
+     *
      * @param file the location to a .csv file
-     * @return an observable list with the parsed {@link LearningUtility} instances
+     * @return an observable list with the parsed {@link LearningUtility}
+     * instances
      * @throws IOException Thrown when the file was not found at given location
      */
     public ObservableList<LearningUtility> readCsvFile(String file) throws IOException {
@@ -422,7 +473,8 @@ public class DomainController {
 
     /**
      * To be defined, method not complete
-     * @param items 
+     *
+     * @param items
      */
     public void registerItems(List<String[]> items) {
         items.stream().forEach((String[] i) -> {
@@ -443,9 +495,10 @@ public class DomainController {
     /**
      * This method creates a new {@link Company} instance. The method checks if
      * the strings are not empty. If all the parameters are correct the method
-     * checks for duplicate names. If no duplicates are found a new instance
-     * is created and the fields are set with the parameters provided. Finally the
+     * checks for duplicate names. If no duplicates are found a new instance is
+     * created and the fields are set with the parameters provided. Finally the
      * new instance is added to the catalog for persistence.
+     *
      * @param name The name of the company
      * @param website The website of the company
      * @param contactPerson The contactpersons name of the company
@@ -471,9 +524,10 @@ public class DomainController {
     /**
      * This method creates a new {@link Location} instance. The method checks if
      * the strings are not empty. If all the parameters are correct the method
-     * checks for duplicate names. If no duplicates are found a new instance
-     * is created and the fields are set with the parameters provided. Finally the
+     * checks for duplicate names. If no duplicates are found a new instance is
+     * created and the fields are set with the parameters provided. Finally the
      * new instance is added to the catalog for persistence.
+     *
      * @param name The location name
      */
     public void createLocation(String name) {
@@ -491,11 +545,12 @@ public class DomainController {
     }
 
     /**
-     * This method creates a new {@link FieldOfStudy} instance. The method checks if
-     * the strings are not empty. If all the parameters are correct the method
-     * checks for duplicate names. If no duplicates are found a new instance
-     * is created and the fields are set with the parameters provided. Finally the
-     * new instance is added to the catalog for persistence.
+     * This method creates a new {@link FieldOfStudy} instance. The method
+     * checks if the strings are not empty. If all the parameters are correct
+     * the method checks for duplicate names. If no duplicates are found a new
+     * instance is created and the fields are set with the parameters provided.
+     * Finally the new instance is added to the catalog for persistence.
+     *
      * @param name The field of study name
      */
     public void createFieldOfStudy(String name) {
@@ -513,11 +568,12 @@ public class DomainController {
     }
 
     /**
-     * This method creates a new {@link TargetGroup} instance. The method checks if
-     * the strings are not empty. If all the parameters are correct the method
-     * checks for duplicate names. If no duplicates are found a new instance
-     * is created and the fields are set with the parameters provided. Finally the
-     * new instance is added to the catalog for persistence.
+     * This method creates a new {@link TargetGroup} instance. The method checks
+     * if the strings are not empty. If all the parameters are correct the
+     * method checks for duplicate names. If no duplicates are found a new
+     * instance is created and the fields are set with the parameters provided.
+     * Finally the new instance is added to the catalog for persistence.
+     *
      * @param name The targetgroup´s name
      */
     public void createTargetGroup(String name) {
@@ -535,13 +591,16 @@ public class DomainController {
     }
 
     /**
-     * This method adds an {@link IObserver} to the {@link ICatalog} of the given type.
-     * The method checks to wich catalog the observer needs to be added by the type parameter.
-     * @param observer the instance that implements the {@link IObserver} interface
+     * This method adds an {@link IObserver} to the {@link ICatalog} of the
+     * given type. The method checks to wich catalog the observer needs to be
+     * added by the type parameter.
+     *
+     * @param observer the instance that implements the {@link IObserver}
+     * interface
      * @param type the {@link Class} wich is hold by the {@link ICatalog}
      */
-    public void addObserverToCatalog(IObserver observer, Class type){
-        switch(type.getSimpleName().toLowerCase()){
+    public void addObserverToCatalog(IObserver observer, Class type) {
+        switch (type.getSimpleName().toLowerCase()) {
             case "learningutility":
                 learningUtilityCatalog.addObserver(observer);
                 break;
@@ -562,38 +621,46 @@ public class DomainController {
                 break;
         }
     }
-    
+
     /**
-     * 
+     *
      * @param o The observer that should be added to the catalog
-     * @deprecated use the generic method {@link #addObserverToCatalog(IObserver, Class) addObserverToCatalog(IObserver, Class)} instead. 
+     * @deprecated use the generic method
+     * {@link #addObserverToCatalog(IObserver, Class) addObserverToCatalog(IObserver, Class)}
+     * instead.
      */
     public void addCompanyObserver(IObserver o) {
         companyCatalog.addObserver(o);
     }
 
     /**
-     * 
+     *
      * @param o The observer that should be added to the catalog
-     * @deprecated use the generic method {@link #addObserverToCatalog(IObserver, Class) addObserverToCatalog(IObserver, Class)} instead. 
+     * @deprecated use the generic method
+     * {@link #addObserverToCatalog(IObserver, Class) addObserverToCatalog(IObserver, Class)}
+     * instead.
      */
     public void addFieldOfStudyObserver(IObserver o) {
         fieldOfStudyCatalog.addObserver(o);
     }
 
     /**
-     * 
+     *
      * @param o The observer that should be added to the catalog
-     * @deprecated use the generic method {@link #addObserverToCatalog(IObserver, Class) addObserverToCatalog(IObserver, Class)} instead. 
+     * @deprecated use the generic method
+     * {@link #addObserverToCatalog(IObserver, Class) addObserverToCatalog(IObserver, Class)}
+     * instead.
      */
     public void addTargetGroupObserver(IObserver o) {
         targetGroupCatalog.addObserver(o);
     }
 
     /**
-     * 
+     *
      * @param o The observer that should be added to the catalog
-     * @deprecated use the generic method {@link #addObserverToCatalog(IObserver, Class) addObserverToCatalog(IObserver, Class)} instead. 
+     * @deprecated use the generic method
+     * {@link #addObserverToCatalog(IObserver, Class) addObserverToCatalog(IObserver, Class)}
+     * instead.
      */
     public void addLocationObserver(IObserver o) {
         locationCatalog.addObserver(o);
@@ -607,9 +674,12 @@ public class DomainController {
     }
 
     /**
-     * This method parses a line of the .csv file read by the {@link #readCsvFile(String) readCsvFile(String)}
-     * to a {@link LearningUtility} instance.
-     * @param tokens An array of strings containing the field values of the csv line
+     * This method parses a line of the .csv file read by the
+     * {@link #readCsvFile(String) readCsvFile(String)} to a
+     * {@link LearningUtility} instance.
+     *
+     * @param tokens An array of strings containing the field values of the csv
+     * line
      * @return a new instance of {@link LearningUtility}
      */
     private LearningUtility parseCsvLine(String[] tokens) {
@@ -657,11 +727,12 @@ public class DomainController {
     }
 
     /**
-     * This method logs the user in. The method hashes the password to SHA-256. Then
-     * the method sends a request to the HoGent rest login service, provided the username and
-     * the hashed password. Then uses the JsonReader to read the returned Json file.
-     * If login succeeded the application continues, else an exception is thrown,
-     * indicating the login failed.
+     * This method logs the user in. The method hashes the password to SHA-256.
+     * Then the method sends a request to the HoGent rest login service,
+     * provided the username and the hashed password. Then uses the JsonReader
+     * to read the returned Json file. If login succeeded the application
+     * continues, else an exception is thrown, indicating the login failed.
+     *
      * @param username The username
      * @param password The password
      */
@@ -698,9 +769,11 @@ public class DomainController {
     }
 
     /**
-     * This method filters the {@link #filteredLearningUtilityList}. The filter is
-     * applied to the {@link LearningUtility#name}, {@link LearningUtility#description}
-     * and {@link LearningUtility#articleNumber} fields.
+     * This method filters the {@link #filteredLearningUtilityList}. The filter
+     * is applied to the
+     * {@link LearningUtility#name}, {@link LearningUtility#description} and
+     * {@link LearningUtility#articleNumber} fields.
+     *
      * @param filterValue The string on wich the list should be filtered
      */
     public void changeFilter(String filterValue) {
@@ -723,16 +796,17 @@ public class DomainController {
             return false; // Does not match.
         });
     }
-    
+
     /**
-     * This method is used for setting the catalogMocks. This method should be used
-     * for testing purposes only.
+     * This method is used for setting the catalogMocks. This method should be
+     * used for testing purposes only.
+     *
      * @param <E> The Class the {@link ICatalog} holds.
      * @param catalogMock The actual {@link ICatalog} mocking object
      */
-    public <E> void setCatalog(ICatalog<E> catalogMock){
+    public <E> void setCatalog(ICatalog<E> catalogMock) {
         Class type = catalogMock.getType();
-        switch(type.getSimpleName().toLowerCase()){
+        switch (type.getSimpleName().toLowerCase()) {
             case "learningutility":
                 this.learningUtilityCatalog = (IAdvancedCatalog<LearningUtility>) catalogMock;
                 learningUtilityList = FXCollections.observableArrayList(learningUtilityCatalog.getEntities());

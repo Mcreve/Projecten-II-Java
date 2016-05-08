@@ -83,5 +83,14 @@ public class Catalog<T> implements ICatalog<T>{
         GenericDaoJpa.commitTransaction();
         notifyObservers();
     }
+
+    @Override
+    public void deleteEntity(T entity) {
+        loadEntities();
+        GenericDaoJpa.startTransaction();
+        repository.delete(entity);
+        GenericDaoJpa.commitTransaction();
+        notifyObservers();
+    }
     
 }

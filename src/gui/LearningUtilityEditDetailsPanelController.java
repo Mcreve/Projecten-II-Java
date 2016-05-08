@@ -8,15 +8,19 @@ package gui;
 import domain.DomainController;
 import domain.interfaces.IObserver;
 import domain.learningUtility.LearningUtility;
+import gui.creationPanels.CompanyCreationPanelController;
+import gui.creationPanels.FieldOfStudyCreationPanelController;
+import gui.creationPanels.LocationCreationPanelController;
+import gui.creationPanels.TargetGroupCreationPanelController;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -26,6 +30,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -76,25 +81,18 @@ public class LearningUtilityEditDetailsPanelController extends GridPane implemen
     private Button btnDelete;
     
     private DomainController domainController;
-    private static final String DEFAULT_HTTP = "Http://";
     private static final String UNKNOWN = "Onbekend";
 
     
        public LearningUtilityEditDetailsPanelController (DomainController domainController){
         this.domainController = domainController;
-        registerAsObserver();
         initLoader();
         populateListViews();
         populateComboBoxes();
         loadLearningUtilityDetails();
     } 
-        private void registerAsObserver() {
-        domainController.addCompanyObserver(this);
-        domainController.addFieldOfStudyObserver(this);
-        domainController.addTargetGroupObserver(this);
-        domainController.addLocationObserver(this);
-    }
-        
+
+
          private void initLoader() throws RuntimeException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("LearningUtilityEditDetailsPanel.fxml"));
         loader.setRoot(this);
@@ -255,22 +253,36 @@ public class LearningUtilityEditDetailsPanelController extends GridPane implemen
 
     @FXML
     private void delete(ActionEvent event) {
+        
+         LearningUtility currentLearningUtility = domainController.getSelectedLearningUtility();
+         domainController.removeLearningUtility(currentLearningUtility);
+        
     }
 
     @FXML
-    private void showNewTargetGroupDialog(ActionEvent event) {
+    private void showNewTargetGroupDialog(ActionEvent event) {        
+        createNewStageAndShow("Doelgroep toevoegen", new Scene(new TargetGroupCreationPanelController(domainController)));
     }
 
     @FXML
     private void showNewFieldOfStudyDialog(ActionEvent event) {
+        createNewStageAndShow("Doelgroep toevoegen", new Scene(new FieldOfStudyCreationPanelController(domainController)));
     }
 
     @FXML
     private void showNewLocationDialog(ActionEvent event) {
+        createNewStageAndShow("Locatie toevoegen", new Scene(new LocationCreationPanelController(domainController)));
     }
 
     @FXML
-    private void showNewCompanyDialog(ActionEvent event) {
+    private void showNewCompanyDialog(ActionEvent event) {        
+        createNewStageAndShow("Bedrijf toevoegen", new Scene(new CompanyCreationPanelController(domainController)));        
+    }
+    private void createNewStageAndShow(String title, Scene scene){
+        Stage stage = new Stage();
+        stage.setTitle(title);
+        stage.setScene(scene);
+        stage.show();
     }
 
 }

@@ -68,7 +68,7 @@ public class DomainControllerLearningUtilityManipulationsTests {
         learningUtility2 = new LearningUtility(1,"Gradenboog", "Een gradenboog om hoeken te meten",BigDecimal.ONE,true,100,0,"Artkl.002");
         learningUtilityList.add(learningUtility2);
         
-        learningUtility3 = new LearningUtility(2, TESTSTRING, "Een microscoop", BigDecimal.ONE, true, 5, 0,"Artkl.003");
+        learningUtility3 = new LearningUtility(2, "test", "Een microscoop", BigDecimal.ONE, true, 5, 0,"Artkl.003");
         learningUtilityList.add(learningUtility3); 
         
         Mockito.when(learningUtilityCatalogMock.getType()).thenReturn(LearningUtility.class);
@@ -123,7 +123,7 @@ public class DomainControllerLearningUtilityManipulationsTests {
         Mockito.when(targetGroupCatalogMock.getByName(null)).thenReturn(new TargetGroup());
         Mockito.when(locationCatalogMock.getByName(null)).thenReturn(new Location());
         
-        domainController.editLearningUtility(learningUtility1, TESTSTRING, 
+        domainController.editLearningUtility(learningUtility1, "test", 
                 learningUtility1.getDescription(), learningUtility1.getPrice(), 
                 learningUtility1.getLoanable(), learningUtility1.getArticleNumber(), 
                 learningUtility1.getPicture(), learningUtility1.getAmountInCatalog(), 
@@ -211,7 +211,7 @@ public class DomainControllerLearningUtilityManipulationsTests {
     
     @After
     public void verifyMockCalls(){        
-        Mockito.verify(learningUtilityCatalogMock).getEntities();
+        
         Mockito.verify(learningUtilityCatalogMock).getType();
         Mockito.verify(companyCatalogMock).getType();
         Mockito.verify(fieldOfStudyCatalogMock).getType();

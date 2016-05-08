@@ -127,14 +127,14 @@
             <Insets right="5.0" />
          </GridPane.margin>
       </TextField>
-      <Button fx:id="btnEdit" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#edit" text="Wijzigen" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
+      <Button fx:id="btnEdit" alignment="CENTER_RIGHT" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#edit" prefHeight="25.0" prefWidth="75.0" text="Wijzigen" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
          <GridPane.margin>
-            <Insets right="15.0" />
+            <Insets />
          </GridPane.margin>
       </Button>
-      <Button fx:id="btnReset" mnemonicParsing="false" onAction="#reset" text="Reset" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
+      <Button fx:id="btnReset" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#reset" prefHeight="25.0" prefWidth="75.0" text="Reset" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="8">
          <GridPane.margin>
-            <Insets right="120.0" />
+            <Insets />
          </GridPane.margin></Button>
       <ListView fx:id="lstTargetGroups" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.rowSpan="2">
          <GridPane.margin>
@@ -188,6 +188,6 @@
          </GridPane.margin>
       </Button>
       <Button fx:id="btnNewCompany" mnemonicParsing="false" onAction="#showNewCompanyDialog" text="Nieuw..." GridPane.columnIndex="4" GridPane.rowIndex="3" />
-      <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#delete" text="Verwijder" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+      <Button fx:id="btnDelete" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="75.0" text="Verwijder" GridPane.columnIndex="3" GridPane.rowIndex="8" />
    </children>
 </fx:root>

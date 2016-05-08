@@ -17,4 +17,5 @@ public interface ICatalog<T> extends IObservable{
     public List<T> getEntities();
     public Class getType();
     public void updateEntity(T entity);
+    public void deleteEntity(T entity);
 }
