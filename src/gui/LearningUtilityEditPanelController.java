@@ -6,11 +6,12 @@
 package gui;
 
 import domain.DomainController;
-import domain.interfaces.IObserver;
 import domain.learningUtility.LearningUtility;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -28,7 +29,7 @@ import javafx.stage.Stage;
  *
  * @author Maxim
  */
-public class LearningUtilityEditPanelController extends GridPane implements IObserver {
+public class LearningUtilityEditPanelController extends GridPane{
 
     @FXML
     private TableView<LearningUtility> tableView;
@@ -42,7 +43,7 @@ public class LearningUtilityEditPanelController extends GridPane implements IObs
     public LearningUtilityEditPanelController(DomainController domainController) {
         this.domainController = domainController;
         initLoader();
-        domainController.addObserverToCatalog(this, LearningUtility.class);
+        //domainController.addObserverToCatalog(this, LearningUtility.class);
     }
 
     private void initLoader() throws RuntimeException {
@@ -62,7 +63,8 @@ public class LearningUtilityEditPanelController extends GridPane implements IObs
     private void populateTable() {
         try {
             setLayoutForTableView();
-            tableView.setItems(domainController.getFilteredLearningUtilityList());
+            
+            tableView.setItems(domainController.getLearningUtilities());
             tableView.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
                 //Check whether item is selected
                 if (newValue != null) {
@@ -151,11 +153,6 @@ public class LearningUtilityEditPanelController extends GridPane implements IObs
 
         String newValue = searchBar.getText() + event.getCharacter().trim();
         domainController.changeFilter(newValue);
-    }
-
-    @Override
-    public void update() {
-        tableView.refresh();
     }
 
 }

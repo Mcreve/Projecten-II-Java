@@ -28,7 +28,7 @@ public class AdvancedCatalog<T extends ISearchableByName> extends Catalog<T> imp
 
     @Override
     public T getByName(String name) {
-        loadEntities();
+        super.loadEntities();
         try {
             return entities.stream().filter(entity -> entity.getName().equals(name)).findFirst().get();
         } catch (NoSuchElementException e) {

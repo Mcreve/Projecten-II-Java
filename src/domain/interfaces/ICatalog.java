@@ -5,7 +5,7 @@
  */
 package domain.interfaces;
 
-import java.util.List;
+import javafx.collections.transformation.FilteredList;
 
 /**
  *
@@ -14,7 +14,7 @@ import java.util.List;
 public interface ICatalog<T> extends IObservable{
     public void addEntity(T entity);
     public <E> T getEntity(E id);
-    public List<T> getEntities();
+    public FilteredList<T> getEntities();
     public Class getType();
     public void updateEntity(T entity);
     public void deleteEntity(T entity);

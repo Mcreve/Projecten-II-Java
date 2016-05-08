@@ -9,6 +9,9 @@ import domain.interfaces.ICatalog;
 import domain.interfaces.IObserver;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import persistence.GenericDaoJpa;
 import persistence.IGenericDao;
 
@@ -18,7 +21,8 @@ import persistence.IGenericDao;
  */
 public class Catalog<T> implements ICatalog<T>{
     
-    protected List<T> entities;
+    protected ObservableList<T> entities;
+    protected FilteredList<T> filteredData;
     protected IGenericDao<T> repository;
     protected final Class<T> type;
     protected List<IObserver> observers;
@@ -50,14 +54,16 @@ public class Catalog<T> implements ICatalog<T>{
         return entities.stream().filter(entity -> entity.equals(id)).findFirst().get();
     }
     @Override
-    public List<T> getEntities(){
+    public FilteredList<T> getEntities(){
         loadEntities();
-        return entities;
+        return filteredData;
     }
     
     protected void loadEntities() {
-        if(entities == null)
-            entities = repository.findAll();
+        if(entities == null){
+            entities = FXCollections.observableList(repository.findAll());
+            filteredData = new FilteredList<>(entities, p -> true);
+        }
     }
     
     @Override
@@ -88,8 +94,9 @@ public class Catalog<T> implements ICatalog<T>{
     public void deleteEntity(T entity) {
         loadEntities();
         GenericDaoJpa.startTransaction();
-        repository.delete(entity);
+        repository.delete(entity);        
         GenericDaoJpa.commitTransaction();
+        this.entities.remove(entity);
         notifyObservers();
     }
     

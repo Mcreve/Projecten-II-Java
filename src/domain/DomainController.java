@@ -191,7 +191,7 @@ public class DomainController {
      *
      * @return a list with all known {@link LearningUtility} instances.
      */
-    public List<LearningUtility> getLearningUtilities() {
+    public FilteredList<LearningUtility> getLearningUtilities() {
         return learningUtilityCatalog.getEntities();
     }
 
@@ -203,7 +203,7 @@ public class DomainController {
      * instances.
      */
     public ObservableList<LearningUtility> getObservableLearningUtilityList() {
-        return FXCollections.unmodifiableObservableList(learningUtilityList);
+        return FXCollections.observableList(learningUtilityList);
     }
 
     /**
@@ -777,6 +777,7 @@ public class DomainController {
      * @param filterValue The string on wich the list should be filtered
      */
     public void changeFilter(String filterValue) {
+        filteredLearningUtilityList = getLearningUtilities();
         filteredLearningUtilityList.setPredicate(learningUtility -> {
             // If filter text is empty, display all LearningUtilities.
             if (filterValue == null || filterValue.isEmpty()) {
