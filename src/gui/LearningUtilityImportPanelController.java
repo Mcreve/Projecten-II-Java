@@ -169,6 +169,7 @@ private void initLoader() throws RuntimeException
             }
         }catch(Exception e)
         {
+            //If possible select the error in the tableview 
             lblInfo.setText(e.getMessage());
         }
            

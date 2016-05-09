@@ -283,6 +283,11 @@ public class DomainController {
         learningUtilityCatalog.addEntity(newItem);
     }
     
+    /**
+     * Adds the learningutility to the catalog and persistance layer after checks
+     * @param learningUtility The {@link LearningUtility} that needs to be added
+     * @author Benjamin Vertonghen
+     */
     public void registerLearningUtilityFromImport(LearningUtility lu)
     {
         checkAmountInStock(lu.getAmountInCatalog());
@@ -291,7 +296,11 @@ public class DomainController {
 
         
     }
-
+    /**
+     * Method checks if the name of the learningutility is filled in and if it already exists
+     * @param name name of the utility
+     * @author Benjamin Vertonghen
+     */
     private void checkName(String name) throws IllegalArgumentException {
         if (name == null || name == "") {
             throw new IllegalArgumentException("Gelieve een naam voor het leermiddel op te geven.");
@@ -300,7 +309,11 @@ public class DomainController {
             throw new IllegalArgumentException("Er bestaat al een leermiddel met de opgegeven naam: " + name + ".");
         }
     }
-
+    /**
+     * Method checks if the amount in stock is greater than 0
+     * @param amountInStock Quantity
+     * @author Benjamin Vertonghen
+     */
     private void checkAmountInStock(int amountInstock) throws IllegalArgumentException {
         if (amountInstock < 1)
         {
