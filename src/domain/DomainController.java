@@ -313,7 +313,7 @@ public class DomainController {
     public void editLearningUtility(LearningUtility learningUtility, String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image,
             int amountInStock, int amountUnavailable, String companyName, String locationName, List<String> targetGroups, List<String> fieldsOfStudy) {
 
-        if (name == null || name == "" || learningUtilityCatalog.getEntities().stream().anyMatch(l -> l.getName().equals(name))) {
+        if (name == null || name == "" || learningUtilityCatalog.getEntities().stream().anyMatch(l -> l.getName().equals(name)) && !name.equals(selectedLearningUtility.getName())) {
             throw new IllegalArgumentException("Er bestaat reeds een item met deze naam");
         } else {
             learningUtility.setName(name);
@@ -469,27 +469,6 @@ public class DomainController {
         }
 
         return items;
-    }
-
-    /**
-     * To be defined, method not complete
-     *
-     * @param items
-     */
-    public void registerItems(List<String[]> items) {
-        items.stream().forEach((String[] i) -> {
-            String name = i[0];
-            String description = i[1];
-            BigDecimal price = BigDecimal.valueOf(Double.parseDouble(i[2]));
-            Boolean loanable = (i[3] == "true" ? true : false);
-            String image = i[4];
-            Location location = locationCatalog.getEntity(i[5]);
-            int amount = Integer.parseInt(i[6]);
-            int amountUnavailable = Integer.parseInt(i[7]);
-            Company company = companyCatalog.getEntity(i[8]);
-            List<TargetGroup> targetGroups = targetGroupCatalog.getEntities().stream().filter(entity -> entity.getName().contains(i[9])).collect(Collectors.toList());
-            //LearningUtility item = createLearningUtility()
-        });
     }
 
     /**
