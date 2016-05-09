@@ -424,18 +424,29 @@ public class DomainController {
         List<TargetGroup> targetGroupsList = new ArrayList<>();
 
         for (String targetGroupName : targetGroups) {
-
-            targetGroupsList.add(targetGroupCatalog.getEntity(targetGroupName));
+            TargetGroup targetGroup = targetGroupCatalog.getEntity(targetGroupName);
+            
+            if(targetGroup == null)
+            {
+                targetGroup = createTargetGroup(targetGroupName);
+            }
+            targetGroupsList.add(targetGroup);
 
         }
         newItem.setTargetGroupList(targetGroupsList);
 
         List<FieldOfStudy> fieldOfStudyList = new ArrayList<>();
 
-        for (String fieldOfStudyName : fieldsOfStudy) {
+        for (String fieldOfStudyName : fieldsOfStudy) 
+        {
 
-            fieldOfStudyList.add(fieldOfStudyCatalog.getEntity(fieldOfStudyName));
-
+            FieldOfStudy fieldOfStudy = fieldOfStudyCatalog.getEntity(fieldOfStudyName);
+            
+            if(fieldOfStudy == null)
+            {
+                fieldOfStudy = createFieldOfStudy(fieldOfStudyName);
+            }
+            fieldOfStudyList.add(fieldOfStudy);
         }
         newItem.setFieldOfStudyList(fieldOfStudyList);
         return newItem;
@@ -571,19 +582,22 @@ public class DomainController {
      *
      * @param name The field of study name
      */
-    public void createFieldOfStudy(String name) {
+    public FieldOfStudy createFieldOfStudy(String name) {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Gelieve een naam op te geven voor het nieuwe leergebied.");
         }
-        FieldOfStudy f;
-        try{
-            f = fieldOfStudyCatalog.getEntity(name);
-            throw new IllegalArgumentException("Het opgegeven leergebied: " + name + " bestaat reeds in het systeem.");
-        } catch(NoSuchElementException ex){
-            f = new FieldOfStudy();
-            f.setName(name);
-            fieldOfStudyCatalog.addEntity(f);
+        
+        FieldOfStudy fieldOfStudy = fieldOfStudyCatalog.getEntity(name);
+        
+        if(fieldOfStudy == null)
+        {
+            fieldOfStudy = new FieldOfStudy();
+            fieldOfStudy.setName(name);
+
+            fieldOfStudyCatalog.addEntity(fieldOfStudy); 
         }
+        return fieldOfStudy;
+            
     }
 
     /**
@@ -595,19 +609,22 @@ public class DomainController {
      *
      * @param name The targetgroup´s name
      */
-    public void createTargetGroup(String name) {
+    public TargetGroup createTargetGroup(String name) {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Gelieve een naam op te geven voor de nieuwe doelgroep.");
         }
-        TargetGroup t;
-        try{
-            t = targetGroupCatalog.getEntity(name);
-            throw new IllegalArgumentException("De opgegeven doelgroep: " + name + " bestaat reeds in het systeem");
-        } catch (NoSuchElementException ex){
-            t = new TargetGroup();
-            t.setName(name);
-            targetGroupCatalog.addEntity(t);
-        }        
+        
+        TargetGroup targetGroup = targetGroupCatalog.getEntity(name);
+        
+        if(targetGroup == null)
+        {
+            targetGroup = new TargetGroup();
+            targetGroup.setName(name);
+
+            targetGroupCatalog.addEntity(targetGroup); 
+        }
+        return targetGroup;
+            
     }
 
     /**

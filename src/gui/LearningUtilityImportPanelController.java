@@ -164,13 +164,14 @@ private void initLoader() throws RuntimeException
             for (LearningUtility lu : tableView.getItems())
             {
                 domainController.registerLearningUtilityFromImport(lu);
+                tableView.setItems(null);
+                lblInfo.setText("Bestand werd met succes geïmporteerd.");
             }
         }catch(Exception e)
         {
             lblInfo.setText(e.getMessage());
         }
            
-
     }
     
 }
