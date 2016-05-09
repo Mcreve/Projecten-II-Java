@@ -6,7 +6,7 @@
 package tests;
 
 import domain.DomainController;
-import domain.interfaces.IAdvancedCatalog;
+import domain.interfaces.ICatalog;
 import domain.learningUtility.Company;
 import domain.learningUtility.FieldOfStudy;
 import domain.learningUtility.LearningUtility;
@@ -46,15 +46,15 @@ public class DomainControllerLearningUtilityManipulationsTests {
     private final String TESTSTRING = "CHANGED";
     private final String TESTSTRING2 = "ALSO CHANGED";
     @Mock
-    private IAdvancedCatalog<LearningUtility> learningUtilityCatalogMock;
+    private ICatalog<LearningUtility> learningUtilityCatalogMock;
     @Mock
-    private IAdvancedCatalog<Company> companyCatalogMock;
+    private ICatalog<Company> companyCatalogMock;
     @Mock
-    private IAdvancedCatalog<FieldOfStudy> fieldOfStudyCatalogMock;
+    private ICatalog<FieldOfStudy> fieldOfStudyCatalogMock;
     @Mock
-    private IAdvancedCatalog<TargetGroup> targetGroupCatalogMock;
+    private ICatalog<TargetGroup> targetGroupCatalogMock;
     @Mock
-    private IAdvancedCatalog<Location> locationCatalogMock;
+    private ICatalog<Location> locationCatalogMock;
     
     @Before
     public void setUp() {
@@ -125,10 +125,10 @@ public class DomainControllerLearningUtilityManipulationsTests {
     
     @Test (expected = IllegalArgumentException.class)
     public void changingNameToExcistingNameThrowsException(){
-        Mockito.when(companyCatalogMock.getByName(null)).thenReturn(new Company());
-        Mockito.when(fieldOfStudyCatalogMock.getByName(null)).thenReturn(new FieldOfStudy());
-        Mockito.when(targetGroupCatalogMock.getByName(null)).thenReturn(new TargetGroup());
-        Mockito.when(locationCatalogMock.getByName(null)).thenReturn(new Location());
+        Mockito.when(companyCatalogMock.getEntity(null)).thenReturn(new Company());
+        Mockito.when(fieldOfStudyCatalogMock.getEntity(null)).thenReturn(new FieldOfStudy());
+        Mockito.when(targetGroupCatalogMock.getEntity(null)).thenReturn(new TargetGroup());
+        Mockito.when(locationCatalogMock.getEntity(null)).thenReturn(new Location());
         
         domainController.editLearningUtility(learningUtility1, "test", 
                 learningUtility1.getDescription(), learningUtility1.getPrice(), 
@@ -142,10 +142,10 @@ public class DomainControllerLearningUtilityManipulationsTests {
     
     @Test (expected = IllegalArgumentException.class)
     public void changingNameToEmptyStringThrowsException(){
-        Mockito.when(companyCatalogMock.getByName(null)).thenReturn(new Company());
-        Mockito.when(fieldOfStudyCatalogMock.getByName(null)).thenReturn(new FieldOfStudy());
-        Mockito.when(targetGroupCatalogMock.getByName(null)).thenReturn(new TargetGroup());
-        Mockito.when(locationCatalogMock.getByName(null)).thenReturn(new Location());
+        Mockito.when(companyCatalogMock.getEntity(null)).thenReturn(new Company());
+        Mockito.when(fieldOfStudyCatalogMock.getEntity(null)).thenReturn(new FieldOfStudy());
+        Mockito.when(targetGroupCatalogMock.getEntity(null)).thenReturn(new TargetGroup());
+        Mockito.when(locationCatalogMock.getEntity(null)).thenReturn(new Location());
         
         domainController.editLearningUtility(learningUtility1, "", 
                 learningUtility1.getDescription(), learningUtility1.getPrice(), 
@@ -159,10 +159,10 @@ public class DomainControllerLearningUtilityManipulationsTests {
     
     @Test(expected = IllegalArgumentException.class)
     public void changingPriceToNegativeThrowsException(){
-        Mockito.when(companyCatalogMock.getByName(null)).thenReturn(new Company());
-        Mockito.when(fieldOfStudyCatalogMock.getByName(null)).thenReturn(new FieldOfStudy());
-        Mockito.when(targetGroupCatalogMock.getByName(null)).thenReturn(new TargetGroup());
-        Mockito.when(locationCatalogMock.getByName(null)).thenReturn(new Location());
+        Mockito.when(companyCatalogMock.getEntity(null)).thenReturn(new Company());
+        Mockito.when(fieldOfStudyCatalogMock.getEntity(null)).thenReturn(new FieldOfStudy());
+        Mockito.when(targetGroupCatalogMock.getEntity(null)).thenReturn(new TargetGroup());
+        Mockito.when(locationCatalogMock.getEntity(null)).thenReturn(new Location());
         
         domainController.editLearningUtility(learningUtility1, learningUtility1.getName(), 
                 learningUtility1.getDescription(), BigDecimal.valueOf(-0.1), 
@@ -176,12 +176,12 @@ public class DomainControllerLearningUtilityManipulationsTests {
     
     @Test
     public void changingAttributesAllOk(){
-        Mockito.when(companyCatalogMock.getByName(TESTSTRING)).thenReturn(new Company(0,TESTSTRING, TESTSTRING,TESTSTRING,TESTSTRING));
-        Mockito.when(fieldOfStudyCatalogMock.getByName(TESTSTRING)).thenReturn(new FieldOfStudy(0,TESTSTRING));
-        Mockito.when(fieldOfStudyCatalogMock.getByName(TESTSTRING2)).thenReturn(new FieldOfStudy(1, TESTSTRING2));
-        Mockito.when(targetGroupCatalogMock.getByName(TESTSTRING)).thenReturn(new TargetGroup(0,TESTSTRING));
-        Mockito.when(targetGroupCatalogMock.getByName(TESTSTRING2)).thenReturn(new TargetGroup(1, TESTSTRING2));
-        Mockito.when(locationCatalogMock.getByName(TESTSTRING2)).thenReturn(new Location(0,TESTSTRING2));
+        Mockito.when(companyCatalogMock.getEntity(TESTSTRING)).thenReturn(new Company(0,TESTSTRING, TESTSTRING,TESTSTRING,TESTSTRING));
+        Mockito.when(fieldOfStudyCatalogMock.getEntity(TESTSTRING)).thenReturn(new FieldOfStudy(0,TESTSTRING));
+        Mockito.when(fieldOfStudyCatalogMock.getEntity(TESTSTRING2)).thenReturn(new FieldOfStudy(1, TESTSTRING2));
+        Mockito.when(targetGroupCatalogMock.getEntity(TESTSTRING)).thenReturn(new TargetGroup(0,TESTSTRING));
+        Mockito.when(targetGroupCatalogMock.getEntity(TESTSTRING2)).thenReturn(new TargetGroup(1, TESTSTRING2));
+        Mockito.when(locationCatalogMock.getEntity(TESTSTRING2)).thenReturn(new Location(0,TESTSTRING2));
         List<String> list = new ArrayList<>();
         list.add(TESTSTRING);
         list.add(TESTSTRING2);
@@ -208,12 +208,12 @@ public class DomainControllerLearningUtilityManipulationsTests {
         assertArrayEquals(learningUtility1.getFieldOfStudyList().stream().map(fieldOfStudy -> fieldOfStudy.getName()).collect(Collectors.toList()).toArray(), list.toArray());
         assertArrayEquals(learningUtility1.getTargetGroupList().stream().map(tg -> tg.getName()).collect(Collectors.toList()).toArray(), list.toArray());
         
-        Mockito.verify(companyCatalogMock).getByName(TESTSTRING);
-        Mockito.verify(fieldOfStudyCatalogMock).getByName(TESTSTRING);
-        Mockito.verify(fieldOfStudyCatalogMock).getByName(TESTSTRING2);
-        Mockito.verify(targetGroupCatalogMock).getByName(TESTSTRING);
-        Mockito.verify(targetGroupCatalogMock).getByName(TESTSTRING2);
-        Mockito.verify(locationCatalogMock).getByName(TESTSTRING2);        
+        Mockito.verify(companyCatalogMock).getEntity(TESTSTRING);
+        Mockito.verify(fieldOfStudyCatalogMock).getEntity(TESTSTRING);
+        Mockito.verify(fieldOfStudyCatalogMock).getEntity(TESTSTRING2);
+        Mockito.verify(targetGroupCatalogMock).getEntity(TESTSTRING);
+        Mockito.verify(targetGroupCatalogMock).getEntity(TESTSTRING2);
+        Mockito.verify(locationCatalogMock).getEntity(TESTSTRING2);        
     }
     
     @After
