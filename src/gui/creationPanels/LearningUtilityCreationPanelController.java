@@ -7,11 +7,14 @@ package gui.creationPanels;
 
 import domain.DomainController;
 import domain.interfaces.IObserver;
+import domain.learningUtility.Company;
+import domain.learningUtility.FieldOfStudy;
+import domain.learningUtility.Location;
+import domain.learningUtility.TargetGroup;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -94,10 +97,10 @@ public class LearningUtilityCreationPanelController extends GridPane implements 
     } 
 
     private void registerAsObserver() {
-        domainController.addCompanyObserver(this);
-        domainController.addFieldOfStudyObserver(this);
-        domainController.addTargetGroupObserver(this);
-        domainController.addLocationObserver(this);
+        domainController.addObserverToCatalog(this, Company.class);
+        domainController.addObserverToCatalog(this, Location.class);
+        domainController.addObserverToCatalog(this, TargetGroup.class);
+        domainController.addObserverToCatalog(this, FieldOfStudy.class);
     }
     
     private void initLoader() throws RuntimeException {

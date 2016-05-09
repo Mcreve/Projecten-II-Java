@@ -21,6 +21,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -65,25 +66,7 @@ public class LearningUtilityEditPanelController extends GridPane{
             setLayoutForTableView();
             
             tableView.setItems(domainController.getLearningUtilities());
-            tableView.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-                //Check whether item is selected
-                if (newValue != null) {
-                    int index = tableView.getSelectionModel().getSelectedIndex();
-                    if (index != currentIndex) {
-                        currentIndex = index;
-                        LearningUtility selectedLearningUtility = newValue;
-                        domainController.setSelectedLearningUtility(selectedLearningUtility);
-                        Stage stage = new Stage();
-                        stage.setTitle("Wijzig LearningUtility");
-                        Scene scene = new Scene(new LearningUtilityEditDetailsPanelController(domainController));
-                        stage.setScene(scene);
-                        stage.setResizable(false);
-                        stage.show();
-
-                    }
-                }
-            });
-
+            
         } catch (Exception ex) {
             lblInfo.setText(ex.getMessage());
         }
@@ -155,4 +138,14 @@ public class LearningUtilityEditPanelController extends GridPane{
         domainController.changeFilter(newValue);
     }
 
+    @FXML
+    private void openEditor(MouseEvent event) {
+        domainController.setSelectedLearningUtility(tableView.getSelectionModel().selectedItemProperty().getValue());
+        Stage stage = new Stage();
+        stage.setTitle("Wijzig LearningUtility");
+        Scene scene = new Scene(new LearningUtilityEditDetailsPanelController(domainController));
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
 }

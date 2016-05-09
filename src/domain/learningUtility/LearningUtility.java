@@ -12,6 +12,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -63,12 +64,12 @@ public class LearningUtility implements Serializable, ISearchableByName {
     @JoinTable(name = "LearningUtility_TargetGroup", joinColumns = {
         @JoinColumn(name = "LearningUtilityId", referencedColumnName = "Id")}, inverseJoinColumns = {
         @JoinColumn(name = "TargetGroupId", referencedColumnName = "Id")})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<TargetGroup> targetGroupList;
      @JoinTable(name = "LearningUtility_FieldOfStudy", joinColumns = {
         @JoinColumn(name = "LearningUtilityId", referencedColumnName = "Id")}, inverseJoinColumns = {
         @JoinColumn(name = "FieldOfStudyId", referencedColumnName = "Id")})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<FieldOfStudy> fieldOfStudyList;
     @JoinColumn(name = "Company_Id", referencedColumnName = "Id")
     @ManyToOne
