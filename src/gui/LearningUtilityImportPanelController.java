@@ -67,6 +67,7 @@ private void initLoader() throws RuntimeException
             setLayoutForTableView();
             tableView.setItems(domainController.readCsvFile(fileLocation));
             lblInfo.setText("Bestand succesvol ingeladen.");
+    
 
 
         }catch(FileNotFoundException ex)
@@ -156,7 +157,22 @@ private void initLoader() throws RuntimeException
      }
 
     @FXML
-    private void importAndLoadDatabase(ActionEvent event) {
+    private void importAndLoadDatabase(ActionEvent event) 
+    {
+        try
+        {
+            for (LearningUtility lu : tableView.getItems())
+            {
+                domainController.registerLearningUtilityFromImport(lu);
+                tableView.setItems(null);
+                lblInfo.setText("Bestand werd met succes geïmporteerd.");
+            }
+        }catch(Exception e)
+        {
+            //If possible select the error in the tableview 
+            lblInfo.setText(e.getMessage());
+        }
+           
     }
     
 }

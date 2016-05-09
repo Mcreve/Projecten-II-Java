@@ -90,6 +90,7 @@ public class DomainController {
     public <E> DomainController(ICatalog<E> catalogMock) {
         setCatalog(catalogMock);
     }
+    
 
     /**
      * Default constructor. Should be used during application setup. The
@@ -274,22 +275,52 @@ public class DomainController {
     public void addLearningUtility(String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image,
             int amountInstock, int amountUnavailable, String companyName, String locationName, List<String> targetGroups, List<String> fieldsOfStudy) {
 
-        if (amountInstock < 1) {
-            throw new IllegalArgumentException("Aantal in stock moet meer zijn dan één.");
-        }
-        if (name == null || name == "") {
-            throw new IllegalArgumentException("Gelieve een naam op te geven.");
-        }
-        if (learningUtilityCatalog.getEntities().stream().anyMatch(l -> l.getName().equals(name))) {
-            throw new IllegalArgumentException("Er bestaat al een artikel met de opgegeven naam.");
-        }
+        checkAmountInStock(amountInstock);
+        checkName(name);
 
         LearningUtility newItem = createLearningUtility(name, description, price, loanable, articleNumber, image, locationName, amountInstock, amountUnavailable, companyName, targetGroups, fieldsOfStudy);
-        System.out.println(newItem.toString());
 
         learningUtilityCatalog.addEntity(newItem);
-
     }
+    
+    /**
+     * Adds the learningutility to the catalog and persistance layer after checks
+     * @param learningUtility The {@link LearningUtility} that needs to be added
+     * @author Benjamin Vertonghen
+     */
+    public void registerLearningUtilityFromImport(LearningUtility lu)
+    {
+        checkAmountInStock(lu.getAmountInCatalog());
+        checkName(lu.getName());
+        learningUtilityCatalog.addEntity(lu);
+
+        
+    }
+    /**
+     * Method checks if the name of the learningutility is filled in and if it already exists
+     * @param name name of the utility
+     * @author Benjamin Vertonghen
+     */
+    private void checkName(String name) throws IllegalArgumentException {
+        if (name == null || name == "") {
+            throw new IllegalArgumentException("Gelieve een naam voor het leermiddel op te geven.");
+        }
+        if (learningUtilityCatalog.getEntities().stream().anyMatch(l -> l.getName().equals(name))) {
+            throw new IllegalArgumentException("Er bestaat al een leermiddel met de opgegeven naam: " + name + ".");
+        }
+    }
+    /**
+     * Method checks if the amount in stock is greater than 0
+     * @param amountInStock Quantity
+     * @author Benjamin Vertonghen
+     */
+    private void checkAmountInStock(int amountInstock) throws IllegalArgumentException {
+        if (amountInstock < 1)
+        {
+            throw new IllegalArgumentException("Het Aantal in stock moet meer zijn dan één.");
+        }
+    }
+
 
     /**
      * This method updates the fields of an {@link LearningUtility} instance and
@@ -313,10 +344,13 @@ public class DomainController {
     public void editLearningUtility(LearningUtility learningUtility, String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image,
             int amountInStock, int amountUnavailable, String companyName, String locationName, List<String> targetGroups, List<String> fieldsOfStudy) {
 
-        if (name == null || name == "" || learningUtilityCatalog.getEntities().stream().anyMatch(l -> l.getName().equals(name)) && !name.equals(selectedLearningUtility.getName())) {
-            throw new IllegalArgumentException("Er bestaat reeds een item met deze naam");
+        String currentName = getSelectedLearningUtility().getName();
+        if(!currentName.equals(name)){
+        if (name == null || name == "" || learningUtilityCatalog.getEntities().stream().anyMatch(l -> l.getName().equals(name))) {
+            throw new IllegalArgumentException("Er bestaat reeds een item met deze naam: " + name + ".");
         } else {
             learningUtility.setName(name);
+        }
         }
         learningUtility.setDescription(description);
         if (price.compareTo(BigDecimal.ZERO) < 0) {
@@ -388,24 +422,47 @@ public class DomainController {
         newItem.setPicture(image);
         newItem.setAmountInCatalog(amountInstock);
         newItem.setAmountUnavailable(amountUnavailable);
+        
         newItem.setCompanyId(companyCatalog.getEntity(companyName));
+        
+        if(newItem.getCompanyId() == null)
+        {
+            newItem.setCompanyId(createCompany(companyName, "Onbekend", "Onbekend", "Onbekend"));
+        }
+        
         newItem.setLocationId(locationCatalog.getEntity(locationName));
+        
+        if(newItem.getLocationId()== null)
+        {
+            newItem.setLocationId(createLocation(locationName));
+        }
 
         List<TargetGroup> targetGroupsList = new ArrayList<>();
 
         for (String targetGroupName : targetGroups) {
-
-            targetGroupsList.add(targetGroupCatalog.getEntity(targetGroupName));
+            TargetGroup targetGroup = targetGroupCatalog.getEntity(targetGroupName);
+            
+            if(targetGroup == null)
+            {
+                targetGroup = createTargetGroup(targetGroupName);
+            }
+            targetGroupsList.add(targetGroup);
 
         }
         newItem.setTargetGroupList(targetGroupsList);
 
         List<FieldOfStudy> fieldOfStudyList = new ArrayList<>();
 
-        for (String fieldOfStudyName : fieldsOfStudy) {
+        for (String fieldOfStudyName : fieldsOfStudy) 
+        {
 
-            fieldOfStudyList.add(fieldOfStudyCatalog.getEntity(fieldOfStudyName));
-
+            FieldOfStudy fieldOfStudy = fieldOfStudyCatalog.getEntity(fieldOfStudyName);
+            
+            if(fieldOfStudy == null)
+            {
+                fieldOfStudy = createFieldOfStudy(fieldOfStudyName);
+            }
+            fieldOfStudyList.add(fieldOfStudy);
         }
         newItem.setFieldOfStudyList(fieldOfStudyList);
         return newItem;
@@ -483,23 +540,25 @@ public class DomainController {
      * @param contactPerson The contactpersons name of the company
      * @param email The email address from the contactperson
      */
-    public void createCompany(String name, String website, String contactPerson, String email) {
-        if (name.isEmpty() || website.isEmpty() || contactPerson.isEmpty() || email.isEmpty()) {
+    public Company createCompany(String name, String website, String contactPerson, String email) {
+        
+        if (name.isEmpty() || website.isEmpty() || contactPerson.isEmpty() || email.isEmpty()) 
+        {
             throw new IllegalArgumentException("Alle velden moeten ingevuld worden.");
         }
-        Company c;
-        try{            
-            c = companyCatalog.getEntity(name);
-            throw new IllegalArgumentException("Dit bedrijf bestaat reeds in het systeem.");
-        } catch(NoSuchElementException ex) {
-            c = new Company();
-            c.setName(name);
-            c.setWebsite(website);
-            c.setContactPersonName(contactPerson);
-            c.setEmailAddress(email);
-            companyCatalog.addEntity(c);
+        
+        Company company = companyCatalog.getEntity(name);
+        
+        if(company == null)
+        {
+            company = new Company();
+            company.setName(name);
+            company.setWebsite(website);
+            company.setContactPersonName(contactPerson);
+            company.setEmailAddress(email);
+            companyCatalog.addEntity(company); 
         }
-
+        return company;
         
     }
 
@@ -512,23 +571,22 @@ public class DomainController {
      *
      * @param name The location name
      */
-    public void createLocation(String name) {
+    public Location createLocation(String name) {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Gelieve een naam op te geven voor de nieuwe locatie");
         }
         
-        Location l;
-        try{
-            l = locationCatalog.getEntity(name);
-            throw new IllegalArgumentException("De opgegeven locatie bestaat reeds in het systeem");
-        } catch (NoSuchElementException ex){
-            l = new Location();
-            l.setName(name);
-            locationCatalog.addEntity(l);
-        }
+        Location loc = locationCatalog.getEntity(name);
         
+        if(loc == null)
+        {
+            loc = new Location();
+            loc.setName(name);
 
-        
+            locationCatalog.addEntity(loc); 
+        }
+        return loc;
+               
     }
 
     /**
@@ -540,19 +598,22 @@ public class DomainController {
      *
      * @param name The field of study name
      */
-    public void createFieldOfStudy(String name) {
+    public FieldOfStudy createFieldOfStudy(String name) {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Gelieve een naam op te geven voor het nieuwe leergebied.");
         }
-        FieldOfStudy f;
-        try{
-            f = fieldOfStudyCatalog.getEntity(name);
-            throw new IllegalArgumentException("Het opgegeven leergebied bestaat reeds in het systeem.");
-        } catch(NoSuchElementException ex){
-            f = new FieldOfStudy();
-            f.setName(name);
-            fieldOfStudyCatalog.addEntity(f);
+        
+        FieldOfStudy fieldOfStudy = fieldOfStudyCatalog.getEntity(name);
+        
+        if(fieldOfStudy == null)
+        {
+            fieldOfStudy = new FieldOfStudy();
+            fieldOfStudy.setName(name);
+
+            fieldOfStudyCatalog.addEntity(fieldOfStudy); 
         }
+        return fieldOfStudy;
+            
     }
 
     /**
@@ -564,19 +625,22 @@ public class DomainController {
      *
      * @param name The targetgroup´s name
      */
-    public void createTargetGroup(String name) {
+    public TargetGroup createTargetGroup(String name) {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Gelieve een naam op te geven voor de nieuwe doelgroep.");
         }
-        TargetGroup t;
-        try{
-            t = targetGroupCatalog.getEntity(name);
-            throw new IllegalArgumentException("De opgegeven doelgroep bestaat reeds in het systeem");
-        } catch (NoSuchElementException ex){
-            t = new TargetGroup();
-            t.setName(name);
-            targetGroupCatalog.addEntity(t);
-        }        
+        
+        TargetGroup targetGroup = targetGroupCatalog.getEntity(name);
+        
+        if(targetGroup == null)
+        {
+            targetGroup = new TargetGroup();
+            targetGroup.setName(name);
+
+            targetGroupCatalog.addEntity(targetGroup); 
+        }
+        return targetGroup;
+            
     }
 
     /**
@@ -698,8 +762,8 @@ public class DomainController {
         List<String> targetGroupsList = new ArrayList<>();
         List<String> fieldsOfStudyList = new ArrayList<>();
 
-        targetGroupsList = Arrays.asList(tokens[IX_TargetGroups_Column].split(";"));
-        fieldsOfStudyList = Arrays.asList(tokens[IX_FieldsOfStudy_Column].split(";"));
+        targetGroupsList = Arrays.asList(tokens[IX_TargetGroups_Column].split(","));
+        fieldsOfStudyList = Arrays.asList(tokens[IX_FieldsOfStudy_Column].split(","));
 
         return createLearningUtility(name,
                 description,
