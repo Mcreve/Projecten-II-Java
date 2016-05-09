@@ -22,6 +22,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
@@ -507,17 +508,20 @@ public class DomainController {
         if (name.isEmpty() || website.isEmpty() || contactPerson.isEmpty() || email.isEmpty()) {
             throw new IllegalArgumentException("Alle velden moeten ingevuld worden.");
         }
-        Company c = companyCatalog.getEntity(name);
-        if (c != null) {
+        Company c;
+        try{            
+            c = companyCatalog.getEntity(name);
             throw new IllegalArgumentException("Dit bedrijf bestaat reeds in het systeem.");
+        } catch(NoSuchElementException ex) {
+            c = new Company();
+            c.setName(name);
+            c.setWebsite(website);
+            c.setContactPersonName(contactPerson);
+            c.setEmailAddress(email);
+            companyCatalog.addEntity(c);
         }
 
-        c = new Company();
-        c.setName(name);
-        c.setWebsite(website);
-        c.setContactPersonName(contactPerson);
-        c.setEmailAddress(email);
-        companyCatalog.addEntity(c);
+        
     }
 
     /**
@@ -533,14 +537,19 @@ public class DomainController {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Gelieve een naam op te geven voor de nieuwe locatie");
         }
-        Location l = locationCatalog.getEntity(name);
-        if (l != null) {
+        
+        Location l;
+        try{
+            l = locationCatalog.getEntity(name);
             throw new IllegalArgumentException("De opgegeven locatie bestaat reeds in het systeem");
+        } catch (NoSuchElementException ex){
+            l = new Location();
+            l.setName(name);
+            locationCatalog.addEntity(l);
         }
+        
 
-        l = new Location();
-        l.setName(name);
-        locationCatalog.addEntity(l);
+        
     }
 
     /**
@@ -556,14 +565,15 @@ public class DomainController {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Gelieve een naam op te geven voor het nieuwe leergebied.");
         }
-        FieldOfStudy f = fieldOfStudyCatalog.getEntity(name);
-        if (f != null) {
+        FieldOfStudy f;
+        try{
+            f = fieldOfStudyCatalog.getEntity(name);
             throw new IllegalArgumentException("Het opgegeven leergebied bestaat reeds in het systeem.");
+        } catch(NoSuchElementException ex){
+            f = new FieldOfStudy();
+            f.setName(name);
+            fieldOfStudyCatalog.addEntity(f);
         }
-
-        f = new FieldOfStudy();
-        f.setName(name);
-        fieldOfStudyCatalog.addEntity(f);
     }
 
     /**
@@ -579,14 +589,15 @@ public class DomainController {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Gelieve een naam op te geven voor de nieuwe doelgroep.");
         }
-        TargetGroup t = targetGroupCatalog.getEntity(name);
-        if (t != null) {
+        TargetGroup t;
+        try{
+            t = targetGroupCatalog.getEntity(name);
             throw new IllegalArgumentException("De opgegeven doelgroep bestaat reeds in het systeem");
-        }
-
-        t = new TargetGroup();
-        t.setName(name);
-        targetGroupCatalog.addEntity(t);
+        } catch (NoSuchElementException ex){
+            t = new TargetGroup();
+            t.setName(name);
+            targetGroupCatalog.addEntity(t);
+        }        
     }
 
     /**
