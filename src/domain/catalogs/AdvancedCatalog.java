@@ -11,9 +11,12 @@ import java.util.NoSuchElementException;
 import persistence.IGenericDao;
 
 /**
- *
+ *  
  * @author Append
  * @param <T>
+ * @deprecated same can be achieved with the {@link Catalog#getEntity(java.lang.Object) }
+ * method. Make sure the entity has an overridden implementation of the {@link Object#equals(java.lang.Object) } method
+ * that accepts a string as argument wich checks equality of the name.
  */
 public class AdvancedCatalog<T extends ISearchableByName> extends Catalog<T> implements IAdvancedCatalog<T> {
 

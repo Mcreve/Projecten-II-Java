@@ -8,6 +8,7 @@ package domain.interfaces;
 /**
  *
  * @author Append
+ * @deprecated Make sure the equals method accepts a String parameter that checks for equal names.
  */
 public interface ISearchableByName
 {

@@ -6,7 +6,6 @@
 package domain;
 
 import domain.catalogs.*;
-import domain.interfaces.IAdvancedCatalog;
 import domain.interfaces.ICatalog;
 import domain.interfaces.IObserver;
 import domain.learningUtility.*;
@@ -43,12 +42,12 @@ import persistence.Connection;
  */
 public class DomainController {
 
-    private IAdvancedCatalog<LearningUtility> learningUtilityCatalog;
-    private IAdvancedCatalog<Company> companyCatalog;
-    private IAdvancedCatalog<FieldOfStudy> fieldOfStudyCatalog;
-    private IAdvancedCatalog<TargetGroup> targetGroupCatalog;
-    private IAdvancedCatalog<Location> locationCatalog;
-    private IAdvancedCatalog<User> userCatalog;
+    private ICatalog<LearningUtility> learningUtilityCatalog;
+    private ICatalog<Company> companyCatalog;
+    private ICatalog<FieldOfStudy> fieldOfStudyCatalog;
+    private ICatalog<TargetGroup> targetGroupCatalog;
+    private ICatalog<Location> locationCatalog;
+    private ICatalog<User> userCatalog;
 
     private static int IX_Name_Column = 0;
     private static int IX_Description_Column = 1;
@@ -97,12 +96,12 @@ public class DomainController {
      * domain.
      */
     public DomainController() {
-        learningUtilityCatalog = new AdvancedCatalog<>(LearningUtility.class);
-        companyCatalog = new AdvancedCatalog<>(Company.class);
-        fieldOfStudyCatalog = new AdvancedCatalog<>(FieldOfStudy.class);
-        targetGroupCatalog = new AdvancedCatalog<>(TargetGroup.class);
-        locationCatalog = new AdvancedCatalog<>(Location.class);
-        userCatalog = new AdvancedCatalog<>(User.class);
+        learningUtilityCatalog = new Catalog<>(LearningUtility.class);
+        companyCatalog = new Catalog<>(Company.class);
+        fieldOfStudyCatalog = new Catalog<>(FieldOfStudy.class);
+        targetGroupCatalog = new Catalog<>(TargetGroup.class);
+        locationCatalog = new Catalog<>(Location.class);
+        userCatalog = new Catalog<>(User.class);
         learningUtilityList = FXCollections.observableArrayList(learningUtilityCatalog.getEntities());
         filteredLearningUtilityList = new FilteredList<>(learningUtilityList, p -> true);
     }
@@ -122,7 +121,7 @@ public class DomainController {
      * @param fieldOfStudyCatalog
      * @deprecated please use the method {@link #setCatalog(ICatalog) }
      */
-    public void setFieldsOfStudy(IAdvancedCatalog<FieldOfStudy> fieldOfStudyCatalog) {
+    public void setFieldsOfStudy(ICatalog<FieldOfStudy> fieldOfStudyCatalog) {
         this.fieldOfStudyCatalog = fieldOfStudyCatalog;
     }
 
@@ -142,7 +141,7 @@ public class DomainController {
      * @param targetGroupCatalog
      * @deprecated please use the method {@link #setCatalog(ICatalog) }
      */
-    public void setTargetGroups(IAdvancedCatalog<TargetGroup> targetGroupCatalog) {
+    public void setTargetGroups(ICatalog<TargetGroup> targetGroupCatalog) {
         this.targetGroupCatalog = targetGroupCatalog;
     }
 
@@ -162,7 +161,7 @@ public class DomainController {
      * @param locationCatalog
      * @deprecated please use the method {@link #setCatalog(ICatalog) }
      */
-    public void setLocations(IAdvancedCatalog<Location> locationCatalog) {
+    public void setLocations(ICatalog<Location> locationCatalog) {
         this.locationCatalog = locationCatalog;
     }
 
@@ -182,7 +181,7 @@ public class DomainController {
      * @param companyCatalog
      * @deprecated please use the method {@link #setCatalog(ICatalog) }
      */
-    public void setCompanies(IAdvancedCatalog<Company> companyCatalog) {
+    public void setCompanies(ICatalog<Company> companyCatalog) {
         this.companyCatalog = companyCatalog;
     }
 
@@ -220,7 +219,7 @@ public class DomainController {
      * @param learningUtilityCatalog
      * @deprecated please use the method {@link #setCatalog(ICatalog) }
      */
-    public void setUtilities(IAdvancedCatalog<LearningUtility> learningUtilityCatalog) {
+    public void setUtilities(ICatalog<LearningUtility> learningUtilityCatalog) {
         this.learningUtilityCatalog = learningUtilityCatalog;
     }
 
@@ -229,7 +228,7 @@ public class DomainController {
      * @param userCatalog
      * @deprecated please use the method {@link #setCatalog(ICatalog) }
      */
-    public void setUsers(IAdvancedCatalog<User> userCatalog) {
+    public void setUsers(ICatalog<User> userCatalog) {
         this.userCatalog = userCatalog;
     }
 
@@ -330,13 +329,13 @@ public class DomainController {
         learningUtility.setPicture(image);
         learningUtility.setAmountInCatalog(amountInStock);
         learningUtility.setAmountUnavailable(amountUnavailable);
-        learningUtility.setCompanyId(companyCatalog.getByName(companyName));
-        learningUtility.setLocationId(locationCatalog.getByName(locationName));
+        learningUtility.setCompanyId(companyCatalog.getEntity(companyName));
+        learningUtility.setLocationId(locationCatalog.getEntity(locationName));
         List<TargetGroup> targetGroupsList = new ArrayList<>();
 
         for (String targetGroupName : targetGroups) {
 
-            targetGroupsList.add(targetGroupCatalog.getByName(targetGroupName));
+            targetGroupsList.add(targetGroupCatalog.getEntity(targetGroupName));
 
         }
         learningUtility.setTargetGroupList(targetGroupsList);
@@ -345,7 +344,7 @@ public class DomainController {
 
         for (String fieldOfStudyName : fieldsOfStudy) {
 
-            fieldOfStudyList.add(fieldOfStudyCatalog.getByName(fieldOfStudyName));
+            fieldOfStudyList.add(fieldOfStudyCatalog.getEntity(fieldOfStudyName));
 
         }
         learningUtility.setFieldOfStudyList(fieldOfStudyList);
@@ -388,14 +387,14 @@ public class DomainController {
         newItem.setPicture(image);
         newItem.setAmountInCatalog(amountInstock);
         newItem.setAmountUnavailable(amountUnavailable);
-        newItem.setCompanyId(companyCatalog.getByName(companyName));
-        newItem.setLocationId(locationCatalog.getByName(locationName));
+        newItem.setCompanyId(companyCatalog.getEntity(companyName));
+        newItem.setLocationId(locationCatalog.getEntity(locationName));
 
         List<TargetGroup> targetGroupsList = new ArrayList<>();
 
         for (String targetGroupName : targetGroups) {
 
-            targetGroupsList.add(targetGroupCatalog.getByName(targetGroupName));
+            targetGroupsList.add(targetGroupCatalog.getEntity(targetGroupName));
 
         }
         newItem.setTargetGroupList(targetGroupsList);
@@ -404,7 +403,7 @@ public class DomainController {
 
         for (String fieldOfStudyName : fieldsOfStudy) {
 
-            fieldOfStudyList.add(fieldOfStudyCatalog.getByName(fieldOfStudyName));
+            fieldOfStudyList.add(fieldOfStudyCatalog.getEntity(fieldOfStudyName));
 
         }
         newItem.setFieldOfStudyList(fieldOfStudyList);
@@ -483,10 +482,10 @@ public class DomainController {
             BigDecimal price = BigDecimal.valueOf(Double.parseDouble(i[2]));
             Boolean loanable = (i[3] == "true" ? true : false);
             String image = i[4];
-            Location location = locationCatalog.getByName(i[5]);
+            Location location = locationCatalog.getEntity(i[5]);
             int amount = Integer.parseInt(i[6]);
             int amountUnavailable = Integer.parseInt(i[7]);
-            Company company = companyCatalog.getByName(i[8]);
+            Company company = companyCatalog.getEntity(i[8]);
             List<TargetGroup> targetGroups = targetGroupCatalog.getEntities().stream().filter(entity -> entity.getName().contains(i[9])).collect(Collectors.toList());
             //LearningUtility item = createLearningUtility()
         });
@@ -508,7 +507,7 @@ public class DomainController {
         if (name.isEmpty() || website.isEmpty() || contactPerson.isEmpty() || email.isEmpty()) {
             throw new IllegalArgumentException("Alle velden moeten ingevuld worden.");
         }
-        Company c = companyCatalog.getByName(name);
+        Company c = companyCatalog.getEntity(name);
         if (c != null) {
             throw new IllegalArgumentException("Dit bedrijf bestaat reeds in het systeem.");
         }
@@ -534,7 +533,7 @@ public class DomainController {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Gelieve een naam op te geven voor de nieuwe locatie");
         }
-        Location l = locationCatalog.getByName(name);
+        Location l = locationCatalog.getEntity(name);
         if (l != null) {
             throw new IllegalArgumentException("De opgegeven locatie bestaat reeds in het systeem");
         }
@@ -557,7 +556,7 @@ public class DomainController {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Gelieve een naam op te geven voor het nieuwe leergebied.");
         }
-        FieldOfStudy f = fieldOfStudyCatalog.getByName(name);
+        FieldOfStudy f = fieldOfStudyCatalog.getEntity(name);
         if (f != null) {
             throw new IllegalArgumentException("Het opgegeven leergebied bestaat reeds in het systeem.");
         }
@@ -580,7 +579,7 @@ public class DomainController {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Gelieve een naam op te geven voor de nieuwe doelgroep.");
         }
-        TargetGroup t = targetGroupCatalog.getByName(name);
+        TargetGroup t = targetGroupCatalog.getEntity(name);
         if (t != null) {
             throw new IllegalArgumentException("De opgegeven doelgroep bestaat reeds in het systeem");
         }
@@ -809,21 +808,21 @@ public class DomainController {
         Class type = catalogMock.getType();
         switch (type.getSimpleName().toLowerCase()) {
             case "learningutility":
-                this.learningUtilityCatalog = (IAdvancedCatalog<LearningUtility>) catalogMock;
+                this.learningUtilityCatalog = (ICatalog<LearningUtility>) catalogMock;
                 learningUtilityList = FXCollections.observableArrayList(learningUtilityCatalog.getEntities());
                 filteredLearningUtilityList = new FilteredList<>(learningUtilityList, p -> true);
                 break;
             case "company":
-                this.companyCatalog = (IAdvancedCatalog<Company>) catalogMock;
+                this.companyCatalog = (ICatalog<Company>) catalogMock;
                 break;
             case "fieldofstudy":
-                this.fieldOfStudyCatalog = (IAdvancedCatalog<FieldOfStudy>) catalogMock;
+                this.fieldOfStudyCatalog = (ICatalog<FieldOfStudy>) catalogMock;
                 break;
             case "targetgroup":
-                this.targetGroupCatalog = (IAdvancedCatalog<TargetGroup>) catalogMock;
+                this.targetGroupCatalog = (ICatalog<TargetGroup>) catalogMock;
                 break;
             case "location":
-                this.locationCatalog = (IAdvancedCatalog<Location>) catalogMock;
+                this.locationCatalog = (ICatalog<Location>) catalogMock;
         }
     }
 }

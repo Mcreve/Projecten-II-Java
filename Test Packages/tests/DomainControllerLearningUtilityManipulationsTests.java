@@ -16,13 +16,15 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import static org.mockito.Mockito.times;
 import org.mockito.MockitoAnnotations;
 
 /**
@@ -39,6 +41,8 @@ public class DomainControllerLearningUtilityManipulationsTests {
     private LearningUtility learningUtility3;
     private LearningUtility learningUtility2;
     private List<LearningUtility> learningUtilityList;
+    private ObservableList<LearningUtility> observableLearningUtilityList;
+    private FilteredList<LearningUtility> filteredLearningUtilityList;
     private final String TESTSTRING = "CHANGED";
     private final String TESTSTRING2 = "ALSO CHANGED";
     @Mock
@@ -71,8 +75,11 @@ public class DomainControllerLearningUtilityManipulationsTests {
         learningUtility3 = new LearningUtility(2, "test", "Een microscoop", BigDecimal.ONE, true, 5, 0,"Artkl.003");
         learningUtilityList.add(learningUtility3); 
         
+        observableLearningUtilityList = FXCollections.observableList(learningUtilityList);
+        filteredLearningUtilityList = new FilteredList(observableLearningUtilityList);
+        
         Mockito.when(learningUtilityCatalogMock.getType()).thenReturn(LearningUtility.class);
-        Mockito.when(learningUtilityCatalogMock.getEntities()).thenReturn(learningUtilityList);
+        Mockito.when(learningUtilityCatalogMock.getEntities()).thenReturn(filteredLearningUtilityList);
         domainController = new DomainController(learningUtilityCatalogMock);
         
         Mockito.when(companyCatalogMock.getType()).thenReturn(Company.class);

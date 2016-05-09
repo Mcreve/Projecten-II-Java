@@ -217,6 +217,8 @@ public class LearningUtility implements Serializable, ISearchableByName {
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Integer)) {
+            if(object instanceof String)
+                return this.name.equals(object);
             return super.equals(object);
         }
         if ((this.id == null && id != null) || (this.id != null && !this.id.equals(id))) {
