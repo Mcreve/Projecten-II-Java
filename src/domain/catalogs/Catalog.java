@@ -51,7 +51,16 @@ public class Catalog<T> implements ICatalog<T>{
     @Override
     public <E> T getEntity(E id){
         loadEntities();
-        return entities.stream().filter(entity -> entity.equals(id)).findFirst().get();
+        try
+        {
+            T entityToFind = entities.stream().filter(entity -> entity.equals(id)).findFirst().get();
+            return entityToFind;
+
+        }catch(Exception e)
+        {
+            return null;
+        }
+        
     }
     @Override
     public FilteredList<T> getEntities(){
