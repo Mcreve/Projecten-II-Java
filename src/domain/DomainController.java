@@ -103,8 +103,8 @@ public class DomainController {
         targetGroupCatalog = new Catalog<>(TargetGroup.class);
         locationCatalog = new Catalog<>(Location.class);
         userCatalog = new Catalog<>(User.class);
-        learningUtilityList = FXCollections.observableArrayList(learningUtilityCatalog.getEntities());
-        filteredLearningUtilityList = new FilteredList<>(learningUtilityList, p -> true);
+        //learningUtilityList = FXCollections.observableArrayList(learningUtilityCatalog.getEntities());
+        //filteredLearningUtilityList = new FilteredList<>(learningUtilityList, p -> true);
     }
 
     /**

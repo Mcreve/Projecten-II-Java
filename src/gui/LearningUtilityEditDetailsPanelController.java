@@ -135,11 +135,16 @@ public class LearningUtilityEditDetailsPanelController extends GridPane implemen
         chkLoanable.setSelected(selectedLearningUtility.getLoanable());
         txtPrice.setText(String.valueOf(selectedLearningUtility.getPrice()));
         
-        cboLocations.getSelectionModel().clearSelection();
-        lstFieldsOfStudy.getSelectionModel().clearSelection();
-        lstTargetGroups.getSelectionModel().clearSelection();
-        cboCompanies.getSelectionModel().clearSelection();
-  
+        selectedLearningUtility.getFieldOfStudyList().stream().forEach(fos -> 
+            lstFieldsOfStudy.getSelectionModel().select(fos.getName())
+        );
+        
+        selectedLearningUtility.getTargetGroupList().stream().forEach(tg -> 
+                lstTargetGroups.getSelectionModel().select(tg.getName())
+        );
+        cboCompanies.getSelectionModel().select(selectedLearningUtility.getCompanyId().getName());
+        cboLocations.getSelectionModel().select(selectedLearningUtility.getLocationId().getName());
+         
         }   
 
     @FXML
@@ -264,9 +269,7 @@ public class LearningUtilityEditDetailsPanelController extends GridPane implemen
         LearningUtility currentLearningUtility = domainController.getSelectedLearningUtility();
         domainController.removeLearningUtility(currentLearningUtility);
         Stage stage = (Stage) btnDelete.getScene().getWindow();
-        PauseTransition delay = new PauseTransition(Duration.millis(4000));
-        delay.setOnFinished( ev -> stage.close() );
-        delay.play();
+        stage.close();
         
     }
 
