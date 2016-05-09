@@ -344,7 +344,7 @@ public class DomainController {
     public void editLearningUtility(LearningUtility learningUtility, String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image,
             int amountInStock, int amountUnavailable, String companyName, String locationName, List<String> targetGroups, List<String> fieldsOfStudy) {
 
-        String currentName = getSelectedLearningUtility().getName();
+        String currentName = learningUtility.getName();
         if(!currentName.equals(name)){
         if (name == null || name == "" || learningUtilityCatalog.getEntities().stream().anyMatch(l -> l.getName().equals(name))) {
             throw new IllegalArgumentException("Er bestaat reeds een item met deze naam: " + name + ".");
