@@ -1,5 +1,8 @@
 Naam;Omschrijving;Uitleenbaar;Artikel Nummer;Foto Url;Prijs;Aantal in stock;Aantal onbeschikbaar;Locatie;Bedrijf;Doelgroepen;Leergebieden
-Item 1;Omschrijving 123;Ja;123-ART-NR;http://google.com;10;10;0;GLEDE 1.011;Wolters;Kleuter;Aardrijkskunde
+Item 1;Omschrijving 123;Ja;123-ART-NR;http://google.com;15;10;0;GLEDE 1.011;Wolters;Kleuter;Aardrijkskunde
 Item 2;Omschrijving 234;Neen;234-ART-NR;http://google.com;20;20;2;GLEDE 1.011;Wolters;Lager;Ontspanning
-Item 3;Omschrijving 345;Ja;345-ART-NR;http://google.com;30;30;3;Preparatie;Hasbro;Middelbaar;Wiskunde
-Item 4;Omschrijving 456;Neen;456-ART-NR;http://google.com;40;40;4;GLEDE 1.011;Hasbro;Lager, Middelbaar;Aardrijkskunde, Wiskunde
+Item 3;Omschrijving 345;Ja;345-ART-NR;http://google.com;30;30;3;Biolabo kast 3 ;Hasbro;Middelbaar;Wiskunde
+Item 4;Omschrijving 456;Neen;456-ART-NR;http://google.com;40;40;4;Preparatie ;Hasbro;Lager,Middelbaar;Aardrijkskunde,Wiskunde
+Item 5;Omschrijving 567;Ja;567-ART-NR;http://google.com;50;50;5;Preparatie ;Verbez;Lager,Middelbaar;Aardrijkskunde,Wiskunde
+Item 6;Omschrijving 567;Ja;567-ART-NR;http://google.com;50;50;5;Grotstraat;bla;Lager,Middelbaar;Aardrijkskunde,Wiskunde
+Item 7;Omschrijving 567;Ja;567-ART-NR;http://google.com;50;50;5;Grotstraat;bla;Lager,Middelbaar,Super Hoger;Aardrijkskunde,Wiskunde,Nederlands
