@@ -12,6 +12,7 @@ import domain.learningUtility.FieldOfStudy;
 import domain.learningUtility.LearningUtility;
 import domain.learningUtility.Location;
 import domain.learningUtility.TargetGroup;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +32,9 @@ import org.mockito.MockitoAnnotations;
  *
  * @author Ward Vanlerberghe
  */
-public class DomainControllerLearningUtilityManipulationsTests {
+public class DomainControllerTests {
     
-    public DomainControllerLearningUtilityManipulationsTests() {
+    public DomainControllerTests() {
     }
     
     private DomainController domainController;
@@ -45,6 +46,7 @@ public class DomainControllerLearningUtilityManipulationsTests {
     private FilteredList<LearningUtility> filteredLearningUtilityList;
     private final String TESTSTRING = "CHANGED";
     private final String TESTSTRING2 = "ALSO CHANGED";
+    
     @Mock
     private ICatalog<LearningUtility> learningUtilityCatalogMock;
     @Mock
@@ -60,7 +62,7 @@ public class DomainControllerLearningUtilityManipulationsTests {
     public void setUp() {
         MockitoAnnotations.initMocks(this);       
         learningUtilityList = new ArrayList<>();
-        
+       
         learningUtility1 = new LearningUtility(0,"Wereldbol","Beschrijving van een wereldbol",BigDecimal.TEN,true,10,1,"Artkl.001");
         learningUtility1.setCompanyId(new Company());
         learningUtility1.setFieldOfStudyList(new ArrayList<>());
@@ -75,6 +77,7 @@ public class DomainControllerLearningUtilityManipulationsTests {
         learningUtility3 = new LearningUtility(2, "test", "Een microscoop", BigDecimal.ONE, true, 5, 0,"Artkl.003");
         learningUtilityList.add(learningUtility3); 
         
+       
         observableLearningUtilityList = FXCollections.observableList(learningUtilityList);
         filteredLearningUtilityList = new FilteredList(observableLearningUtilityList);
         
@@ -93,35 +96,131 @@ public class DomainControllerLearningUtilityManipulationsTests {
         
         Mockito.when(locationCatalogMock.getType()).thenReturn(Location.class);
         domainController.setCatalog(locationCatalogMock);
+        
     }
     
-    @Test
-    public void changeFilterAllCapitalsFiltersList(){          
-        domainController.changeFilter("GRADENBOOG");
+    
+    
+    // Adding learningUtility
+    
+     @Test
+    public void addLearningUtilityTest(){
         
-        assertEquals(domainController.getFilteredLearningUtilityList().size(),1);
+        
+        Mockito.when(companyCatalogMock.getEntity(TESTSTRING)).thenReturn(new Company(0,TESTSTRING, TESTSTRING,TESTSTRING,TESTSTRING));
+        Mockito.when(fieldOfStudyCatalogMock.getEntity(TESTSTRING)).thenReturn(new FieldOfStudy(0,TESTSTRING));
+        Mockito.when(fieldOfStudyCatalogMock.getEntity(TESTSTRING2)).thenReturn(new FieldOfStudy(1, TESTSTRING2));
+        Mockito.when(targetGroupCatalogMock.getEntity(TESTSTRING)).thenReturn(new TargetGroup(0,TESTSTRING));
+        Mockito.when(targetGroupCatalogMock.getEntity(TESTSTRING2)).thenReturn(new TargetGroup(1, TESTSTRING2));
+        Mockito.when(locationCatalogMock.getEntity(TESTSTRING2)).thenReturn(new Location(0,TESTSTRING2));
+        List<String> list = new ArrayList<>();
+        list.add(TESTSTRING);
+        list.add(TESTSTRING2);
+       
+       domainController.addLearningUtility( TESTSTRING, 
+                TESTSTRING2, BigDecimal.ONE, 
+                false, TESTSTRING, 
+                TESTSTRING2, Integer.MAX_VALUE, 
+                Integer.MAX_VALUE, TESTSTRING, 
+                TESTSTRING2, 
+                list, 
+                list);
+       
+        List<TargetGroup> targetGroupsList = new ArrayList<>();
+        targetGroupsList.add(new TargetGroup(0,TESTSTRING));
+        targetGroupsList.add(new TargetGroup(1,TESTSTRING2));
+        
+        List<FieldOfStudy> fieldsOfStudyList = new ArrayList<>();
+        fieldsOfStudyList.add(new FieldOfStudy(0,TESTSTRING));
+        fieldsOfStudyList.add(new FieldOfStudy(1,TESTSTRING2));
+        
+       
+       LearningUtility learningUtility = new LearningUtility();
+       learningUtility.setName(TESTSTRING);
+       learningUtility.setDescription(TESTSTRING2);
+       learningUtility.setPrice(BigDecimal.ONE);
+       learningUtility.setLoanable(false);
+       learningUtility.setArticleNumber(TESTSTRING);
+       learningUtility.setPicture(TESTSTRING2);
+       learningUtility.setAmountInCatalog(Integer.MAX_VALUE);
+       learningUtility.setAmountUnavailable(Integer.MAX_VALUE);
+       learningUtility.setCompanyId(new Company(0,TESTSTRING, TESTSTRING,TESTSTRING,TESTSTRING));
+       learningUtility.setLocationId(new Location(0,TESTSTRING2));
+       learningUtility.setTargetGroupList(targetGroupsList);
+       learningUtility.setFieldOfStudyList(fieldsOfStudyList);
+       
+
+      
+       Mockito.verify(learningUtilityCatalogMock).addEntity(learningUtility);
+
+
+ }
+    
+     
+    @Test (expected = IllegalArgumentException.class)
+    public void addLearningUtilityWithNoAmountInStock(){
+        
+           
+        domainController.addLearningUtility("testName", null , null, true, null, null, 0, 0, null, null, null, null);
+    }
+    @Test (expected = IllegalArgumentException.class)
+     public void addLearningUtilityWithExistingName(){
+        
+           
+        domainController.addLearningUtility("Wereldbol", null , null, true, null, null, 2, 0, null, null, null, null);
     }
     
-    @Test
-    public void changeFilterAllLowerCaseFiltersList(){
-        domainController.changeFilter("gradenboog");
+       @Test (expected = IllegalArgumentException.class)
+    public void addLearningUtilityWithNameNull(){
         
-        assertEquals(domainController.getFilteredLearningUtilityList().size(),1);
+           
+        domainController.addLearningUtility(null, null , null, true, null, null, 2, 0, null, null, null, null);
     }
     
-    @Test
-    public void noMatchReturnsEmptyList(){
-        domainController.changeFilter("HAHA");
+     // Adding in Bulk
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void AddFileWithWrongExtension() throws IOException{
         
-        assertEquals(domainController.getFilteredLearningUtilityList().size(),0);
+        domainController.readCsvFile("test.exe");
+    }
+    @Test
+    public void readFile() throws IOException{
+       
+        ObservableList<LearningUtility> TestList = domainController.readCsvFile("leermiddelen.csv");
+        
+        assertEquals(10,TestList.get(0).getAmountInCatalog());
+        assertEquals(20,TestList.get(1).getAmountInCatalog());
+     
+        
+    }
+    @Test (expected = IllegalArgumentException.class)
+    public void readFileDuplicateName() throws IOException{
+       
+        domainController.readCsvFile("leermiddelenDuplicateName.csv");
+    
     }
     
-    @Test
-    public void emptyStringReturnsAllLearningUtilities(){
-        domainController.changeFilter("");
-        
-        assertEquals(domainController.getFilteredLearningUtilityList().size(), 3);
+    @Test (expected = IllegalArgumentException.class)
+    public void readFileNegativeAmountAvailable() throws IOException{
+       
+         domainController.readCsvFile("leermiddelenNegativeAmountAvailable.csv");
+    
     }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void readFileNegativeAmountUnavailable() throws IOException{
+       
+         domainController.readCsvFile("leermiddelenNegativeAmountUnavailable.csv");
+    
+    }
+    
+     @Test (expected = IllegalArgumentException.class)
+    public void readFileNegativePrice() throws IOException{
+       
+        domainController.readCsvFile("leermiddelenNegativePrice.csv");
+    }
+    // Modify learningUtility tests
     
     @Test (expected = IllegalArgumentException.class)
     public void changingNameToExcistingNameThrowsException(){
@@ -214,6 +313,37 @@ public class DomainControllerLearningUtilityManipulationsTests {
         Mockito.verify(targetGroupCatalogMock).getEntity(TESTSTRING);
         Mockito.verify(targetGroupCatalogMock).getEntity(TESTSTRING2);
         Mockito.verify(locationCatalogMock).getEntity(TESTSTRING2);        
+    }
+    
+    
+     // Filter tests
+    
+    @Test
+    public void changeFilterAllCapitalsFiltersList(){          
+        domainController.changeFilter("GRADENBOOG");
+        
+        assertEquals(domainController.getFilteredLearningUtilityList().size(),1);
+    }
+    
+    @Test
+    public void changeFilterAllLowerCaseFiltersList(){
+        domainController.changeFilter("gradenboog");
+        
+        assertEquals(domainController.getFilteredLearningUtilityList().size(),1);
+    }
+    
+    @Test
+    public void noMatchReturnsEmptyList(){
+        domainController.changeFilter("HAHA");
+        
+        assertEquals(domainController.getFilteredLearningUtilityList().size(),0);
+    }
+    
+    @Test
+    public void emptyStringReturnsAllLearningUtilities(){
+        domainController.changeFilter("");
+        
+        assertEquals(domainController.getFilteredLearningUtilityList().size(), 3);
     }
     
     @After
