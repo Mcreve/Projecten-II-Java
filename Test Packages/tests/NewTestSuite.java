@@ -5,11 +5,7 @@
  */
 package tests;
 
-import tests.domain2.LocationTest;
-import tests.domain2.CompanyTest;
-import tests.domain2.FieldOfStudyTest;
-import tests.domain2.LearningUtilityTest;
-import tests.domain2.TargetGroupTest;
+import tests.domain.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
