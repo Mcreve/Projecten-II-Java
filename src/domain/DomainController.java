@@ -22,7 +22,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
@@ -549,15 +548,18 @@ public class DomainController {
         
         Company company = companyCatalog.getEntity(name);
         
-        if(company == null)
+        if(company != null)
         {
-            company = new Company();
-            company.setName(name);
-            company.setWebsite(website);
-            company.setContactPersonName(contactPerson);
-            company.setEmailAddress(email);
-            companyCatalog.addEntity(company); 
+             throw new IllegalArgumentException("Opgegeven bedrijf met deze naam bestaat reeds.");
         }
+        
+        company = new Company();
+        company.setName(name);
+        company.setWebsite(website);
+        company.setContactPersonName(contactPerson);
+        company.setEmailAddress(email);
+        companyCatalog.addEntity(company);
+        
         return company;
         
     }
@@ -578,13 +580,15 @@ public class DomainController {
         
         Location loc = locationCatalog.getEntity(name);
         
-        if(loc == null)
+        if(loc != null)
         {
-            loc = new Location();
-            loc.setName(name);
-
-            locationCatalog.addEntity(loc); 
+            throw new IllegalArgumentException("Er bestaat reeds een locatie met opgegeven naam");
         }
+        
+        loc = new Location();
+        loc.setName(name);
+        locationCatalog.addEntity(loc); 
+
         return loc;
                
     }
@@ -605,13 +609,16 @@ public class DomainController {
         
         FieldOfStudy fieldOfStudy = fieldOfStudyCatalog.getEntity(name);
         
-        if(fieldOfStudy == null)
+        if(fieldOfStudy != null)
         {
-            fieldOfStudy = new FieldOfStudy();
-            fieldOfStudy.setName(name);
-
-            fieldOfStudyCatalog.addEntity(fieldOfStudy); 
+            throw new IllegalArgumentException("Er bestaat reeds een leergebied met opgegeven naam");
         }
+        
+        fieldOfStudy = new FieldOfStudy();
+        fieldOfStudy.setName(name);
+
+        fieldOfStudyCatalog.addEntity(fieldOfStudy); 
+        
         return fieldOfStudy;
             
     }
@@ -632,13 +639,16 @@ public class DomainController {
         
         TargetGroup targetGroup = targetGroupCatalog.getEntity(name);
         
-        if(targetGroup == null)
+        if(targetGroup != null)
         {
-            targetGroup = new TargetGroup();
-            targetGroup.setName(name);
-
-            targetGroupCatalog.addEntity(targetGroup); 
+            throw new IllegalArgumentException("Er bestaat reeds een doelgroep met opgegeven naam");
         }
+        
+        targetGroup = new TargetGroup();
+        targetGroup.setName(name);
+
+        targetGroupCatalog.addEntity(targetGroup); 
+        
         return targetGroup;
             
     }

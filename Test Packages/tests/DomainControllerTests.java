@@ -320,6 +320,98 @@ public class DomainControllerTests {
         assertEquals(domainController.getFilteredLearningUtilityList().size(), 3);
     }
     
+    @Test
+    public void createCompanyOk(){
+        Mockito.when(companyCatalogMock.getEntity(TESTSTRING)).thenReturn(null);
+        domainController.createCompany(TESTSTRING, TESTSTRING, TESTSTRING, TESTSTRING);
+        Mockito.verify(companyCatalogMock).addEntity(any(Company.class));
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void createCompanyWithExcistingNameThrowsException(){
+        Mockito.when(companyCatalogMock.getEntity(TESTSTRING)).thenReturn(new Company());
+        domainController.createCompany(TESTSTRING, TESTSTRING, TESTSTRING, TESTSTRING);
+        Mockito.verify(companyCatalogMock).getEntity(TESTSTRING);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void createCompanyWithEmptyNameThrowsException(){
+        domainController.createCompany("", TESTSTRING, TESTSTRING, TESTSTRING);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void createCompanyWithEmptyWebsiteThrowsException(){
+        domainController.createCompany(TESTSTRING, "", TESTSTRING, TESTSTRING);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void createCompanyWithEmptyContactPersonThrowsException(){
+        domainController.createCompany(TESTSTRING, TESTSTRING, "", TESTSTRING);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void createCompanyWithEmptyEmailAddressThrowsException(){
+        domainController.createCompany(TESTSTRING, TESTSTRING, TESTSTRING, "");
+    }
+    
+    @Test
+    public void createLocationOk(){
+        Mockito.when(locationCatalogMock.getEntity(TESTSTRING)).thenReturn(null);
+        domainController.createLocation(TESTSTRING);
+        Mockito.verify(locationCatalogMock).getEntity(TESTSTRING);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void createLocationWithEmptyNameThrowsException(){
+        domainController.createLocation("");
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void createLocationWithExcistingNameThrowsException(){
+        Mockito.when(locationCatalogMock.getEntity(TESTSTRING)).thenReturn(new Location());
+        domainController.createLocation(TESTSTRING);
+        Mockito.verify(locationCatalogMock).getEntity(TESTSTRING);
+    }
+    
+    @Test
+    public void createFieldOfStudyOk(){
+        Mockito.when(fieldOfStudyCatalogMock.getEntity(TESTSTRING)).thenReturn(null);
+        domainController.createFieldOfStudy(TESTSTRING);
+        Mockito.verify(fieldOfStudyCatalogMock).getEntity(TESTSTRING);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void createFieldOfStudyWithEmptyNameThrowsException(){
+        domainController.createFieldOfStudy("");
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void createFieldOfStudyWithExcistingNameThrowsException(){
+        Mockito.when(fieldOfStudyCatalogMock.getEntity(TESTSTRING)).thenReturn(new FieldOfStudy());
+        domainController.createFieldOfStudy(TESTSTRING);
+        Mockito.verify(fieldOfStudyCatalogMock).getEntity(TESTSTRING);
+    }
+    
+    
+    
+    @Test
+    public void createTargetGroupOk(){
+        Mockito.when(targetGroupCatalogMock.getEntity(TESTSTRING)).thenReturn(null);
+        domainController.createTargetGroup(TESTSTRING);
+        Mockito.verify(targetGroupCatalogMock).getEntity(TESTSTRING);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void createTargetGroupWithEmptyNameThrowsException(){
+        domainController.createTargetGroup("");
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void createTargetGroupWithExcistingNameThrowsException(){
+        Mockito.when(targetGroupCatalogMock.getEntity(TESTSTRING)).thenReturn(new TargetGroup());
+        domainController.createTargetGroup(TESTSTRING);
+    }
+    
     @After
     public void verifyMockCalls(){        
         
