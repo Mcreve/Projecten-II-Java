@@ -15,6 +15,6 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({DomainControllerTests.class, CompanyTest.class, FieldOfStudyTest.class, LearningUtilityTest.class, LocationTest.class,TargetGroupTest.class})
-public class NewTestSuite {
+public class TestSuite {
         
 }
