@@ -24,6 +24,7 @@ import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+import static org.mockito.Matchers.any;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -126,34 +127,7 @@ public class DomainControllerTests {
                 list, 
                 list);
        
-        List<TargetGroup> targetGroupsList = new ArrayList<>();
-        targetGroupsList.add(new TargetGroup(0,TESTSTRING));
-        targetGroupsList.add(new TargetGroup(1,TESTSTRING2));
-        
-        List<FieldOfStudy> fieldsOfStudyList = new ArrayList<>();
-        fieldsOfStudyList.add(new FieldOfStudy(0,TESTSTRING));
-        fieldsOfStudyList.add(new FieldOfStudy(1,TESTSTRING2));
-        
-       
-       LearningUtility learningUtility = new LearningUtility();
-       learningUtility.setName(TESTSTRING);
-       learningUtility.setDescription(TESTSTRING2);
-       learningUtility.setPrice(BigDecimal.ONE);
-       learningUtility.setLoanable(false);
-       learningUtility.setArticleNumber(TESTSTRING);
-       learningUtility.setPicture(TESTSTRING2);
-       learningUtility.setAmountInCatalog(Integer.MAX_VALUE);
-       learningUtility.setAmountUnavailable(Integer.MAX_VALUE);
-       learningUtility.setCompanyId(new Company(0,TESTSTRING, TESTSTRING,TESTSTRING,TESTSTRING));
-       learningUtility.setLocationId(new Location(0,TESTSTRING2));
-       learningUtility.setTargetGroupList(targetGroupsList);
-       learningUtility.setFieldOfStudyList(fieldsOfStudyList);
-       
-
-      
-       Mockito.verify(learningUtilityCatalogMock).addEntity(learningUtility);
-
-
+       Mockito.verify(learningUtilityCatalogMock).addEntity(any(LearningUtility.class));
  }
     
      
