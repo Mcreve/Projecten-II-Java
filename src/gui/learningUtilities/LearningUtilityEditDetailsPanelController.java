@@ -3,18 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui.creationPanels;
+package gui.learningUtilities;
 
 import domain.DomainController;
 import domain.interfaces.IObserver;
-import domain.learningUtility.Company;
-import domain.learningUtility.FieldOfStudy;
-import domain.learningUtility.Location;
-import domain.learningUtility.TargetGroup;
+import domain.learningUtility.LearningUtility;
+import gui.creationPanels.CompanyCreationPanelController;
+import gui.creationPanels.FieldOfStudyCreationPanelController;
+import gui.creationPanels.LocationCreationPanelController;
+import gui.creationPanels.TargetGroupCreationPanelController;
 import java.io.IOException;
 import java.math.BigDecimal;
+import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,9 +37,9 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
- * @author Append
+ * @author Maxim
  */
-public class LearningUtilityCreationPanelController extends GridPane implements IObserver {
+public class LearningUtilityEditDetailsPanelController extends GridPane implements IObserver {
 
     @FXML
     private TextField txtName;
@@ -55,7 +58,7 @@ public class LearningUtilityCreationPanelController extends GridPane implements 
     @FXML
     private TextField txtImage;
     @FXML
-    private Button btnAdd;
+    private Button btnEdit;
     @FXML
     private Button btnReset;
     @FXML
@@ -66,14 +69,6 @@ public class LearningUtilityCreationPanelController extends GridPane implements 
     private ComboBox<String> cboCompanies;
     @FXML
     private ComboBox<String> cboLocations;
-    
-    private DomainController domainController;
-    private static final String EMPTY_STRING = "";
-    private static final double ZERO_DOUBLE = 0.00;
-    private static final int ZERO_INTEGER = 0;
-    private static final String DEFAULT_HTTP = "Http://";
-    private static final String UNKNOWN = "Onbekend";
-    
     @FXML
     private Label lblInfo;
     @FXML
@@ -84,27 +79,25 @@ public class LearningUtilityCreationPanelController extends GridPane implements 
     private Button btnNewLocation;
     @FXML
     private Button btnNewCompany;
-
+    @FXML
+    private Button btnDelete;
+    
+    private DomainController domainController;
+    private static final String UNKNOWN = "Onbekend";
 
     
-    public LearningUtilityCreationPanelController(DomainController domainController){
+       public LearningUtilityEditDetailsPanelController (DomainController domainController){
         this.domainController = domainController;
-        registerAsObserver();
         initLoader();
         populateListViews();
         populateComboBoxes();
-        setDefaults();
+        loadLearningUtilityDetails();
     } 
 
-    private void registerAsObserver() {
-        domainController.addObserverToCatalog(this, Company.class);
-        domainController.addObserverToCatalog(this, Location.class);
-        domainController.addObserverToCatalog(this, TargetGroup.class);
-        domainController.addObserverToCatalog(this, FieldOfStudy.class);
-    }
-    
-    private void initLoader() throws RuntimeException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("LearningUtilityCreationPanel.fxml"));
+
+         private void initLoader() throws RuntimeException {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("LearningUtilityEditDetailsPanel.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         try{
@@ -113,8 +106,8 @@ public class LearningUtilityCreationPanelController extends GridPane implements 
             throw new RuntimeException(e);
         }
     }
-    
-    private void populateListViews(){
+         
+         private void populateListViews(){
         //Set selectionmodes to multiple selection
         lstFieldsOfStudy.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         lstTargetGroups.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -130,37 +123,46 @@ public class LearningUtilityCreationPanelController extends GridPane implements 
         cboCompanies.setItems(FXCollections.observableArrayList(domainController.getCompanies()));
 
     }
-    
-        private void setDefaults()
-    {
-        txtName.setText(EMPTY_STRING);
-        txtArticleNumber.setText(EMPTY_STRING);
-        txtAmountInStock.setText(String.valueOf(ZERO_INTEGER));
-        txtAmountUnavailable.setText(String.valueOf(ZERO_INTEGER));
-        txtDescription.setText(EMPTY_STRING);
-        txtImage.setText(DEFAULT_HTTP); 
-        chkLoanable.setSelected(true);
-        txtPrice.setText(String.valueOf(ZERO_DOUBLE));
+        private void loadLearningUtilityDetails()
+        {
+        LearningUtility selectedLearningUtility = domainController.getSelectedLearningUtility();
+        txtName.setText(selectedLearningUtility.getName());
+        txtArticleNumber.setText(selectedLearningUtility.getArticleNumber());
+        txtAmountInStock.setText(String.valueOf(selectedLearningUtility.getAmountInCatalog()));
+        txtAmountUnavailable.setText(String.valueOf(selectedLearningUtility.getAmountUnavailable()));
+        txtDescription.setText(selectedLearningUtility.getDescription());
+        txtImage.setText(selectedLearningUtility.getPicture()); 
+        chkLoanable.setSelected(selectedLearningUtility.getLoanable());
+        txtPrice.setText(String.valueOf(selectedLearningUtility.getPrice()));
         
-        cboLocations.getSelectionModel().clearSelection();
-        lstFieldsOfStudy.getSelectionModel().clearSelection();
-        lstTargetGroups.getSelectionModel().clearSelection();
-        cboCompanies.getSelectionModel().clearSelection();
-        lblInfo.setText(EMPTY_STRING);
-    }
-  
-    
+        selectedLearningUtility.getFieldOfStudyList().stream().forEach(fos -> 
+            lstFieldsOfStudy.getSelectionModel().select(fos.getName())
+        );
+        
+        selectedLearningUtility.getTargetGroupList().stream().forEach(tg -> 
+                lstTargetGroups.getSelectionModel().select(tg.getName())
+        );
+        cboCompanies.getSelectionModel().select(selectedLearningUtility.getCompanyId().getName());
+        cboLocations.getSelectionModel().select(selectedLearningUtility.getLocationId().getName());
+         
+        }   
+
     @FXML
-    private void add(ActionEvent event) throws IllegalArgumentException 
-    {
+    private void edit(ActionEvent event) {
+        
+        LearningUtility currentLearningUtility = domainController.getSelectedLearningUtility();
+        Stage stage = (Stage) btnEdit.getScene().getWindow();
+        PauseTransition delay = new PauseTransition(Duration.millis(4000));
+        delay.setOnFinished( ev -> stage.close() );
+        delay.play();
+        
         String infoMessage = validateFields();
                 
-        if(!infoMessage.equals(EMPTY_STRING))
+        if(!infoMessage.equals(""))
         {
            lblInfo.setText(infoMessage);
            return;
         }
-        
         String name = txtName.getText();
         String description = txtDescription.getText();
         BigDecimal price = new BigDecimal(txtPrice.getText());
@@ -203,11 +205,10 @@ public class LearningUtilityCreationPanelController extends GridPane implements 
                 fieldsOfStudyList.add(item);
             });
         }
-        
-        try
+         try
         {
-            domainController.addLearningUtility(
-                                            name,
+            
+                domainController.editLearningUtility(currentLearningUtility, name,
                                             description,
                                             price,
                                             loanable,
@@ -218,9 +219,10 @@ public class LearningUtilityCreationPanelController extends GridPane implements 
                                             company,
                                             location,
                                             targetGroupsList,
-                                            fieldsOfStudyList);   
+                                            fieldsOfStudyList);
+  
             
-        lblInfo.setText(name + " werd succesvol toegevoegd.");
+        lblInfo.setText(name + " werd succesvol gewijzigd.");
 
         }catch(Exception e)
         {
@@ -228,16 +230,9 @@ public class LearningUtilityCreationPanelController extends GridPane implements 
         }
     }
 
-    @FXML
-    private void reset(ActionEvent event) {
-        populateListViews();
-        populateComboBoxes();
-        setDefaults();
-    }
-    
     private String validateFields()
     {
-        if(txtName.getText() == null ? EMPTY_STRING == null : txtName.getText().equals(EMPTY_STRING))
+        if(txtName.getText() == null ? "" == null : txtName.getText().equals(""))
             return "Gelieve de Naam in te vullen.";
         
         if(!txtAmountInStock.getText().matches("[0-9]+?"))
@@ -252,7 +247,30 @@ public class LearningUtilityCreationPanelController extends GridPane implements 
         if(!txtPrice.getText().matches("[0-9]+(\\.[0-9][0-9]?)?"))
             return "De prijs moet een numerisch getal zijn, met een '.' voor decimalen."; 
         
-        return EMPTY_STRING;
+        return "";
+    }
+    @FXML
+    private void reset(ActionEvent event) {
+    
+        loadLearningUtilityDetails();
+}
+
+    @Override
+    public void update() {
+        populateComboBoxes();
+        populateListViews();
+    }
+   
+    
+
+    @FXML
+    private void delete(ActionEvent event) {
+        
+        LearningUtility currentLearningUtility = domainController.getSelectedLearningUtility();
+        domainController.removeLearningUtility(currentLearningUtility);
+        Stage stage = (Stage) btnDelete.getScene().getWindow();
+        stage.close();
+        
     }
 
     @FXML
@@ -274,17 +292,11 @@ public class LearningUtilityCreationPanelController extends GridPane implements 
     private void showNewCompanyDialog(ActionEvent event) {        
         createNewStageAndShow("Bedrijf toevoegen", new Scene(new CompanyCreationPanelController(domainController)));        
     }
-
-    @Override
-    public void update() {
-        populateComboBoxes();
-        populateListViews();
-    }
-    
     private void createNewStageAndShow(String title, Scene scene){
         Stage stage = new Stage();
         stage.setTitle(title);
         stage.setScene(scene);
         stage.show();
     }
+
 }

@@ -3,15 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package gui.learningUtilities;
 
 import domain.DomainController;
+import domain.interfaces.IObserver;
 import domain.learningUtility.LearningUtility;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -30,7 +29,7 @@ import javafx.stage.Stage;
  *
  * @author Maxim
  */
-public class LearningUtilityEditPanelController extends GridPane{
+public class LearningUtilityEditPanelController extends GridPane implements IObserver{
 
     @FXML
     private TableView<LearningUtility> tableView;
@@ -44,7 +43,7 @@ public class LearningUtilityEditPanelController extends GridPane{
     public LearningUtilityEditPanelController(DomainController domainController) {
         this.domainController = domainController;
         initLoader();
-        //domainController.addObserverToCatalog(this, LearningUtility.class);
+        domainController.addObserverToCatalog(this, LearningUtility.class);
     }
 
     private void initLoader() throws RuntimeException {
@@ -147,5 +146,10 @@ public class LearningUtilityEditPanelController extends GridPane{
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+    }
+
+    @Override
+    public void update() {
+        tableView.refresh();
     }
 }
