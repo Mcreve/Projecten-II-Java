@@ -93,7 +93,7 @@ public class User implements Serializable, ISearchableByName {
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof String)) {
-            return false;
+            return super.equals(object);
         }
         String emailAddress = (String) object;
         if ((this.emailAddress == null && emailAddress != null) || (this.emailAddress != null && !this.emailAddress.toLowerCase().equals(emailAddress.toLowerCase()))) {

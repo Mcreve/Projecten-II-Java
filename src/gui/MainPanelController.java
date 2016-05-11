@@ -9,6 +9,7 @@ import gui.learningUtilities.LearningUtilityImportPanelController;
 import gui.learningUtilities.LearningUtilityEditPanelController;
 import gui.learningUtilities.LearningUtilityCreationPanelController;
 import domain.DomainController;
+import gui.reservations.ReservationMainPanelController;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +21,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.FileChooser;
 
 /**
  * FXML Controller class
@@ -163,7 +163,11 @@ public class MainPanelController extends BorderPane {
         this.setCenter(editPanel);
         }    
         
-        
+        if(branch.equals(BRANCH_RESERVATIONS)){
+            if(leaf.equals(LEAF_EDIT)){
+                this.setCenter(new ReservationMainPanelController(domainController));
+            }
+        }
         
     }
     

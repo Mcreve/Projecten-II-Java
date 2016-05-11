@@ -28,6 +28,7 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.collections.transformation.FilteredList;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -71,6 +72,7 @@ public class DomainController implements IObservable {
     private FilteredList<LearningUtility> filteredLearningUtilityList;
     private LearningUtility selectedLearningUtility;
     private Reservation currentReservation;
+    private User currentUser;
 
     /**
      * @param test useless information
@@ -119,8 +121,39 @@ public class DomainController implements IObservable {
      *
      * @return A list with all the reservations
      */
-    public FilteredList<Reservation> getReservations() {
+    private FilteredList<Reservation> getReservations() {
         return reservationCatalog.getEntities();
+    }
+    
+    /**
+     * Creates an {@link ObservableMap} with {@link User} as key and a 
+     * {@link List} of {@link Reservation} instances as value 
+     * @return the {@link ObservableMap} with {@link User} as key and a 
+     * {@link List} of {@link Reservation} instances as value
+     */
+    private ObservableMap<User, List<Reservation>> getReservationsByUser(){
+        return FXCollections.observableMap(getReservations()
+                .stream()
+                .collect(Collectors.groupingBy(Reservation::getUserEmailAddress))
+        );
+    }
+    
+    /**
+     * Returns a {@link FilteredList} with all the {@link User users} that have a
+     * {@link Reservation}
+     * @return a {@link FilteredList} with all the {@link User users} that have a
+     * {@link Reservation}
+     */
+    public FilteredList<User> getUsersWithReservations(){
+        return new FilteredList<>(FXCollections.observableList(getReservationsByUser().keySet().stream().collect(Collectors.toList())).sorted());
+    }
+    
+    /**
+     * Finds all {@link Reservation reservations} from the {@link User} currently marked as selected and returns them as a {@link FilteredList}
+     * @return a {@link FilteredList} with all {@link Reservation reservations} from the {@link User} currently marked as selected
+     */
+    public FilteredList<Reservation> getReservationsFromUser(){
+        return new FilteredList<>(FXCollections.observableList(getReservationsByUser().get(currentUser)));
     }
 
     /**
@@ -228,6 +261,10 @@ public class DomainController implements IObservable {
     public Reservation getCurrentReservation() {
         return currentReservation;
     }
+    
+    public boolean userIsSet(){
+        return currentUser == null ? false:true;
+    }
 
     /**
      * Gets the {@link LearningUtility} that is marked as selected
@@ -257,6 +294,16 @@ public class DomainController implements IObservable {
      */
     public void setCurrentReservation(Reservation reservation) {
         this.currentReservation = reservation;
+        notifyObservers();
+    }
+    
+    /**
+     * Sets the {@link User} that should be marked as selected
+     * @param user the {@link User} that should be marked as selected
+     */
+    public void setCurrentUser(User user){
+        this.currentUser = user;
+        notifyObservers();
     }
 
     /**
