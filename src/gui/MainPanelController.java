@@ -9,6 +9,7 @@ import gui.learningUtilities.LearningUtilityImportPanelController;
 import gui.learningUtilities.LearningUtilityEditPanelController;
 import gui.learningUtilities.LearningUtilityCreationPanelController;
 import domain.DomainController;
+import gui.users.UserConfigurationMainPanelController;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -162,6 +163,12 @@ public class MainPanelController extends BorderPane {
         LearningUtilityEditPanelController editPanel = new LearningUtilityEditPanelController(domainController);
         this.setCenter(editPanel);
         }    
+        if(branch == BRANCH_USERS && leaf == LEAF_MANAGERS)
+        {
+            UserConfigurationMainPanelController userConfigurationMainPanelController  = new UserConfigurationMainPanelController(domainController);
+            this.setCenter(userConfigurationMainPanelController);
+        }    
+        
         
         
         

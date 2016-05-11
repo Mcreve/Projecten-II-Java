@@ -905,6 +905,9 @@ public class DomainController implements IObservable {
                 break;
             case "location":
                 this.locationCatalog = (ICatalog<Location>) catalogMock;
+                break;
+            case "user":
+                this.userCatalog = (ICatalog<User>) catalogMock;
         }
     }
 
