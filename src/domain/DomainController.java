@@ -7,6 +7,7 @@ package domain;
 
 import domain.catalogs.*;
 import domain.interfaces.ICatalog;
+import domain.interfaces.IObservable;
 import domain.interfaces.IObserver;
 import domain.learningUtility.*;
 import domain.users.*;
@@ -21,6 +22,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -40,7 +42,7 @@ import persistence.Connection;
  *
  * @author Ward Vanlerberghe
  */
-public class DomainController {
+public class DomainController implements IObservable {
 
     private ICatalog<LearningUtility> learningUtilityCatalog;
     private ICatalog<Company> companyCatalog;
@@ -48,6 +50,9 @@ public class DomainController {
     private ICatalog<TargetGroup> targetGroupCatalog;
     private ICatalog<Location> locationCatalog;
     private ICatalog<User> userCatalog;
+    private ICatalog<Reservation> reservationCatalog;
+
+    private List<IObserver> observers;
 
     private static int IX_Name_Column = 0;
     private static int IX_Description_Column = 1;
@@ -65,6 +70,7 @@ public class DomainController {
     private ObservableList<LearningUtility> learningUtilityList;
     private FilteredList<LearningUtility> filteredLearningUtilityList;
     private LearningUtility selectedLearningUtility;
+    private Reservation currentReservation;
 
     /**
      * @param test useless information
@@ -89,7 +95,6 @@ public class DomainController {
     public <E> DomainController(ICatalog<E> catalogMock) {
         setCatalog(catalogMock);
     }
-    
 
     /**
      * Default constructor. Should be used during application setup. The
@@ -103,8 +108,19 @@ public class DomainController {
         targetGroupCatalog = new Catalog<>(TargetGroup.class);
         locationCatalog = new Catalog<>(Location.class);
         userCatalog = new Catalog<>(User.class);
+        reservationCatalog = new Catalog<>(Reservation.class);
+        observers = new ArrayList<>();
         //learningUtilityList = FXCollections.observableArrayList(learningUtilityCatalog.getEntities());
         //filteredLearningUtilityList = new FilteredList<>(learningUtilityList, p -> true);
+    }
+
+    /**
+     * Returns a list with all the reservations
+     *
+     * @return A list with all the reservations
+     */
+    public FilteredList<Reservation> getReservations() {
+        return reservationCatalog.getEntities();
     }
 
     /**
@@ -196,23 +212,51 @@ public class DomainController {
     }
 
     /**
-     * Returns an observable list with all known {@link LearningUtility}
-     * instances.
-     *
-     * @return an observable list with all known {@link LearningUtility}
-     * instances.
-     */
-    public ObservableList<LearningUtility> getObservableLearningUtilityList() {
-        return FXCollections.observableList(learningUtilityList);
-    }
-
-    /**
      * Returns the filtered list of {@link LearningUtility} instances.
      *
      * @return the filtered list of {@link LearningUtility} instances.
      */
     public FilteredList<LearningUtility> getFilteredLearningUtilityList() {
         return filteredLearningUtilityList;
+    }
+
+    /**
+     * Gets the {@link Reservation} that is currently marked as selected
+     *
+     * @return the {@link Reservation} that is currently marked as selected
+     */
+    public Reservation getCurrentReservation() {
+        return currentReservation;
+    }
+
+    /**
+     * Gets the {@link LearningUtility} that is marked as selected
+     *
+     * @return
+     */
+    public LearningUtility getSelectedLearningUtility() {
+        return this.selectedLearningUtility;
+    }
+
+    //Setters
+    /**
+     * Sets the {@link LearningUtility} as selected.
+     *
+     * @param learningUtility The {@link LearningUtility} that needs to be
+     * marked as selected
+     */
+    public void setSelectedLearningUtility(LearningUtility learningUtility) {
+        this.selectedLearningUtility = learningUtility;
+    }
+
+    /**
+     * Sets the {@link Reservation} as selected
+     *
+     * @param reservation the {@link Reservation} that needs to be marked as
+     * selected
+     */
+    public void setCurrentReservation(Reservation reservation) {
+        this.currentReservation = reservation;
     }
 
     /**
@@ -234,22 +278,17 @@ public class DomainController {
     }
 
     /**
-     * Sets the {@link LearningUtility} as selected.
+     * This method edits the reservation marked as currently selected with the      {@link #setCurrentReservation(domain.learningUtility.Reservation) 
+     * setCurrentReservation(Reservation)} with the parameters provided
      *
-     * @param learningUtility The {@link LearningUtility} that needs to be
-     * marked as selected
+     * @param daysBlocked The days that the {@link LearningUtility} is blocked
+     * @param returnDate The date the {@link LearningUtility} should be returned
+     * @param amount The amount of items that are reserved for this reservation
      */
-    public void setSelectedLearningUtility(LearningUtility learningUtility) {
-        this.selectedLearningUtility = learningUtility;
-    }
-
-    /**
-     * Gets the {@link LearningUtility} that is marked as selected
-     *
-     * @return
-     */
-    public LearningUtility getSelectedLearningUtility() {
-        return this.selectedLearningUtility;
+    public void editReservation(String daysBlocked, Date returnDate, int amount) {
+        currentReservation.setDateWanted(returnDate);
+        currentReservation.setAmount(amount);
+        currentReservation.setDaysBlocked(daysBlocked);
     }
 
     /**
@@ -281,45 +320,6 @@ public class DomainController {
 
         learningUtilityCatalog.addEntity(newItem);
     }
-    
-    /**
-     * Adds the learningutility to the catalog and persistance layer after checks
-     * @param learningUtility The {@link LearningUtility} that needs to be added
-     * @author Benjamin Vertonghen
-     */
-    public void registerLearningUtilityFromImport(LearningUtility lu)
-    {
-        checkAmountInStock(lu.getAmountInCatalog());
-        checkName(lu.getName());
-        learningUtilityCatalog.addEntity(lu);
-
-        
-    }
-    /**
-     * Method checks if the name of the learningutility is filled in and if it already exists
-     * @param name name of the utility
-     * @author Benjamin Vertonghen
-     */
-    private void checkName(String name) throws IllegalArgumentException {
-        if (name == null || name == "") {
-            throw new IllegalArgumentException("Gelieve een naam voor het leermiddel op te geven.");
-        }
-        if (learningUtilityCatalog.getEntities().stream().anyMatch(l -> l.getName().equals(name))) {
-            throw new IllegalArgumentException("Er bestaat al een leermiddel met de opgegeven naam: " + name + ".");
-        }
-    }
-    /**
-     * Method checks if the amount in stock is greater than 0
-     * @param amountInStock Quantity
-     * @author Benjamin Vertonghen
-     */
-    private void checkAmountInStock(int amountInstock) throws IllegalArgumentException {
-        if (amountInstock < 1)
-        {
-            throw new IllegalArgumentException("Het Aantal in stock moet meer zijn dan één.");
-        }
-    }
-
 
     /**
      * This method updates the fields of an {@link LearningUtility} instance and
@@ -344,13 +344,10 @@ public class DomainController {
             int amountInStock, int amountUnavailable, String companyName, String locationName, List<String> targetGroups, List<String> fieldsOfStudy) {
 
         String currentName = learningUtility.getName();
-        if(!currentName.equals(name)){
-        if (name == null || name == "" || learningUtilityCatalog.getEntities().stream().anyMatch(l -> l.getName().equals(name))) {
-            throw new IllegalArgumentException("Er bestaat reeds een item met deze naam: " + name + ".");
-        } else {
-            learningUtility.setName(name);
+        if (!currentName.equals(name)) {
+            checkName(name);
         }
-        }
+        learningUtility.setName(name);
         learningUtility.setDescription(description);
         if (price.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("De prijs kan niet negatief zijn");
@@ -383,88 +380,51 @@ public class DomainController {
         }
         learningUtility.setFieldOfStudyList(fieldOfStudyList);
         learningUtilityCatalog.updateEntity(learningUtility);
-
-        //learningUtilityCatalog.notifyAll();
-    }
-    
-    public void removeLearningUtility(LearningUtility learningUtility)
-    {
-        learningUtilityCatalog.deleteEntity(learningUtility);
     }
 
     /**
-     * This method creates a new {@link LearningUtility} instance and sets its
-     * fields with the parameters provided. Then returns the instance.
+     * Adds the learningutility to the catalog and persistance layer after
+     * checks
      *
-     * @param name The name of the item
-     * @param description The description of the item
-     * @param price The price of the item
-     * @param loanable Indicates wether the item is loanable or not
-     * @param articleNumber The article number of the item
-     * @param image The url to the image of the item
-     * @param amountInStock The amount that is in stock of this item
-     * @param amountUnavailable The amount of items that aren't available
-     * @param companyName The name of the company that distributes the item
-     * @param locationName The location of wich the item is in
-     * @param targetGroups A list with the names of the target groups
-     * @param fieldsOfStudy A list with the names of the fields of study
-     * @return A new instance of {@link LearningUtility} with its fields set
-     * with the provided parameters
+     * @param lu The {@link LearningUtility} that needs to be added
+     * @author Benjamin Vertonghen
      */
-    private LearningUtility createLearningUtility(String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image, String locationName, int amountInstock, int amountUnavailable, String companyName, List<String> targetGroups, List<String> fieldsOfStudy) {
-        LearningUtility newItem = new LearningUtility();
-        newItem.setName(name);
-        newItem.setDescription(description);
-        newItem.setPrice(price);
-        newItem.setLoanable(loanable);
-        newItem.setArticleNumber(articleNumber);
-        newItem.setPicture(image);
-        newItem.setAmountInCatalog(amountInstock);
-        newItem.setAmountUnavailable(amountUnavailable);
-        
-        newItem.setCompanyId(companyCatalog.getEntity(companyName));
-        
-        if(newItem.getCompanyId() == null)
-        {
-            newItem.setCompanyId(createCompany(companyName, "Onbekend", "Onbekend", "Onbekend"));
+    public void registerLearningUtilityFromImport(LearningUtility lu) {
+        checkAmountInStock(lu.getAmountInCatalog());
+        checkName(lu.getName());
+        learningUtilityCatalog.addEntity(lu);
+    }
+
+    /**
+     * Method checks if the amount in stock is greater than 0
+     *
+     * @param amountInStock Quantity
+     * @author Benjamin Vertonghen
+     */
+    private void checkAmountInStock(int amountInstock) throws IllegalArgumentException {
+        if (amountInstock < 1) {
+            throw new IllegalArgumentException("Het Aantal in stock moet meer zijn dan één.");
         }
-        
-        newItem.setLocationId(locationCatalog.getEntity(locationName));
-        
-        if(newItem.getLocationId()== null)
-        {
-            newItem.setLocationId(createLocation(locationName));
+    }
+
+    /**
+     * Method checks if the name of the learningutility is filled in and if it
+     * already exists
+     *
+     * @param name name of the utility
+     * @author Benjamin Vertonghen
+     */
+    private void checkName(String name) throws IllegalArgumentException {
+        if (name == null || name.equals("")) {
+            throw new IllegalArgumentException("Gelieve een naam voor het leermiddel op te geven.");
         }
-
-        List<TargetGroup> targetGroupsList = new ArrayList<>();
-
-        for (String targetGroupName : targetGroups) {
-            TargetGroup targetGroup = targetGroupCatalog.getEntity(targetGroupName);
-            
-            if(targetGroup == null)
-            {
-                targetGroup = createTargetGroup(targetGroupName);
-            }
-            targetGroupsList.add(targetGroup);
-
+        if (learningUtilityCatalog.getEntities().stream().anyMatch(l -> l.getName().equals(name))) {
+            throw new IllegalArgumentException("Er bestaat al een leermiddel met de opgegeven naam: " + name + ".");
         }
-        newItem.setTargetGroupList(targetGroupsList);
+    }
 
-        List<FieldOfStudy> fieldOfStudyList = new ArrayList<>();
-
-        for (String fieldOfStudyName : fieldsOfStudy) 
-        {
-
-            FieldOfStudy fieldOfStudy = fieldOfStudyCatalog.getEntity(fieldOfStudyName);
-            
-            if(fieldOfStudy == null)
-            {
-                fieldOfStudy = createFieldOfStudy(fieldOfStudyName);
-            }
-            fieldOfStudyList.add(fieldOfStudy);
-        }
-        newItem.setFieldOfStudyList(fieldOfStudyList);
-        return newItem;
+    public void removeLearningUtility(LearningUtility learningUtility) {
+        learningUtilityCatalog.deleteEntity(learningUtility);
     }
 
     /**
@@ -528,6 +488,129 @@ public class DomainController {
     }
 
     /**
+     * This method parses a line of the .csv file read by the
+     * {@link #readCsvFile(String) readCsvFile(String)} to a
+     * {@link LearningUtility} instance.
+     *
+     * @param tokens An array of strings containing the field values of the csv
+     * line
+     * @return a new instance of {@link LearningUtility}
+     */
+    private LearningUtility parseCsvLine(String[] tokens) {
+        Double price;
+        int amountUnavailable;
+
+        String name = tokens[IX_Name_Column];
+        String description = tokens[IX_Description_Column];
+        if (!(tokens[IX_Price_Column].equals(""))) {
+            price = Double.parseDouble(tokens[IX_Price_Column]);
+        } else {
+            price = 0.0;
+        }
+
+        String loanableString = tokens[IX_Loanable_Column];
+        Boolean loanable = loanableString.equalsIgnoreCase("Ja");
+        String articleNumber = tokens[IX_Article_No_Column];
+        String image = tokens[IX_Photo_URL_Column];
+        String locationName = tokens[IX_Location_Column];
+        int amountInstock = Integer.parseInt(tokens[IX_AmountInStock_Column]);
+        if (!(tokens[IX_AmountUnavailable_Column].equals(""))) {
+            amountUnavailable = Integer.parseInt(tokens[IX_AmountUnavailable_Column]);
+        } else {
+            amountUnavailable = 0;
+        }
+        String companyName = tokens[IX_Company_Column];
+        List<String> targetGroupsList = new ArrayList<>();
+        List<String> fieldsOfStudyList = new ArrayList<>();
+
+        targetGroupsList = Arrays.asList(tokens[IX_TargetGroups_Column].split(","));
+        fieldsOfStudyList = Arrays.asList(tokens[IX_FieldsOfStudy_Column].split(","));
+
+        return createLearningUtility(name,
+                description,
+                BigDecimal.valueOf(price),
+                loanable,
+                articleNumber,
+                image,
+                locationName,
+                amountInstock,
+                amountUnavailable,
+                companyName,
+                targetGroupsList, fieldsOfStudyList);
+
+    }
+
+    /**
+     * This method creates a new {@link LearningUtility} instance and sets its
+     * fields with the parameters provided. Then returns the instance.
+     *
+     * @param name The name of the item
+     * @param description The description of the item
+     * @param price The price of the item
+     * @param loanable Indicates wether the item is loanable or not
+     * @param articleNumber The article number of the item
+     * @param image The url to the image of the item
+     * @param amountInStock The amount that is in stock of this item
+     * @param amountUnavailable The amount of items that aren't available
+     * @param companyName The name of the company that distributes the item
+     * @param locationName The location of wich the item is in
+     * @param targetGroups A list with the names of the target groups
+     * @param fieldsOfStudy A list with the names of the fields of study
+     * @return A new instance of {@link LearningUtility} with its fields set
+     * with the provided parameters
+     */
+    private LearningUtility createLearningUtility(String name, String description, BigDecimal price, boolean loanable, String articleNumber, String image, String locationName, int amountInstock, int amountUnavailable, String companyName, List<String> targetGroups, List<String> fieldsOfStudy) {
+        LearningUtility newItem = new LearningUtility();
+        newItem.setName(name);
+        newItem.setDescription(description);
+        newItem.setPrice(price);
+        newItem.setLoanable(loanable);
+        newItem.setArticleNumber(articleNumber);
+        newItem.setPicture(image);
+        newItem.setAmountInCatalog(amountInstock);
+        newItem.setAmountUnavailable(amountUnavailable);
+
+        newItem.setCompanyId(companyCatalog.getEntity(companyName));
+
+        if (newItem.getCompanyId() == null) {
+            newItem.setCompanyId(createCompany(companyName, "Onbekend", "Onbekend", "Onbekend"));
+        }
+
+        newItem.setLocationId(locationCatalog.getEntity(locationName));
+
+        if (newItem.getLocationId() == null) {
+            newItem.setLocationId(createLocation(locationName));
+        }
+
+        List<TargetGroup> targetGroupsList = new ArrayList<>();
+
+        for (String targetGroupName : targetGroups) {
+            TargetGroup targetGroup = targetGroupCatalog.getEntity(targetGroupName);
+
+            if (targetGroup == null) {
+                targetGroup = createTargetGroup(targetGroupName);
+            }
+            targetGroupsList.add(targetGroup);
+
+        }
+        newItem.setTargetGroupList(targetGroupsList);
+
+        List<FieldOfStudy> fieldOfStudyList = new ArrayList<>();
+
+        for (String fieldOfStudyName : fieldsOfStudy) {
+
+            FieldOfStudy fieldOfStudy = fieldOfStudyCatalog.getEntity(fieldOfStudyName);
+
+            if (fieldOfStudy == null) {
+                fieldOfStudy = createFieldOfStudy(fieldOfStudyName);
+            }
+            fieldOfStudyList.add(fieldOfStudy);
+        }
+        newItem.setFieldOfStudyList(fieldOfStudyList);
+        return newItem;
+    }
+
+    /**
      * This method creates a new {@link Company} instance. The method checks if
      * the strings are not empty. If all the parameters are correct the method
      * checks for duplicate names. If no duplicates are found a new instance is
@@ -540,28 +623,26 @@ public class DomainController {
      * @param email The email address from the contactperson
      */
     public Company createCompany(String name, String website, String contactPerson, String email) {
-        
-        if (name.isEmpty() || website.isEmpty() || contactPerson.isEmpty() || email.isEmpty()) 
-        {
+
+        if (name.isEmpty() || website.isEmpty() || contactPerson.isEmpty() || email.isEmpty()) {
             throw new IllegalArgumentException("Alle velden moeten ingevuld worden.");
         }
-        
+
         Company company = companyCatalog.getEntity(name);
-        
-        if(company != null)
-        {
-             throw new IllegalArgumentException("Opgegeven bedrijf met deze naam bestaat reeds.");
+
+        if (company != null) {
+            throw new IllegalArgumentException("Opgegeven bedrijf met deze naam bestaat reeds.");
         }
-        
+
         company = new Company();
         company.setName(name);
         company.setWebsite(website);
         company.setContactPersonName(contactPerson);
         company.setEmailAddress(email);
         companyCatalog.addEntity(company);
-        
+
         return company;
-        
+
     }
 
     /**
@@ -577,20 +658,19 @@ public class DomainController {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Gelieve een naam op te geven voor de nieuwe locatie");
         }
-        
+
         Location loc = locationCatalog.getEntity(name);
-        
-        if(loc != null)
-        {
+
+        if (loc != null) {
             throw new IllegalArgumentException("Er bestaat reeds een locatie met opgegeven naam");
         }
-        
+
         loc = new Location();
         loc.setName(name);
-        locationCatalog.addEntity(loc); 
+        locationCatalog.addEntity(loc);
 
         return loc;
-               
+
     }
 
     /**
@@ -606,21 +686,20 @@ public class DomainController {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Gelieve een naam op te geven voor het nieuwe leergebied.");
         }
-        
+
         FieldOfStudy fieldOfStudy = fieldOfStudyCatalog.getEntity(name);
-        
-        if(fieldOfStudy != null)
-        {
+
+        if (fieldOfStudy != null) {
             throw new IllegalArgumentException("Er bestaat reeds een leergebied met opgegeven naam");
         }
-        
+
         fieldOfStudy = new FieldOfStudy();
         fieldOfStudy.setName(name);
 
-        fieldOfStudyCatalog.addEntity(fieldOfStudy); 
-        
+        fieldOfStudyCatalog.addEntity(fieldOfStudy);
+
         return fieldOfStudy;
-            
+
     }
 
     /**
@@ -636,21 +715,20 @@ public class DomainController {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Gelieve een naam op te geven voor de nieuwe doelgroep.");
         }
-        
+
         TargetGroup targetGroup = targetGroupCatalog.getEntity(name);
-        
-        if(targetGroup != null)
-        {
+
+        if (targetGroup != null) {
             throw new IllegalArgumentException("Er bestaat reeds een doelgroep met opgegeven naam");
         }
-        
+
         targetGroup = new TargetGroup();
         targetGroup.setName(name);
 
-        targetGroupCatalog.addEntity(targetGroup); 
-        
+        targetGroupCatalog.addEntity(targetGroup);
+
         return targetGroup;
-            
+
     }
 
     /**
@@ -727,66 +805,6 @@ public class DomainController {
      */
     public void addLocationObserver(IObserver o) {
         locationCatalog.addObserver(o);
-    }
-
-    /**
-     * This method closes the connection with the database
-     */
-    public void closeConnection() {
-        Connection.close();
-    }
-
-    /**
-     * This method parses a line of the .csv file read by the
-     * {@link #readCsvFile(String) readCsvFile(String)} to a
-     * {@link LearningUtility} instance.
-     *
-     * @param tokens An array of strings containing the field values of the csv
-     * line
-     * @return a new instance of {@link LearningUtility}
-     */
-    private LearningUtility parseCsvLine(String[] tokens) {
-        Double price;
-        int amountUnavailable;
-
-        String name = tokens[IX_Name_Column];
-        String description = tokens[IX_Description_Column];
-        if (!(tokens[IX_Price_Column].equals(""))) {
-            price = Double.parseDouble(tokens[IX_Price_Column]);
-        } else {
-            price = 0.0;
-        }
-
-        String loanableString = tokens[IX_Loanable_Column];
-        Boolean loanable = loanableString.equalsIgnoreCase("Ja");
-        String articleNumber = tokens[IX_Article_No_Column];
-        String image = tokens[IX_Photo_URL_Column];
-        String locationName = tokens[IX_Location_Column];
-        int amountInstock = Integer.parseInt(tokens[IX_AmountInStock_Column]);
-        if (!(tokens[IX_AmountUnavailable_Column].equals(""))) {
-            amountUnavailable = Integer.parseInt(tokens[IX_AmountUnavailable_Column]);
-        } else {
-            amountUnavailable = 0;
-        }
-        String companyName = tokens[IX_Company_Column];
-        List<String> targetGroupsList = new ArrayList<>();
-        List<String> fieldsOfStudyList = new ArrayList<>();
-
-        targetGroupsList = Arrays.asList(tokens[IX_TargetGroups_Column].split(","));
-        fieldsOfStudyList = Arrays.asList(tokens[IX_FieldsOfStudy_Column].split(","));
-
-        return createLearningUtility(name,
-                description,
-                BigDecimal.valueOf(price),
-                loanable,
-                articleNumber,
-                image,
-                locationName,
-                amountInstock,
-                amountUnavailable,
-                companyName,
-                targetGroupsList, fieldsOfStudyList);
-
     }
 
     /**
@@ -888,5 +906,22 @@ public class DomainController {
             case "location":
                 this.locationCatalog = (ICatalog<Location>) catalogMock;
         }
+    }
+
+    @Override
+    public void notifyObservers() {
+        observers.stream().forEach(o -> o.update());
+    }
+
+    @Override
+    public void addObserver(IObserver observer) {
+        observers.add(observer);
+    }
+
+    /**
+     * This method closes the connection with the database
+     */
+    public void closeConnection() {
+        Connection.close();
     }
 }
