@@ -15,17 +15,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 
 /**
  * FXML Controller class
  *
  * @author Ward Vanlerberghe
  */
-public class ReservationTableViewController extends AnchorPane implements IObserver {
+public class ReservationTableViewController extends GridPane implements IObserver {
 
-    @FXML
-    private AnchorPane AnchorPane;
     @FXML
     private TableView<Reservation> tableView;
     private DomainController domainController;
@@ -33,6 +32,7 @@ public class ReservationTableViewController extends AnchorPane implements IObser
     public ReservationTableViewController(DomainController domainController){
         this.domainController = domainController;
         domainController.addObserver(this);
+        domainController.setCurrentReservation(null);
         initLoader();
         
         TableColumn<Reservation, String> colLearningUtility = new TableColumn<>("Leermiddel");
@@ -40,7 +40,7 @@ public class ReservationTableViewController extends AnchorPane implements IObser
         colLearningUtility.setMinWidth(300);
         
         TableColumn<Reservation, Date> colDate = new TableColumn<>("Afhaaldatum");
-        colDate.setCellValueFactory(new PropertyValueFactory<>("reservationDate"));
+        colDate.setCellValueFactory(new PropertyValueFactory<>("dateWanted"));
         colDate.setMinWidth(50);
         
         tableView.getColumns().addAll(colLearningUtility, colDate);
@@ -61,6 +61,11 @@ public class ReservationTableViewController extends AnchorPane implements IObser
     public void update() {
         if(domainController.userIsSet())
             tableView.setItems(domainController.getReservationsFromUser());
+    }
+
+    @FXML
+    private void selectReservation(MouseEvent event) {
+        domainController.setCurrentReservation(tableView.getSelectionModel().getSelectedItem());
     }
     
 }

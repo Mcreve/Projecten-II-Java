@@ -24,6 +24,7 @@ public class ReservationMainPanelController extends GridPane {
         initLoader();
         this.add(new UserTableViewPanelController(domainController), 0, 0, 1, 2);
         this.add(new ReservationTableViewController(domainController), 1, 0);
+        this.add(new ReservationEditPanelController(domainController), 1, 1);
     }
 
     private void initLoader() throws RuntimeException {

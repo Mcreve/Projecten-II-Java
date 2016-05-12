@@ -15,14 +15,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 
 /**
  * FXML Controller class
  *
  * @author Ward Vanlerberghe
  */
-public class UserTableViewPanelController extends AnchorPane implements IObserver {
+public class UserTableViewPanelController extends GridPane implements IObserver {
 
     private DomainController domainController;
     @FXML
