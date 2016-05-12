@@ -6,6 +6,7 @@
 package gui.reservations;
 
 import domain.DomainController;
+import gui.users.UserTablePanelController;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
@@ -18,11 +19,13 @@ import javafx.scene.layout.GridPane;
 public class ReservationMainPanelController extends GridPane {
     
     private DomainController domainController;
-
+    private UserTableViewPanelController userTableViewPanelController;
     public ReservationMainPanelController(DomainController domainController){
         this.domainController = domainController;
         initLoader();
-        this.add(new UserTableViewPanelController(domainController), 0, 0, 1, 2);
+        userTableViewPanelController = new UserTableViewPanelController(domainController);
+        userTableViewPanelController.fillList();
+        this.add(userTableViewPanelController, 0, 0, 1, 2);
         this.add(new ReservationTableViewController(domainController), 1, 0);
         this.add(new ReservationEditPanelController(domainController), 1, 1);
     }

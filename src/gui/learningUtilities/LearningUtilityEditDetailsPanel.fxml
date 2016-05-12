@@ -179,7 +179,7 @@
          </GridPane.margin>
       </Button>
       <Button fx:id="btnNewCompany" mnemonicParsing="false" onAction="#showNewCompanyDialog" text="Nieuw..." GridPane.columnIndex="4" GridPane.rowIndex="3" />
-      <Button fx:id="btnDelete" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#delete" prefHeight="30.0" prefWidth="93.0" text="Verwijder" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
+      <Button fx:id="btnDelete" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#delete" prefHeight="30.0" prefWidth="75.0" text="Verwijder" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
          <GridPane.margin>
             <Insets right="95.0" />
          </GridPane.margin></Button>

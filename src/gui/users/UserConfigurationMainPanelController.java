@@ -8,6 +8,7 @@ package gui.users;
 import domain.DomainController;
 import domain.interfaces.IObserver;
 import domain.users.User;
+import gui.reservations.UserTableViewPanelController;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -31,7 +32,8 @@ public class UserConfigurationMainPanelController extends GridPane implements IO
 
     private DomainController domainController;
     private UserConfigurationPanelController userConfigurationPanelController;
-    
+    private UserTablePanelController userTablePanelController;
+
     /**
      * Initializes the controller class.
      */
@@ -59,13 +61,16 @@ public class UserConfigurationMainPanelController extends GridPane implements IO
     private void initGui(){
         
         userConfigurationPanelController = new UserConfigurationPanelController(domainController);
+        userTablePanelController = new UserTablePanelController(domainController);
+        userTablePanelController.fillList();
         this.add(userConfigurationPanelController, 0, 1);
+        this.add(userTablePanelController,0,0);
         
             
         }
     @Override
     public void update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 }
   

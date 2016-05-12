@@ -73,7 +73,8 @@ public class DomainController implements IObservable {
     private LearningUtility selectedLearningUtility;
     private Reservation currentReservation;
     private User currentUser;
-
+    private User selectedUser;
+    
     /**
      * @param test useless information
      * @deprecated Faulty use of setterInjection, use
@@ -112,6 +113,7 @@ public class DomainController implements IObservable {
         userCatalog = new Catalog<>(User.class);
         reservationCatalog = new Catalog<>(Reservation.class);
         observers = new ArrayList<>();
+        
         //learningUtilityList = FXCollections.observableArrayList(learningUtilityCatalog.getEntities());
         //filteredLearningUtilityList = new FilteredList<>(learningUtilityList, p -> true);
     }
@@ -123,6 +125,10 @@ public class DomainController implements IObservable {
      */
     private FilteredList<Reservation> getReservations() {
         return reservationCatalog.getEntities();
+    }
+    
+     private FilteredList<User> getUsers() {
+        return userCatalog.getEntities();
     }
     
     /**
@@ -146,6 +152,14 @@ public class DomainController implements IObservable {
      */
     public FilteredList<User> getUsersWithReservations(){
         return new FilteredList<>(FXCollections.observableList(getReservationsByUser().keySet().stream().collect(Collectors.toList())).sorted());
+    }
+    
+    
+    public FilteredList<User> getAdmins(){
+        return new FilteredList<>(FXCollections.observableList(getUsers().stream().collect(Collectors.toList())));
+       //Juiste code hieronder
+//return new FilteredList<>(FXCollections.observableList(getUsers().stream().filter(u -> u instanceof Manager).collect(Collectors.toList())));
+        
     }
     
     /**
@@ -261,10 +275,19 @@ public class DomainController implements IObservable {
     public Reservation getCurrentReservation() {
         return currentReservation;
     }
-    
+    public User getCurrentUser(){
+        return this.currentUser;
+    }
+    public User getSelectedUser(){
+        return this.selectedUser;
+    }
     public boolean userIsSet(){
         return currentUser == null ? false:true;
     }
+    public boolean selectedUserIsSet(){
+        return selectedUser == null ? false:true;
+    }
+    
 
     /**
      * Gets the {@link LearningUtility} that is marked as selected
@@ -323,7 +346,19 @@ public class DomainController implements IObservable {
     public void setUsers(ICatalog<User> userCatalog) {
         this.userCatalog = userCatalog;
     }
+    public void makeAdmin(){
+        
+        selectedUser = (Manager)selectedUser;
+        
+        
+    }
+    public void removeAdmin(){
+    
+        selectedUser = (Lector) selectedUser;
+        
+}
 
+    
     /**
      * This method edits the reservation marked as currently selected with the      {@link #setCurrentReservation(domain.learningUtility.Reservation) 
      * setCurrentReservation(Reservation)} with the parameters provided
@@ -973,5 +1008,10 @@ public class DomainController implements IObservable {
      */
     public void closeConnection() {
         Connection.close();
+    }
+
+    public void setSelectedUser(User user) {
+       this.selectedUser = user ;
+       notifyObservers();
     }
 }

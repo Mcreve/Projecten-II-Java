@@ -46,6 +46,10 @@ public class UserTableViewPanelController extends GridPane implements IObserver 
         colEmailAddress.setMinWidth(400);
        
         tableView.getColumns().addAll(colLastName, colFirstName, colEmailAddress);
+        
+    }
+    
+    public void fillList(){
         tableView.setItems(domainController.getUsersWithReservations());
     }
 
@@ -60,6 +64,9 @@ public class UserTableViewPanelController extends GridPane implements IObserver 
         }
     }
 
+    public TableView<User> getTableView(){
+        return this.tableView;
+    }
     @Override
     public void update() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -70,4 +77,5 @@ public class UserTableViewPanelController extends GridPane implements IObserver 
         domainController.setCurrentUser(tableView.getSelectionModel().getSelectedItem());
     }   
        
+    
 }

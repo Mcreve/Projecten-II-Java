@@ -24,19 +24,19 @@
       <RowConstraints vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label text="Naam" GridPane.rowIndex="1">
+      <Label text="Voornaam" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets right="15.0" />
          </GridPane.margin>
       </Label>
-      <TextField fx:id="txtName" maxWidth="-Infinity" prefHeight="30.0" prefWidth="350.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <TextField fx:id="txtFirstName" maxWidth="-Infinity" prefHeight="30.0" prefWidth="350.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets right="15.0" />
          </GridPane.margin>
       </TextField>
-      <Label text="E-mail" GridPane.rowIndex="2" GridPane.valignment="TOP">
+      <Label text="Naam" GridPane.rowIndex="2" GridPane.valignment="TOP">
          <GridPane.margin>
-            <Insets right="15.0" top="5.0" />
+            <Insets right="15.0" top="10.0" />
          </GridPane.margin>
       </Label>
       <Label fx:id="lblInfo" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="6" GridPane.valignment="CENTER">
@@ -47,7 +47,7 @@
             <Insets left="15.0" />
          </GridPane.margin>
       </Label>
-      <TextField fx:id="txtName1" maxWidth="-Infinity" prefHeight="30.0" prefWidth="350.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <TextField fx:id="txtName" maxWidth="-Infinity" prefHeight="30.0" prefWidth="350.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <Button fx:id="btnDellete" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#delete" prefHeight="30.0" prefWidth="80.0" text="Verwijderen" GridPane.columnIndex="1" GridPane.rowIndex="6">
          <GridPane.margin>
             <Insets left="25.0" />
@@ -58,12 +58,12 @@
             <Insets left="125.0" />
          </GridPane.margin>
       </Button>
-      <CheckBox fx:id="adminCheckBox" mnemonicParsing="false" onAction="#toggleAdmin" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <CheckBox fx:id="adminCheckBox" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets left="5.0" />
          </GridPane.margin>
       </CheckBox>
-      <Label text="Beheerder" GridPane.rowIndex="3">
+      <Label text="Beheerder" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets right="10.0" />
          </GridPane.margin>
@@ -73,6 +73,12 @@
             <Insets left="225.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="btnListLector" layoutX="316.0" layoutY="354.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showLectors" prefHeight="30.0" prefWidth="150.0" text="Selecteer lector" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <Button fx:id="btnListLector" layoutX="316.0" layoutY="354.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showLectors" prefHeight="30.0" prefWidth="150.0" text="Selecteer lector" GridPane.rowIndex="6" />
+      <TextField fx:id="txtEmail" layoutX="157.0" layoutY="105.0" maxWidth="-Infinity" prefHeight="30.0" prefWidth="350.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Label layoutX="108.0" layoutY="105.0" text="E-mail" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets right="15.0" />
+         </GridPane.margin>
+      </Label>
    </children>
 </fx:root>

@@ -8,6 +8,7 @@ package gui.users;
 import domain.DomainController;
 import domain.interfaces.IObservable;
 import domain.interfaces.IObserver;
+import domain.users.Manager;
 import domain.users.User;
 import java.io.IOException;
 import java.net.URL;
@@ -34,7 +35,9 @@ public class UserConfigurationPanelController extends GridPane implements IObser
     @FXML
     private Label lblInfo;
     @FXML
-    private TextField txtName1;
+    private TextField txtFirstName;
+    @FXML
+    private TextField txtEmail;
     @FXML
     private Button btnDellete;
     @FXML
@@ -54,7 +57,7 @@ public class UserConfigurationPanelController extends GridPane implements IObser
     public UserConfigurationPanelController(DomainController domainController) {
         this.domainController = domainController;
         initLoader();
-        domainController.addObserverToCatalog(this, User.class);
+        domainController.addObserver(this);
     }
 
     private void initLoader() throws RuntimeException {
@@ -74,11 +77,21 @@ public class UserConfigurationPanelController extends GridPane implements IObser
 
     @FXML
     private void edit(ActionEvent event) {
+       
+       User user = domainController.getSelectedUser();
+       user.setFirstName(txtFirstName.getText());
+       user.setLastName(txtName.getText());
+       user.setEmailAddress(txtEmail.getText());
+       if(adminCheckBox.isSelected())
+       {
+           domainController.makeAdmin();
+       }
+       else{
+           domainController.removeAdmin();
+       }
+       
     }
 
-    @FXML
-    private void toggleAdmin(ActionEvent event) {
-    }
 
     @FXML
     private void add(ActionEvent event) {
@@ -90,7 +103,15 @@ public class UserConfigurationPanelController extends GridPane implements IObser
 
     @Override
     public void update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        if(domainController.selectedUserIsSet()){
+            User user = domainController.getSelectedUser();
+            txtName.setText(user.getLastName());
+            txtFirstName.setText(user.getFirstName());
+            txtEmail.setText(user.getEmailAddress());
+            adminCheckBox.setSelected(user instanceof Manager);
+        }
+            
     }
 
 }

@@ -74,6 +74,8 @@ public class ReservationEditPanelController extends GridPane implements IObserve
 
     @Override
     public void update() {
+        
+        if(domainController.getCurrentReservation() != null){
         Reservation r = domainController.getCurrentReservation();
         
         LocalDate pickUpDate = r.getDateWanted().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -89,6 +91,7 @@ public class ReservationEditPanelController extends GridPane implements IObserve
         datePickerReturnDate.setValue(returnDate);
         txtLoanedOut.setText(Integer.toString(r.getAmount()));
         //Todo update txtAmountReturned when implemented in database and application
+        }
     }
     
 }
