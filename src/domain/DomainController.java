@@ -282,10 +282,10 @@ public class DomainController implements IObservable {
         return this.currentUserAdminPanel;
     }
     public boolean userIsSet(){
-        return currentUser == null ? false:true;
+        return currentUser != null;
     }
     public boolean CurrentUserIsAdminPanelSet(){
-        return currentUserAdminPanel == null ? false:true;
+        return currentUserAdminPanel != null;
     }
     
 

@@ -30,7 +30,6 @@ public class UserTablePanelController extends UserTableViewPanelController imple
     public UserTablePanelController(DomainController domainController) {
         super(domainController);
         this.domainController = domainController;
-        this.domainController.setCurrentUserAdminPanel(null);
         domainController.addObserver(this);
         domainController.addObserverToCatalog(this, User.class);
 

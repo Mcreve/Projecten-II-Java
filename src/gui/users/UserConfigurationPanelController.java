@@ -6,17 +6,13 @@
 package gui.users;
 
 import domain.DomainController;
-import domain.interfaces.IObservable;
 import domain.interfaces.IObserver;
 import domain.users.Manager;
 import domain.users.User;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -110,8 +106,8 @@ public class UserConfigurationPanelController extends GridPane implements IObser
     @Override
     public void update() {
         
-        if(domainController.CurrentUserIsAdminPanelSet()){
-            User user = domainController.getCurrentUserAdminPanel();
+        if(domainController.userIsSet()){
+            User user = domainController.getCurrentUser();
             txtName.setText(user.getLastName());
             txtFirstName.setText(user.getFirstName());
             txtEmail.setText(user.getEmailAddress());
