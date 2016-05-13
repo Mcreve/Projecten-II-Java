@@ -53,7 +53,7 @@ public class UserTableViewPanelController extends GridPane implements IObserver 
         tableView.setItems(domainController.getUsersWithReservations());
     }
 
-    protected void initLoader() throws RuntimeException {
+    private void initLoader() throws RuntimeException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("UserTableViewPanel.fxml"));
         loader.setRoot(this);
         loader.setController(this);
