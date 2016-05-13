@@ -30,7 +30,6 @@ public class UserTableViewPanelController extends GridPane implements IObserver 
     
     public UserTableViewPanelController(DomainController domainController){
         this.domainController = domainController;
-        this.domainController.setCurrentUser(null);
         initLoader();
         
         TableColumn<User, String> colLastName = new TableColumn<>("Familienaam");
@@ -53,7 +52,7 @@ public class UserTableViewPanelController extends GridPane implements IObserver 
         tableView.setItems(domainController.getUsersWithReservations());
     }
 
-    private void initLoader() throws RuntimeException {
+    protected void initLoader() throws RuntimeException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("UserTableViewPanel.fxml"));
         loader.setRoot(this);
         loader.setController(this);

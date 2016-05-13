@@ -23,47 +23,49 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author Ward Vanlerberghe
  */
-public class UserTablePanelController extends UserTableViewPanelController implements IObserver{
+public class UserTablePanelController extends UserTableViewPanelController implements IObserver {
 
     private DomainController domainController;
-   
 
-   
-    
-    public UserTablePanelController(DomainController domainController){
+    public UserTablePanelController(DomainController domainController) {
         super(domainController);
         this.domainController = domainController;
         this.domainController.setCurrentUserAdminPanel(null);
         domainController.addObserver(this);
         domainController.addObserverToCatalog(this, User.class);
-        
-       
+
     }
 
     /**
      *
      */
     @Override
-   public void fillList(){
-         getTableView().setItems(domainController.getAdmins());
+    public void fillList() {
+        getTableView().setItems(domainController.getAdmins());
     }
-  
+    
+    @Override
+    protected void initLoader(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/reservations/UserTableViewPanel.fxml"));
+        loader.setRoot(this);
+        loader.setController(this);
+        try{
+            loader.load();
+        } catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
     @FXML
     private void selectActiveUser(MouseEvent event) {
-        
+
         domainController.setCurrentUserAdminPanel(getTableView().getSelectionModel().getSelectedItem());
-        
-        
-    }   
+
+    }
+
     @Override
     public void update() {
         fillList();
         getTableView().refresh();
     }
-    }
-
-   
-
-    
-       
-
+}
