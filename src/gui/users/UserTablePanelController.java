@@ -34,6 +34,7 @@ public class UserTablePanelController extends UserTableViewPanelController imple
         super(domainController);
         this.domainController = domainController;
         this.domainController.setCurrentUserAdminPanel(null);
+        domainController.addObserver(this);
         domainController.addObserverToCatalog(this, User.class);
         
        
@@ -56,6 +57,7 @@ public class UserTablePanelController extends UserTableViewPanelController imple
     }   
     @Override
     public void update() {
+        fillList();
         getTableView().refresh();
     }
     }
