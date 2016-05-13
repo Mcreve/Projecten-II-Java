@@ -73,7 +73,7 @@ public class DomainController implements IObservable {
     private LearningUtility selectedLearningUtility;
     private Reservation currentReservation;
     private User currentUser;
-    private User selectedUser;
+    private User currentUserAdminPanel;
     
     /**
      * @param test useless information
@@ -278,14 +278,14 @@ public class DomainController implements IObservable {
     public User getCurrentUser(){
         return this.currentUser;
     }
-    public User getSelectedUser(){
-        return this.selectedUser;
+    public User getCurrentUserAdminPanel(){
+        return this.currentUserAdminPanel;
     }
     public boolean userIsSet(){
         return currentUser == null ? false:true;
     }
-    public boolean selectedUserIsSet(){
-        return selectedUser == null ? false:true;
+    public boolean CurrentUserIsAdminPanelSet(){
+        return currentUserAdminPanel == null ? false:true;
     }
     
 
@@ -346,17 +346,43 @@ public class DomainController implements IObservable {
     public void setUsers(ICatalog<User> userCatalog) {
         this.userCatalog = userCatalog;
     }
-    public void makeAdmin(){
+    
+    public void createAdmin(String email, String firstName, String LastName){
+        Manager newManager = new Manager();
+        newManager.setEmailAddress(email);
+        newManager.setFirstName(firstName);
+        newManager.setLastName(LastName);
+        userCatalog.addEntity(newManager);
+    }
+    public void makeAdmin(User user){
         
-        selectedUser = (Manager)selectedUser;
+        if(user instanceof Lector){
+        userCatalog.deleteEntity(user);
+        user = new Manager(user);
+        userCatalog.addEntity(user);
+        }
+        if(user instanceof Manager){
+            userCatalog.updateEntity(user);
+        }
+        notifyObservers();
         
         
     }
-    public void removeAdmin(){
-    
-        selectedUser = (Lector) selectedUser;
+    public void removeAdmin(User user){
+        
+        userCatalog.deleteEntity(user);
+        Lector downGradedUser = new Lector();
+        downGradedUser.setEmailAddress(user.getEmailAddress());
+        downGradedUser.setFirstName(user.getFirstName());
+        downGradedUser.setLastName(user.getLastName());
+        userCatalog.addEntity(downGradedUser);
+        
         
 }
+    public void deleteAdmin(User user){
+        userCatalog.deleteEntity(user);
+        
+    }
 
     
     /**
@@ -1010,8 +1036,8 @@ public class DomainController implements IObservable {
         Connection.close();
     }
 
-    public void setSelectedUser(User user) {
-       this.selectedUser = user ;
+    public void setCurrentUserAdminPanel(User user) {
+       this.currentUserAdminPanel= user ;
        notifyObservers();
     }
 }

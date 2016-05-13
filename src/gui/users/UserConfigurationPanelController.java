@@ -73,28 +73,34 @@ public class UserConfigurationPanelController extends GridPane implements IObser
 
     @FXML
     private void delete(ActionEvent event) {
+        
+        domainController.deleteAdmin(domainController.getCurrentUserAdminPanel());
+        domainController.setCurrentUserAdminPanel(null);
     }
 
     @FXML
     private void edit(ActionEvent event) {
        
-       User user = domainController.getSelectedUser();
+       User user = domainController.getCurrentUserAdminPanel();
        user.setFirstName(txtFirstName.getText());
        user.setLastName(txtName.getText());
        user.setEmailAddress(txtEmail.getText());
        if(adminCheckBox.isSelected())
        {
-           domainController.makeAdmin();
+           domainController.makeAdmin(user);
        }
        else{
-           domainController.removeAdmin();
+           domainController.removeAdmin(user);
        }
+       
        
     }
 
 
     @FXML
     private void add(ActionEvent event) {
+        
+        domainController.createAdmin(txtEmail.getText(),txtFirstName.getText(), txtName.getText());
     }
 
     @FXML
@@ -104,12 +110,18 @@ public class UserConfigurationPanelController extends GridPane implements IObser
     @Override
     public void update() {
         
-        if(domainController.selectedUserIsSet()){
-            User user = domainController.getSelectedUser();
+        if(domainController.CurrentUserIsAdminPanelSet()){
+            User user = domainController.getCurrentUserAdminPanel();
             txtName.setText(user.getLastName());
             txtFirstName.setText(user.getFirstName());
             txtEmail.setText(user.getEmailAddress());
             adminCheckBox.setSelected(user instanceof Manager);
+        }
+        else{
+            txtEmail.clear();
+            txtFirstName.clear();
+            txtName.clear();
+            adminCheckBox.setSelected(false);
         }
             
     }

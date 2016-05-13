@@ -18,6 +18,12 @@ public class Manager extends Lector{
         super();
     }
     
+    public Manager(User user){
+        this.setFirstName(user.getFirstName());
+        this.setEmailAddress(user.getEmailAddress());
+        this.setLastName(user.getLastName());
+        
+    }
     @Override
     public String toString(){
         return super.toString() + " " + this.getClass().getSimpleName();

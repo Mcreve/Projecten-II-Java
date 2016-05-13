@@ -23,7 +23,7 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author Ward Vanlerberghe
  */
-public class UserTablePanelController extends UserTableViewPanelController {
+public class UserTablePanelController extends UserTableViewPanelController implements IObserver{
 
     private DomainController domainController;
    
@@ -33,7 +33,9 @@ public class UserTablePanelController extends UserTableViewPanelController {
     public UserTablePanelController(DomainController domainController){
         super(domainController);
         this.domainController = domainController;
-        this.domainController.setSelectedUser(null);
+        this.domainController.setCurrentUserAdminPanel(null);
+        domainController.addObserverToCatalog(this, User.class);
+        
        
     }
 
@@ -48,10 +50,14 @@ public class UserTablePanelController extends UserTableViewPanelController {
     @FXML
     private void selectActiveUser(MouseEvent event) {
         
-        domainController.setSelectedUser(getTableView().getSelectionModel().getSelectedItem());
+        domainController.setCurrentUserAdminPanel(getTableView().getSelectionModel().getSelectedItem());
         
         
     }   
+    @Override
+    public void update() {
+        getTableView().refresh();
+    }
     }
 
    
