@@ -32,7 +32,6 @@ public class ReservationTableViewController extends GridPane implements IObserve
     public ReservationTableViewController(DomainController domainController){
         this.domainController = domainController;
         domainController.addObserver(this);
-        domainController.setCurrentReservation(null);
         initLoader();
         
         TableColumn<Reservation, String> colLearningUtility = new TableColumn<>("Leermiddel");
