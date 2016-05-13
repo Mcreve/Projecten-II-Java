@@ -9,6 +9,7 @@ import domain.catalogs.*;
 import domain.interfaces.ICatalog;
 import domain.interfaces.IObservable;
 import domain.interfaces.IObserver;
+import domain.interfaces.IReservationCatalog;
 import domain.learningUtility.*;
 import domain.users.*;
 import java.io.IOException;
@@ -20,6 +21,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -51,7 +54,7 @@ public class DomainController implements IObservable {
     private ICatalog<TargetGroup> targetGroupCatalog;
     private ICatalog<Location> locationCatalog;
     private ICatalog<User> userCatalog;
-    private ICatalog<Reservation> reservationCatalog;
+    private IReservationCatalog reservationCatalog;
 
     private List<IObserver> observers;
 
@@ -74,6 +77,7 @@ public class DomainController implements IObservable {
     private Reservation currentReservation;
     private User currentUser;
     private User currentUserAdminPanel;
+    private LocalDate currentDate;
     
     /**
      * @param test useless information
@@ -111,9 +115,8 @@ public class DomainController implements IObservable {
         targetGroupCatalog = new Catalog<>(TargetGroup.class);
         locationCatalog = new Catalog<>(Location.class);
         userCatalog = new Catalog<>(User.class);
-        reservationCatalog = new Catalog<>(Reservation.class);
+        reservationCatalog = new ReservationCatalog();
         observers = new ArrayList<>();
-        
         //learningUtilityList = FXCollections.observableArrayList(learningUtilityCatalog.getEntities());
         //filteredLearningUtilityList = new FilteredList<>(learningUtilityList, p -> true);
     }
@@ -167,6 +170,8 @@ public class DomainController implements IObservable {
      * @return a {@link FilteredList} with all {@link Reservation reservations} from the {@link User} currently marked as selected
      */
     public FilteredList<Reservation> getReservationsFromUser(){
+        if(currentUser == null)
+            return null;
         return new FilteredList<>(FXCollections.observableList(getReservationsByUser().get(currentUser)));
     }
 
@@ -288,6 +293,10 @@ public class DomainController implements IObservable {
         return currentUserAdminPanel != null;
     }
     
+    public LocalDate getCurrentDate(){
+        return this.currentDate;
+    }
+    
 
     /**
      * Gets the {@link LearningUtility} that is marked as selected
@@ -326,6 +335,13 @@ public class DomainController implements IObservable {
      */
     public void setCurrentUser(User user){
         this.currentUser = user;
+        notifyObservers();
+    }
+    
+    public void setCurrentDate(LocalDate date){
+        this.currentDate = date;
+        this.currentUser = null;
+        this.currentReservation = null;
         notifyObservers();
     }
 
@@ -988,6 +1004,11 @@ public class DomainController implements IObservable {
 
             return false; // Does not match.
         });
+    }
+    
+    public void changeDateFilter(){
+        Date d = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        reservationCatalog.changeFilter(d);
     }
 
     /**

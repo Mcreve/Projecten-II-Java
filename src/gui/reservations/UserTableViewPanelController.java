@@ -30,6 +30,7 @@ public class UserTableViewPanelController extends GridPane implements IObserver 
     
     public UserTableViewPanelController(DomainController domainController){
         this.domainController = domainController;
+        domainController.addObserver(this);
         initLoader();
         
         TableColumn<User, String> colLastName = new TableColumn<>("Familienaam");
@@ -69,7 +70,8 @@ public class UserTableViewPanelController extends GridPane implements IObserver 
     }
     @Override
     public void update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        domainController.changeDateFilter();
+        tableView.setItems(domainController.getUsersWithReservations());
     }
 
     @FXML

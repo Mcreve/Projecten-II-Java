@@ -40,9 +40,17 @@ public class ReservationTableViewController extends GridPane implements IObserve
         
         TableColumn<Reservation, Date> colDate = new TableColumn<>("Afhaaldatum");
         colDate.setCellValueFactory(new PropertyValueFactory<>("dateWanted"));
-        colDate.setMinWidth(50);
+        colDate.setMinWidth(100);
         
-        tableView.getColumns().addAll(colLearningUtility, colDate);
+        TableColumn<Reservation, Date> colReturnDate = new TableColumn<>("Indiendatum");
+        colReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
+        colDate.setMinWidth(100);
+        
+        TableColumn<Reservation, Integer> colAmount = new TableColumn<>("Aantal");
+        colAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        colAmount.setMinWidth(50);
+        
+        tableView.getColumns().addAll(colLearningUtility, colDate, colReturnDate, colAmount);
     }   
 
     private void initLoader() throws RuntimeException {
@@ -58,8 +66,7 @@ public class ReservationTableViewController extends GridPane implements IObserve
 
     @Override
     public void update() {
-        if(domainController.userIsSet())
-            tableView.setItems(domainController.getReservationsFromUser());
+        tableView.setItems(domainController.getReservationsFromUser());
     }
 
     @FXML

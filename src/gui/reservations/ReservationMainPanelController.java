@@ -6,9 +6,11 @@
 package gui.reservations;
 
 import domain.DomainController;
-import gui.users.UserTablePanelController;
 import java.io.IOException;
+import java.time.LocalDate;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.DatePicker;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -20,14 +22,25 @@ public class ReservationMainPanelController extends GridPane {
     
     private DomainController domainController;
     private UserTableViewPanelController userTableViewPanelController;
+    @FXML
+    private DatePicker datePicker;
     public ReservationMainPanelController(DomainController domainController){
         this.domainController = domainController;
         initLoader();
         userTableViewPanelController = new UserTableViewPanelController(domainController);
         userTableViewPanelController.fillList();
-        this.add(userTableViewPanelController, 0, 0, 1, 2);
-        this.add(new ReservationTableViewController(domainController), 1, 0);
-        this.add(new ReservationEditPanelController(domainController), 1, 1);
+        this.add(userTableViewPanelController, 0, 1, 1, 2);
+        this.add(new ReservationTableViewController(domainController), 1, 1);
+        this.add(new ReservationEditPanelController(domainController), 1, 2);
+        setNextPickupDate();
+    }
+
+    private void setNextPickupDate() {
+        int daysTillNextPickupMoment = 0;
+        if(LocalDate.now().getDayOfWeek().getValue() != 1)
+            daysTillNextPickupMoment = 8 - LocalDate.now().getDayOfWeek().getValue();
+        datePicker.setValue(LocalDate.now().plusDays(daysTillNextPickupMoment));
+        domainController.setCurrentDate(datePicker.getValue());
     }
 
     private void initLoader() throws RuntimeException {
@@ -39,6 +52,9 @@ public class ReservationMainPanelController extends GridPane {
         } catch (IOException e){
             throw new RuntimeException(e);
         }
+        datePicker.setOnAction(event -> {
+            domainController.setCurrentDate(datePicker.getValue());
+        });
     }
     
 }

@@ -37,7 +37,7 @@ public class Reservation implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @Column(name = "DateWanted")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date dateWanted;
     @Basic(optional = false)
     @Column(name = "Amount")
@@ -53,6 +53,11 @@ public class Reservation implements Serializable {
     @JoinColumn(name = "User_EmailAddress", referencedColumnName = "EmailAddress")
     @ManyToOne
     private User userEmailAddress;
+    @Column(name = "ReturnDate")
+    @Temporal(TemporalType.DATE)
+    private Date returnDate;
+    @Column(name = "AmountReturned")
+    private int amountReturned;
 
     public Reservation() {
     }
@@ -121,6 +126,22 @@ public class Reservation implements Serializable {
 
     public void setUserEmailAddress(User userEmailAddress) {
         this.userEmailAddress = userEmailAddress;
+    }
+    
+    public Date getReturnDate(){
+        return returnDate;
+    }
+    
+    public void setReturnDate(Date date){
+        this.returnDate = date;
+    }
+    
+    public int getAmountReturned(){
+        return amountReturned;
+    }
+    
+    public void setAmountReturned(int amountReturned){
+        this.amountReturned = amountReturned;
     }
 
     @Override
