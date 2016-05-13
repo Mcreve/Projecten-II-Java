@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<fx:root prefHeight="468.0" prefWidth="540.0" type="GridPane" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefWidth="500.0" type="GridPane" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="160.0" minWidth="123.0" prefWidth="147.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="413.0" minWidth="10.0" prefWidth="393.0" />
@@ -19,7 +19,6 @@
       <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
       <RowConstraints vgrow="SOMETIMES" />
   </rowConstraints>
@@ -39,7 +38,7 @@
             <Insets right="15.0" top="10.0" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="lblInfo" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+      <Label fx:id="lblInfo" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
          <opaqueInsets>
             <Insets right="15.0" />
          </opaqueInsets>
@@ -48,37 +47,37 @@
          </GridPane.margin>
       </Label>
       <TextField fx:id="txtName" maxWidth="-Infinity" prefHeight="30.0" prefWidth="350.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Button fx:id="btnDellete" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#delete" prefHeight="30.0" prefWidth="80.0" text="Verwijderen" GridPane.columnIndex="1" GridPane.rowIndex="6">
-         <GridPane.margin>
-            <Insets left="25.0" />
-         </GridPane.margin>
-      </Button>
-      <Button fx:id="btnEdit" layoutX="157.0" layoutY="354.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#edit" prefHeight="30.0" prefWidth="80.0" text="Wijzigen" GridPane.columnIndex="1" GridPane.rowIndex="6">
-         <GridPane.margin>
-            <Insets left="125.0" />
-         </GridPane.margin>
-      </Button>
+      <TextField fx:id="txtEmail" layoutX="157.0" layoutY="105.0" maxWidth="-Infinity" prefHeight="30.0" prefWidth="350.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <CheckBox fx:id="adminCheckBox" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets left="5.0" />
          </GridPane.margin>
       </CheckBox>
+      <Button fx:id="btnDelete" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#delete" prefHeight="30.0" prefWidth="80.0" text="Verwijderen" GridPane.columnIndex="1" GridPane.rowIndex="5">
+         <GridPane.margin>
+            <Insets left="25.0" />
+         </GridPane.margin>
+      </Button>
+      <Button fx:id="btnEdit" layoutX="157.0" layoutY="354.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#edit" prefHeight="30.0" prefWidth="80.0" text="Wijzigen" GridPane.columnIndex="1" GridPane.rowIndex="5">
+         <GridPane.margin>
+            <Insets left="125.0" />
+         </GridPane.margin>
+      </Button>
       <Label text="Beheerder" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets right="10.0" />
          </GridPane.margin>
       </Label>
-      <Button fx:id="btnAdd" layoutX="316.0" layoutY="354.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#add" prefHeight="30.0" prefWidth="80.0" text="Toevoegen" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="6">
+      <Button fx:id="btnAdd" layoutX="316.0" layoutY="354.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#add" prefHeight="30.0" prefWidth="80.0" text="Toevoegen" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets left="225.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="btnListLector" layoutX="316.0" layoutY="354.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showLectors" prefHeight="30.0" prefWidth="150.0" text="Selecteer lector" GridPane.rowIndex="6" />
-      <TextField fx:id="txtEmail" layoutX="157.0" layoutY="105.0" maxWidth="-Infinity" prefHeight="30.0" prefWidth="350.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <Label layoutX="108.0" layoutY="105.0" text="E-mail" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets right="15.0" />
          </GridPane.margin>
       </Label>
+      <Button fx:id="btnReset" layoutX="282.0" layoutY="354.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#reset" prefHeight="30.0" prefWidth="80.0" text="Reset" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
    </children>
 </fx:root>

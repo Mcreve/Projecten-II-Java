@@ -12,6 +12,7 @@ import domain.learningUtility.FieldOfStudy;
 import domain.learningUtility.LearningUtility;
 import domain.learningUtility.Location;
 import domain.learningUtility.TargetGroup;
+import domain.users.User;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -24,12 +25,9 @@ import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Matchers.any;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.any;
 
 /**
@@ -61,6 +59,8 @@ public class DomainControllerTests {
     private ICatalog<TargetGroup> targetGroupCatalogMock;
     @Mock
     private ICatalog<Location> locationCatalogMock;
+    @Mock
+    private ICatalog<User> userCatalogMock;
     
     @Before
     public void setUp() {

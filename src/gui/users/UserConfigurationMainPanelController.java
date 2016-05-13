@@ -63,7 +63,7 @@ public class UserConfigurationMainPanelController extends GridPane implements IO
         userConfigurationPanelController = new UserConfigurationPanelController(domainController);
         userTablePanelController = new UserTablePanelController(domainController);
         userTablePanelController.fillList();
-        this.add(userConfigurationPanelController, 0, 1);
+        this.add(userConfigurationPanelController, 1, 0);
         this.add(userTablePanelController,0,0);
         
             

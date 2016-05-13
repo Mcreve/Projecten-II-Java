@@ -50,6 +50,7 @@ public class UserTableViewPanelController extends GridPane implements IObserver 
     
     public void fillList(){
         tableView.setItems(domainController.getUsersWithReservations());
+       
     }
 
     protected void initLoader() throws RuntimeException {

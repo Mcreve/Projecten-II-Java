@@ -7,6 +7,7 @@ package gui.users;
 
 import domain.DomainController;
 import domain.interfaces.IObserver;
+import domain.users.Lector;
 import domain.users.Manager;
 import domain.users.User;
 import java.io.IOException;
@@ -35,7 +36,7 @@ public class UserConfigurationPanelController extends GridPane implements IObser
     @FXML
     private TextField txtEmail;
     @FXML
-    private Button btnDellete;
+    private Button btnDelete;
     @FXML
     private Button btnEdit;
     @FXML
@@ -44,6 +45,8 @@ public class UserConfigurationPanelController extends GridPane implements IObser
     private Button btnAdd;
     @FXML
     private Button btnListLector;
+    @FXML
+    private Button btnReset;
 
     private DomainController domainController;
 
@@ -54,6 +57,7 @@ public class UserConfigurationPanelController extends GridPane implements IObser
         this.domainController = domainController;
         initLoader();
         domainController.addObserver(this);
+        domainController.addObserverToCatalog(this, User.class);
     }
 
     private void initLoader() throws RuntimeException {
@@ -70,23 +74,33 @@ public class UserConfigurationPanelController extends GridPane implements IObser
     @FXML
     private void delete(ActionEvent event) {
         
-        domainController.deleteAdmin(domainController.getCurrentUserAdminPanel());
-        domainController.setCurrentUserAdminPanel(null);
+        User deletedUser = domainController.deleteAdmin(domainController.getCurrentUser());
+        updateLabels(deletedUser);
+        
+    }
+    @FXML
+    private void reset(ActionEvent event){
+        updateLabels(null);
+        domainController.setCurrentUser(null);
     }
 
     @FXML
     private void edit(ActionEvent event) {
        
-       User user = domainController.getCurrentUserAdminPanel();
+       User user = domainController.getCurrentUser();
        user.setFirstName(txtFirstName.getText());
        user.setLastName(txtName.getText());
        user.setEmailAddress(txtEmail.getText());
        if(adminCheckBox.isSelected())
        {
-           domainController.makeAdmin(user);
+          Manager upgradedManager = (Manager) domainController.makeAdmin(user);
+           updateLabels(upgradedManager);
+           
+           
        }
        else{
-           domainController.removeAdmin(user);
+         Lector downgradedManager =   (Lector) domainController.removeAdmin(user);
+           updateLabels(downgradedManager);
        }
        
        
@@ -96,7 +110,11 @@ public class UserConfigurationPanelController extends GridPane implements IObser
     @FXML
     private void add(ActionEvent event) {
         
-        domainController.createAdmin(txtEmail.getText(),txtFirstName.getText(), txtName.getText());
+      
+        Manager manager = (Manager) domainController.createAdmin(txtEmail.getText(),txtFirstName.getText(), txtName.getText());
+        updateLabels(manager);
+       
+        
     }
 
     @FXML
@@ -113,13 +131,25 @@ public class UserConfigurationPanelController extends GridPane implements IObser
             txtEmail.setText(user.getEmailAddress());
             adminCheckBox.setSelected(user instanceof Manager);
         }
-        else{
+
+    }  
+        public void updateLabels(User user){
+            if(user == null)
+            {
             txtEmail.clear();
             txtFirstName.clear();
             txtName.clear();
             adminCheckBox.setSelected(false);
-        }
-            
+            domainController.setCurrentUser(null);
+            }
+            else{
+           txtFirstName.setText(user.getFirstName());
+           txtFirstName.setText(user.getFirstName());
+           adminCheckBox.setSelected(user instanceof Manager);
+           domainController.setCurrentUser(user);
+            }
+          
+}   
     }
 
-}
+

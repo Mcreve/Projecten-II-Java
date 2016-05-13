@@ -347,14 +347,15 @@ public class DomainController implements IObservable {
         this.userCatalog = userCatalog;
     }
     
-    public void createAdmin(String email, String firstName, String LastName){
+    public User createAdmin(String email, String firstName, String LastName){
         Manager newManager = new Manager();
         newManager.setEmailAddress(email);
         newManager.setFirstName(firstName);
         newManager.setLastName(LastName);
         userCatalog.addEntity(newManager);
+        return newManager;
     }
-    public void makeAdmin(User user){
+    public User makeAdmin(User user){
         
         if(user instanceof Lector){
         userCatalog.deleteEntity(user);
@@ -365,10 +366,10 @@ public class DomainController implements IObservable {
             userCatalog.updateEntity(user);
         }
         notifyObservers();
-        
+        return user;
         
     }
-    public void removeAdmin(User user){
+    public User removeAdmin(User user){
         
         userCatalog.deleteEntity(user);
         Lector downGradedUser = new Lector();
@@ -376,11 +377,13 @@ public class DomainController implements IObservable {
         downGradedUser.setFirstName(user.getFirstName());
         downGradedUser.setLastName(user.getLastName());
         userCatalog.addEntity(downGradedUser);
+        return downGradedUser;
         
         
 }
-    public void deleteAdmin(User user){
+    public User deleteAdmin(User user){
         userCatalog.deleteEntity(user);
+        return null;
         
     }
 

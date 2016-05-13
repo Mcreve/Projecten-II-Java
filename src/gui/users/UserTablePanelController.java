@@ -32,6 +32,10 @@ public class UserTablePanelController extends UserTableViewPanelController imple
         this.domainController = domainController;
         domainController.addObserver(this);
         domainController.addObserverToCatalog(this, User.class);
+        TableColumn<User, String> colAdmin = new TableColumn<>("Admin");
+        colAdmin.setCellValueFactory(new PropertyValueFactory<>("Discriminator"));
+        colAdmin.setMinWidth(400);
+        getTableView().getColumns().add(colAdmin);
 
     }
 
@@ -41,6 +45,7 @@ public class UserTablePanelController extends UserTableViewPanelController imple
     @Override
     public void fillList() {
         getTableView().setItems(domainController.getAdmins());
+         System.out.println(domainController.getAdmins());
     }
     
     @Override
