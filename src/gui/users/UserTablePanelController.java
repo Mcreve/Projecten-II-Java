@@ -39,6 +39,18 @@ public class UserTablePanelController extends UserTableViewPanelController imple
         
        
     }
+    
+    @Override
+    protected void initLoader() throws RuntimeException {
+        FXMLLoader loader = new FXMLLoader(super.getClass().getResource("UserTableViewPanel.fxml"));
+        loader.setRoot(this);
+        loader.setController(this);
+        try{
+            loader.load();
+        } catch(IOException ex){
+            throw new RuntimeException(ex);
+        }
+    }
 
     /**
      *
@@ -60,7 +72,7 @@ public class UserTablePanelController extends UserTableViewPanelController imple
         fillList();
         getTableView().refresh();
     }
-    }
+}
 
    
 
