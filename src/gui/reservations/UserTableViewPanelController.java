@@ -30,6 +30,7 @@ public class UserTableViewPanelController extends GridPane implements IObserver 
     
     public UserTableViewPanelController(DomainController domainController){
         this.domainController = domainController;
+        this.domainController.setCurrentUser(null);
         initLoader();
         
         TableColumn<User, String> colLastName = new TableColumn<>("Familienaam");

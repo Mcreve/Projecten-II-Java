@@ -57,20 +57,20 @@ public class UserTablePanelController extends UserTableViewPanelController imple
      */
     @Override
    public void fillList(){
-         super.getTableView().setItems(domainController.getAdmins());
+         getTableView().setItems(domainController.getAdmins());
     }
   
     @FXML
     private void selectActiveUser(MouseEvent event) {
         
-        domainController.setCurrentUserAdminPanel(super.getTableView().getSelectionModel().getSelectedItem());
+        domainController.setCurrentUserAdminPanel(getTableView().getSelectionModel().getSelectedItem());
         
         
     }   
     @Override
     public void update() {
         fillList();
-        super.getTableView().refresh();
+        getTableView().refresh();
     }
 }
 
