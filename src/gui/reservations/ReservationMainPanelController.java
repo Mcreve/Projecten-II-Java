@@ -30,8 +30,12 @@ public class ReservationMainPanelController extends GridPane {
         userTableViewPanelController = new UserTableViewPanelController(domainController);
         userTableViewPanelController.fillList();
         this.add(userTableViewPanelController, 0, 1, 1, 2);
-        this.add(new ReservationTableViewController(domainController), 1, 1);
-        this.add(new ReservationEditPanelController(domainController), 1, 2);
+        ReservationTableViewController reservationTableViewController =  new ReservationTableViewController(domainController);
+        ReservationEditPanelController reservationEditPanelController = new ReservationEditPanelController(domainController,reservationTableViewController);
+        this.add(reservationTableViewController, 1, 1);
+        this.add(reservationEditPanelController , 1, 2);
+        reservationTableViewController.setEditPanel(reservationEditPanelController);
+
         setNextPickupDate();
     }
 

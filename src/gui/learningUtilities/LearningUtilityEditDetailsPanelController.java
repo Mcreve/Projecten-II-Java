@@ -8,6 +8,8 @@ package gui.learningUtilities;
 import domain.DomainController;
 import domain.interfaces.IObserver;
 import domain.learningUtility.LearningUtility;
+
+
 import gui.creationPanels.CompanyCreationPanelController;
 import gui.creationPanels.FieldOfStudyCreationPanelController;
 import gui.creationPanels.LocationCreationPanelController;

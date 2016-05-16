@@ -8,6 +8,7 @@ package gui.reservations;
 import domain.DomainController;
 import domain.interfaces.IObserver;
 import domain.learningUtility.Reservation;
+import domain.users.User;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -18,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
@@ -27,7 +29,9 @@ import javafx.scene.layout.GridPane;
  * @author Ward Vanlerberghe
  */
 public class ReservationEditPanelController extends GridPane implements IObserver {
-
+    
+    ReservationTableViewController reservationTableViewController;
+    
     @FXML
     private DatePicker datePickerPickupDate;
     @FXML
@@ -37,14 +41,17 @@ public class ReservationEditPanelController extends GridPane implements IObserve
     @FXML
     private TextField txtReturned;
     @FXML
-    private Button btnCancel;
-    @FXML
     private Button btnSave;
     private DomainController domainController;
+    @FXML
+    private Button btnDelete;
     
-    public ReservationEditPanelController(DomainController domainController){
+    public ReservationEditPanelController(DomainController domainController, ReservationTableViewController reservationTableViewController){
         this.domainController = domainController;
+        this.reservationTableViewController = reservationTableViewController;
         domainController.addObserver(this);
+        domainController.addObserverToCatalog(this, Reservation.class);
+
         initLoader();
     }
 
@@ -60,16 +67,14 @@ public class ReservationEditPanelController extends GridPane implements IObserve
     }
     
 
-    @FXML
     private void cancel(ActionEvent event) {
         update();
     }
 
     @FXML
     private void edit(ActionEvent event) {
-        //ToDo Add returndate when database is changed
         Date pickUpDate = Date.from(datePickerPickupDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        domainController.editReservation(null, pickUpDate,Integer.parseInt(txtLoanedOut.getText()));
+        domainController.editReservation(null, pickUpDate,Integer.parseInt(txtLoanedOut.getText()),Integer.parseInt(txtReturned.getText()));
     }
 
     @Override
@@ -90,8 +95,18 @@ public class ReservationEditPanelController extends GridPane implements IObserve
         
         datePickerReturnDate.setValue(returnDate);
         txtLoanedOut.setText(Integer.toString(r.getAmount()));
-        //Todo update txtAmountReturned when implemented in database and application
+        txtReturned.setText(Integer.toString(r.getAmountReturned()));
         }
+    }
+
+    @FXML
+    private void delete(ActionEvent event) {
+        Reservation r = domainController.getCurrentReservation();
+        domainController.deleteReservation(r);
+        reservationTableViewController.update();
+        domainController.notifyObservers();
+        //Item gets deleted from DB (see website / C#) But the view won't update yet.
+        //Any Idea's how to fix this?
     }
     
 }

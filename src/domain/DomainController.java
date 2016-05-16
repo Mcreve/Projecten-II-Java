@@ -10,7 +10,12 @@ import domain.interfaces.ICatalog;
 import domain.interfaces.IObservable;
 import domain.interfaces.IObserver;
 import domain.interfaces.IReservationCatalog;
-import domain.learningUtility.*;
+import domain.learningUtility.Reservation;
+import domain.learningUtility.FieldOfStudy;
+import domain.learningUtility.Company;
+import domain.learningUtility.LearningUtility;
+import domain.learningUtility.Location;
+import domain.learningUtility.TargetGroup;
 import domain.users.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -325,8 +330,9 @@ public class DomainController implements IObservable {
      * selected
      */
     public void setCurrentReservation(Reservation reservation) {
+        
         this.currentReservation = reservation;
-        notifyObservers();
+     //   notifyObservers();
     }
     
     /**
@@ -402,6 +408,12 @@ public class DomainController implements IObservable {
         return null;
         
     }
+    
+    public Reservation deleteReservation(Reservation reservation)
+    {
+        reservationCatalog.deleteEntity(reservation);
+        return null;
+    }
 
     
     /**
@@ -412,10 +424,13 @@ public class DomainController implements IObservable {
      * @param returnDate The date the {@link LearningUtility} should be returned
      * @param amount The amount of items that are reserved for this reservation
      */
-    public void editReservation(String daysBlocked, Date returnDate, int amount) {
+    public void editReservation(String daysBlocked, Date returnDate, int amount, int amountReturned) {
         currentReservation.setDateWanted(returnDate);
         currentReservation.setAmount(amount);
         currentReservation.setDaysBlocked(daysBlocked);
+        currentReservation.setAmountReturned(amountReturned);
+        reservationCatalog.updateEntity(currentReservation);
+
     }
 
     /**
@@ -982,7 +997,7 @@ public class DomainController implements IObservable {
      * {@link LearningUtility#name}, {@link LearningUtility#description} and
      * {@link LearningUtility#articleNumber} fields.
      *
-     * @param filterValue The string on wich the list should be filtered
+     * @param filterValue The string on which the list should be filtered
      */
     public void changeFilter(String filterValue) {
         filteredLearningUtilityList = getLearningUtilities();

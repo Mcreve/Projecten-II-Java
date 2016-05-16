@@ -24,10 +24,11 @@ import javafx.scene.layout.GridPane;
  * @author Ward Vanlerberghe
  */
 public class ReservationTableViewController extends GridPane implements IObserver {
-
+    private DomainController domainController;
+    private ReservationEditPanelController reservationEditPanelController;
     @FXML
     private TableView<Reservation> tableView;
-    private DomainController domainController;
+    
 
     public ReservationTableViewController(DomainController domainController){
         this.domainController = domainController;
@@ -63,15 +64,28 @@ public class ReservationTableViewController extends GridPane implements IObserve
             throw new RuntimeException(e);
         }
     }   
-
+			
     @Override
-    public void update() {
+    public void update() 
+    {
+        tableView.refresh();
         tableView.setItems(domainController.getReservationsFromUser());
     }
 
     @FXML
-    private void selectReservation(MouseEvent event) {
-        domainController.setCurrentReservation(tableView.getSelectionModel().getSelectedItem());
+    private void select(MouseEvent event) {
+        
+        Reservation res = tableView.getSelectionModel().getSelectedItem();
+        domainController.setCurrentReservation(res);
+        reservationEditPanelController.update();
+
     }
+    
+    public void setEditPanel(ReservationEditPanelController reservationEditPanelController)
+    {
+        this.reservationEditPanelController = reservationEditPanelController;
+    }
+    
+
     
 }

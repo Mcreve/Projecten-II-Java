@@ -103,7 +103,7 @@ public class Catalog<T> implements ICatalog<T>{
     public void deleteEntity(T entity) {
         loadEntities();
         GenericDaoJpa.startTransaction();
-        repository.delete(entity);        
+        repository.delete(entity);       
         GenericDaoJpa.commitTransaction();
         this.entities.remove(entity);
         notifyObservers();
