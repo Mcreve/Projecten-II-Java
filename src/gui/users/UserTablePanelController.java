@@ -10,13 +10,16 @@ import domain.interfaces.IObserver;
 import domain.users.User;
 import gui.reservations.UserTableViewPanelController;
 import java.io.IOException;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -32,11 +35,12 @@ public class UserTablePanelController extends UserTableViewPanelController imple
         this.domainController = domainController;
         domainController.addObserver(this);
         domainController.addObserverToCatalog(this, User.class);
-        TableColumn<User, String> colAdmin = new TableColumn<>("Admin");
-        colAdmin.setCellValueFactory(new PropertyValueFactory<>("Discriminator"));
-        colAdmin.setMinWidth(400);
-        getTableView().getColumns().add(colAdmin);
-
+       // TableColumn<User, String> colEmailAddress = new TableColumn<>("Admin");
+       // colEmailAddress.setCellValueFactory((CellDataFeatures<User, String> p) -> p.getValue().getClass().getName()
+       // );
+ 
+       // colEmailAddress.setMinWidth(400);
+       
     }
 
     /**
@@ -45,7 +49,6 @@ public class UserTablePanelController extends UserTableViewPanelController imple
     @Override
     public void fillList() {
         getTableView().setItems(domainController.getAdmins());
-         System.out.println(domainController.getAdmins());
     }
     
     @Override
@@ -63,7 +66,7 @@ public class UserTablePanelController extends UserTableViewPanelController imple
     @FXML
     private void selectActiveUser(MouseEvent event) {
 
-        domainController.setCurrentUserAdminPanel(getTableView().getSelectionModel().getSelectedItem());
+        domainController.setCurrentUser(getTableView().getSelectionModel().getSelectedItem());
 
     }
 

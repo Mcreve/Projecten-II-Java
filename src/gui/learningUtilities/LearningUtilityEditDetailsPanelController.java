@@ -127,6 +127,7 @@ public class LearningUtilityEditDetailsPanelController extends GridPane implemen
     }
         private void loadLearningUtilityDetails()
         {
+           
         LearningUtility selectedLearningUtility = domainController.getSelectedLearningUtility();
         txtName.setText(selectedLearningUtility.getName());
         txtArticleNumber.setText(selectedLearningUtility.getArticleNumber());
@@ -146,17 +147,13 @@ public class LearningUtilityEditDetailsPanelController extends GridPane implemen
         );
         cboCompanies.getSelectionModel().select(selectedLearningUtility.getCompanyId().getName());
         cboLocations.getSelectionModel().select(selectedLearningUtility.getLocationId().getName());
-         
+            
         }   
 
     @FXML
     private void edit(ActionEvent event) {
         
         LearningUtility currentLearningUtility = domainController.getSelectedLearningUtility();
-        Stage stage = (Stage) btnEdit.getScene().getWindow();
-        PauseTransition delay = new PauseTransition(Duration.millis(4000));
-        delay.setOnFinished( ev -> stage.close() );
-        delay.play();
         
         String infoMessage = validateFields();
                 
@@ -225,7 +222,10 @@ public class LearningUtilityEditDetailsPanelController extends GridPane implemen
   
             
         lblInfo.setText(name + " werd succesvol gewijzigd.");
-
+        Stage stage = (Stage) btnEdit.getScene().getWindow();
+        PauseTransition delay = new PauseTransition(Duration.millis(4000));
+        delay.setOnFinished( ev -> stage.close() );
+        delay.play();
         }catch(Exception e)
         {
             lblInfo.setText(e.getMessage());
@@ -267,11 +267,19 @@ public class LearningUtilityEditDetailsPanelController extends GridPane implemen
 
     @FXML
     private void delete(ActionEvent event) {
-        
+        try{
         LearningUtility currentLearningUtility = domainController.getSelectedLearningUtility();
         domainController.removeLearningUtility(currentLearningUtility);
         Stage stage = (Stage) btnDelete.getScene().getWindow();
-        stage.close();
+        PauseTransition delay = new PauseTransition(Duration.millis(4000));
+        delay.setOnFinished( ev -> stage.close() );
+        delay.play();
+        lblInfo.setText(currentLearningUtility.getName() + " werd succesvol verwijderd.");
+        }
+        catch(Exception e)
+        {
+            lblInfo.setText(e.getMessage());
+        }
         
     }
 

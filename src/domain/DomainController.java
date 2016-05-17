@@ -164,9 +164,8 @@ public class DomainController implements IObservable {
     
     
     public FilteredList<User> getAdmins(){
-        return new FilteredList<>(FXCollections.observableList(getUsers().stream().collect(Collectors.toList())));
-       //Juiste code hieronder
-//return new FilteredList<>(FXCollections.observableList(getUsers().stream().filter(u -> u instanceof Manager).collect(Collectors.toList())));
+        
+return new FilteredList<>(FXCollections.observableList(getUsers().stream().filter(u -> u instanceof Manager || u instanceof Lector).collect(Collectors.toList())));
         
     }
     
@@ -1001,7 +1000,7 @@ public class DomainController implements IObservable {
      */
     public void changeFilter(String filterValue) {
         filteredLearningUtilityList = getLearningUtilities();
-        filteredLearningUtilityList.setPredicate(learningUtility -> {
+        filteredLearningUtilityList.setPredicate((LearningUtility learningUtility) -> {
             // If filter text is empty, display all LearningUtilities.
             if (filterValue == null || filterValue.isEmpty()) {
                 return true;
@@ -1014,9 +1013,15 @@ public class DomainController implements IObservable {
                 return true; // Filter matches articlenumber.
             } else if (learningUtility.getDescription().toLowerCase().contains(lowerCaseFilter)) {
                 return true; //Filter matches description 
-
+            } else if (learningUtility.getLocationId().getName().toLowerCase().contains(lowerCaseFilter)) {
+                return true; //Filter matches location name
+            } else if (learningUtility.getCompanyId().getName().toLowerCase().contains(lowerCaseFilter)) {
+                return true; //Filter matches company name
+           // } else if (learningUtility.getFieldOfStudyList().stream().anyMatch(x -> x.getName().contains(lowerCaseFilter))) {
+           //    return true; //Filter matches one or more fields op study
+           //  } else if (learningUtility.getTargetGroupList().stream().anyMatch(x -> x.getName().contains(lowerCaseFilter))) {
+           //    return true; //Filter matches one or more targetgroups
             }
-
             return false; // Does not match.
         });
     }

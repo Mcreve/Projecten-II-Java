@@ -139,6 +139,7 @@ public class LearningUtilityEditPanelController extends GridPane implements IObs
 
     @FXML
     private void openEditor(MouseEvent event) {
+        if(!(tableView.getSelectionModel().selectedItemProperty().getValue() == null)){
         domainController.setSelectedLearningUtility(tableView.getSelectionModel().selectedItemProperty().getValue());
         Stage stage = new Stage();
         stage.setTitle("Wijzig LearningUtility");
@@ -146,6 +147,7 @@ public class LearningUtilityEditPanelController extends GridPane implements IObs
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+        }
     }
 
     @Override

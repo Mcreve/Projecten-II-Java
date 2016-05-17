@@ -117,10 +117,6 @@ public class UserConfigurationPanelController extends GridPane implements IObser
         
     }
 
-    @FXML
-    private void showLectors(ActionEvent event) {
-    }
-
     @Override
     public void update() {
         
