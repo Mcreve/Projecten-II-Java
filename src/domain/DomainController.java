@@ -1036,10 +1036,10 @@ return new FilteredList<>(FXCollections.observableList(getUsers().stream().filte
                 return true; //Filter matches location name
             } else if (learningUtility.getCompanyId().getName().toLowerCase().contains(lowerCaseFilter)) {
                 return true; //Filter matches company name
-           // } else if (learningUtility.getFieldOfStudyList().stream().anyMatch(x -> x.getName().contains(lowerCaseFilter))) {
-           //    return true; //Filter matches one or more fields op study
-           //  } else if (learningUtility.getTargetGroupList().stream().anyMatch(x -> x.getName().contains(lowerCaseFilter))) {
-           //    return true; //Filter matches one or more targetgroups
+           } else if (learningUtility.getFieldOfStudyList().stream().anyMatch(x -> x.getName().toLowerCase().contains(lowerCaseFilter))) {
+               return true; //Filter matches one or more fields op study
+             } else if (learningUtility.getTargetGroupList().stream().anyMatch(x -> x.getName().toLowerCase().contains(lowerCaseFilter))) {
+               return true; //Filter matches one or more targetgroups
             }
             return false; // Does not match.
         });
