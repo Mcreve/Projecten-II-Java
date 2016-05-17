@@ -7,15 +7,20 @@ package tests;
 
 import domain.DomainController;
 import domain.interfaces.ICatalog;
+import domain.interfaces.IReservationCatalog;
 import domain.learningUtility.Company;
 import domain.learningUtility.FieldOfStudy;
 import domain.learningUtility.LearningUtility;
 import domain.learningUtility.Location;
+import domain.learningUtility.Reservation;
 import domain.learningUtility.TargetGroup;
 import domain.users.User;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
@@ -43,9 +48,22 @@ public class DomainControllerTests {
     private LearningUtility learningUtility1;
     private LearningUtility learningUtility3;
     private LearningUtility learningUtility2;
+    private Reservation reservation1;
+    private Reservation reservation2;
+    
+    private User user1;
+    private User user2;
+    
+    
     private List<LearningUtility> learningUtilityList;
+    private List<Reservation> reservationList;
+    
     private ObservableList<LearningUtility> observableLearningUtilityList;
+    private ObservableList<Reservation> observableReservationList;
+
     private FilteredList<LearningUtility> filteredLearningUtilityList;
+    private FilteredList<Reservation> filteredReservationList;
+
     private final String TESTSTRING = "CHANGED";
     private final String TESTSTRING2 = "ALSO CHANGED";
     
@@ -61,11 +79,14 @@ public class DomainControllerTests {
     private ICatalog<Location> locationCatalogMock;
     @Mock
     private ICatalog<User> userCatalogMock;
+    @Mock
+    private IReservationCatalog reservationCatalogMock;
     
     @Before
-    public void setUp() {
+    public void setUp() throws ParseException {
         MockitoAnnotations.initMocks(this);       
         learningUtilityList = new ArrayList<>();
+        reservationList = new ArrayList<>();
        
         learningUtility1 = new LearningUtility(0,"Wereldbol","Beschrijving van een wereldbol",BigDecimal.TEN,true,10,1,"Artkl.001");
         learningUtility1.setCompanyId(new Company(1,"Name",null,null,null));
@@ -95,6 +116,46 @@ public class DomainControllerTests {
         learningUtility3.setTargetGroupList(targetGroups);
         learningUtilityList.add(learningUtility3); 
         
+        
+        user1 = new User("carl.merkx@hogent.be");
+        user2 = new User("benjamin.vertonghen@student.hogent.be");
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date dateWanted = sdf.parse("16/05/2016");
+        Date reservationDate = sdf.parse("10/05/2016");
+        Date returnDate = sdf.parse("20/05/2016");
+        
+        reservation1 = new Reservation();
+        reservation1.setAmount(10);
+        reservation1.setAmountReturned(0);
+        reservation1.setDateWanted(dateWanted);
+        reservation1.setId(1);
+        reservation1.setLearningUtilityId(learningUtility1);
+        reservation1.setReservationDate(reservationDate);
+        reservation1.setReturnDate(returnDate);
+        reservation1.setUserEmailAddress(user1);
+        
+        
+        
+        reservation2 = new Reservation();
+        dateWanted = sdf.parse("13/05/2016");
+        reservationDate = sdf.parse("15/05/2016");
+        returnDate = sdf.parse("27/05/2016");
+        
+        reservation2 = new Reservation();
+        reservation2.setAmount(20);
+        reservation2.setAmountReturned(0);
+        reservation2.setDateWanted(dateWanted);
+        reservation2.setId(2);
+        reservation2.setLearningUtilityId(learningUtility2);
+        reservation2.setReservationDate(reservationDate);
+        reservation2.setReturnDate(returnDate);
+        reservation2.setUserEmailAddress(user2);
+       
+        
+        
+        
+        
        
         observableLearningUtilityList = FXCollections.observableList(learningUtilityList);
         filteredLearningUtilityList = new FilteredList(observableLearningUtilityList);
@@ -114,7 +175,13 @@ public class DomainControllerTests {
         
         Mockito.when(locationCatalogMock.getType()).thenReturn(Location.class);
         domainController.setCatalog(locationCatalogMock);
+
+        observableReservationList = FXCollections.observableList(reservationList);
+        filteredReservationList = new FilteredList(observableReservationList);
         
+        Mockito.when(reservationCatalogMock.getType()).thenReturn(Reservation.class);
+        Mockito.when(reservationCatalogMock.getEntities()).thenReturn(filteredReservationList);
+        domainController.setCatalog(reservationCatalogMock);
     }
     
     
@@ -429,6 +496,22 @@ public class DomainControllerTests {
         domainController.createTargetGroup(TESTSTRING);
     }
     
+//Reservations
+    @Test
+    public void reservationCatalogReturnsCorrectReservations(){
+        Mockito.when(reservationCatalogMock.getEntities()).thenReturn(filteredReservationList);
+        domainController.getReservationsFromUser();
+        Mockito.verify(reservationCatalogMock).getEntities();
+    }
+    @Test(expected = NullPointerException.class)
+    public void reservationCatalogDeletesReservation(){
+        Mockito.when(reservationCatalogMock.getEntity(reservation1)).thenReturn(reservation1);
+        domainController.setCurrentReservation(reservation1);
+        domainController.deleteReservation();
+        Mockito.verify(reservationCatalogMock).getEntity(null);
+    }  
+    
+    
     @After
     public void verifyMockCalls(){        
         
@@ -437,5 +520,7 @@ public class DomainControllerTests {
         Mockito.verify(fieldOfStudyCatalogMock).getType();
         Mockito.verify(targetGroupCatalogMock).getType();
         Mockito.verify(locationCatalogMock).getType();
+        Mockito.verify(reservationCatalogMock).getType();
+
     }
 }
