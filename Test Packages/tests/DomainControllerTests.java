@@ -68,17 +68,31 @@ public class DomainControllerTests {
         learningUtilityList = new ArrayList<>();
        
         learningUtility1 = new LearningUtility(0,"Wereldbol","Beschrijving van een wereldbol",BigDecimal.TEN,true,10,1,"Artkl.001");
-        learningUtility1.setCompanyId(new Company());
-        learningUtility1.setFieldOfStudyList(new ArrayList<>());
-        learningUtility1.setLocationId(new Location());
+        learningUtility1.setCompanyId(new Company(1,"Name",null,null,null));
+        List<FieldOfStudy> fieldsOfStudy = new ArrayList<>();
+        fieldsOfStudy.add(new FieldOfStudy(1, "field of study"));
+        learningUtility1.setFieldOfStudyList(fieldsOfStudy);
+        learningUtility1.setLocationId(new Location(1,"new location"));
         learningUtility1.setPicture("");
-        learningUtility1.setTargetGroupList(new ArrayList<>());
+        List<TargetGroup> targetGroups = new ArrayList<>();
+        targetGroups.add(new TargetGroup(1,"Target Group"));
+        learningUtility1.setTargetGroupList(targetGroups);
         learningUtilityList.add(learningUtility1);
         
         learningUtility2 = new LearningUtility(1,"Gradenboog", "Een gradenboog om hoeken te meten",BigDecimal.ONE,true,100,0,"Artkl.002");
+        learningUtility2.setCompanyId(new Company(1,"Name",null,null,null));
+        learningUtility2.setFieldOfStudyList(fieldsOfStudy);
+        learningUtility2.setLocationId(new Location(1,"new location"));
+        learningUtility2.setPicture("");
+        learningUtility2.setTargetGroupList(targetGroups);
         learningUtilityList.add(learningUtility2);
         
         learningUtility3 = new LearningUtility(2, "test", "Een microscoop", BigDecimal.ONE, true, 5, 0,"Artkl.003");
+        learningUtility3.setCompanyId(new Company(1,"Name",null,null,null));
+        learningUtility3.setFieldOfStudyList(fieldsOfStudy);
+        learningUtility3.setLocationId(new Location(1,"new location"));
+        learningUtility3.setPicture("");
+        learningUtility3.setTargetGroupList(targetGroups);
         learningUtilityList.add(learningUtility3); 
         
        
