@@ -72,10 +72,12 @@ private void initLoader() throws RuntimeException
 
         }catch(FileNotFoundException ex)
         {
-            lblInfo.setText(ex.getMessage());
+            tableView.setPlaceholder(new Label(ex.getMessage()));
+        //lblInfo.setText(ex.getMessage());
         }catch(Exception ex)
         {
-            lblInfo.setText(ex.getMessage());
+            tableView.setPlaceholder(new Label(ex.getMessage()));
+        //lblInfo.setText(ex.getMessage());
         }
 
     }  
@@ -149,6 +151,7 @@ private void initLoader() throws RuntimeException
         colFieldsOfStudy.setMinWidth(100);        
         colFieldsOfStudy.setCellValueFactory(new PropertyValueFactory<>("fieldOfStudyList"));  
         
+        tableView.setPlaceholder(new Label("Geen items om weer te geven"));
         tableView.getColumns().addAll(colName,colDescription,colPrice,
                                     colLoanable,colArticleNo,colImage,
                                     colLocation,colAmountInstock,colAmountUnavailable,

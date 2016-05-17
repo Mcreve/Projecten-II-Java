@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.Date;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -25,7 +26,7 @@ import javafx.scene.layout.GridPane;
  */
 public class ReservationTableViewController extends GridPane implements IObserver {
     private DomainController domainController;
-    private ReservationEditPanelController reservationEditPanelController;
+    //private ReservationEditPanelController reservationEditPanelController;
     @FXML
     private TableView<Reservation> tableView;
     
@@ -51,6 +52,7 @@ public class ReservationTableViewController extends GridPane implements IObserve
         colAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
         colAmount.setMinWidth(50);
         
+        tableView.setPlaceholder(new Label("Geen items om weer te geven"));
         tableView.getColumns().addAll(colLearningUtility, colDate, colReturnDate, colAmount);
     }   
 
@@ -68,23 +70,25 @@ public class ReservationTableViewController extends GridPane implements IObserve
     @Override
     public void update() 
     {
-        tableView.refresh();
         tableView.setItems(domainController.getReservationsFromUser());
+        if(domainController.getCurrentReservation() != null){            
+            tableView.getSelectionModel().select(domainController.getCurrentReservation());
+        }
+        tableView.refresh();
     }
 
     @FXML
     private void select(MouseEvent event) {
-        
+        domainController.removeObserver(this);
         Reservation res = tableView.getSelectionModel().getSelectedItem();
         domainController.setCurrentReservation(res);
-        reservationEditPanelController.update();
-
+        domainController.addObserver(this);
     }
     
-    public void setEditPanel(ReservationEditPanelController reservationEditPanelController)
-    {
-        this.reservationEditPanelController = reservationEditPanelController;
-    }
+//    public void setEditPanel(ReservationEditPanelController reservationEditPanelController)
+//    {
+//        this.reservationEditPanelController = reservationEditPanelController;
+//    }
     
 
     

@@ -96,15 +96,18 @@ public class ReservationEditPanelController extends GridPane implements IObserve
         datePickerReturnDate.setValue(returnDate);
         txtLoanedOut.setText(Integer.toString(r.getAmount()));
         txtReturned.setText(Integer.toString(r.getAmountReturned()));
+        } else {
+            txtLoanedOut.setText(null);
+            txtReturned.setText(null);
+            datePickerPickupDate.setValue(null);
+            datePickerReturnDate.setValue(null);
         }
     }
 
     @FXML
     private void delete(ActionEvent event) {
-        Reservation r = domainController.getCurrentReservation();
-        domainController.deleteReservation(r);
-        reservationTableViewController.update();
-        domainController.notifyObservers();
+        //Reservation r = domainController.getCurrentReservation();
+        domainController.deleteReservation();
         //Item gets deleted from DB (see website / C#) But the view won't update yet.
         //Any Idea's how to fix this?
     }

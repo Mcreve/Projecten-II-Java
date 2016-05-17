@@ -175,7 +175,7 @@ public class DomainController implements IObservable {
      * @return a {@link FilteredList} with all {@link Reservation reservations} from the {@link User} currently marked as selected
      */
     public FilteredList<Reservation> getReservationsFromUser(){
-        if(currentUser == null)
+        if(!getReservationsByUser().containsKey(currentUser))
             return null;
         return new FilteredList<>(FXCollections.observableList(getReservationsByUser().get(currentUser)));
     }
@@ -332,7 +332,7 @@ public class DomainController implements IObservable {
     public void setCurrentReservation(Reservation reservation) {
         
         this.currentReservation = reservation;
-     //   notifyObservers();
+        notifyObservers();
     }
     
     /**
@@ -409,10 +409,13 @@ public class DomainController implements IObservable {
         
     }
     
-    public Reservation deleteReservation(Reservation reservation)
+    public void deleteReservation()
     {
-        reservationCatalog.deleteEntity(reservation);
-        return null;
+        reservationCatalog.deleteEntity(currentReservation);
+        currentReservation = null;
+        if(getReservationsFromUser() == null)
+            currentUser = null;
+        notifyObservers();
     }
 
     
@@ -430,7 +433,7 @@ public class DomainController implements IObservable {
         currentReservation.setDaysBlocked(daysBlocked);
         currentReservation.setAmountReturned(amountReturned);
         reservationCatalog.updateEntity(currentReservation);
-
+        notifyObservers();
     }
 
     /**
@@ -1066,6 +1069,10 @@ public class DomainController implements IObservable {
     @Override
     public void addObserver(IObserver observer) {
         observers.add(observer);
+    }
+    
+    public void removeObserver(IObserver observer){
+        observers.remove(observer);
     }
 
     /**
