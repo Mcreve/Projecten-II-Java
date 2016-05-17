@@ -427,8 +427,9 @@ public class DomainController implements IObservable {
      * @param returnDate The date the {@link LearningUtility} should be returned
      * @param amount The amount of items that are reserved for this reservation
      */
-    public void editReservation(String daysBlocked, Date returnDate, int amount, int amountReturned) {
-        currentReservation.setDateWanted(returnDate);
+    public void editReservation(String daysBlocked, Date pickUpdate, Date returnDate, int amount, int amountReturned) {
+        currentReservation.setDateWanted(pickUpdate);
+        currentReservation.setReturnDate(returnDate);
         currentReservation.setAmount(amount);
         currentReservation.setDaysBlocked(daysBlocked);
         currentReservation.setAmountReturned(amountReturned);

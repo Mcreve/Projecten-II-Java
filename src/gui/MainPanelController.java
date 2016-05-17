@@ -39,7 +39,7 @@ public class MainPanelController extends BorderPane {
     private final String LEAF_ADD = "Toevoegen";
     private final String LEAF_EDIT = "Aanpassen";
     private final String LEAF_IMPORT = "Importeren";
-    private final String LEAF_OUTGOING = "Uitgaand";
+    private final String LEAF_OUTGOING = "Beheren";
     private final String LEAF_INCOMING = "Binnenkomend";
 
 
@@ -94,8 +94,6 @@ public class MainPanelController extends BorderPane {
         TreeItem<String> rootReservations = new TreeItem<>(BRANCH_RESERVATIONS);
         TreeItem<String> branchEditReservation = new TreeItem<>(LEAF_OUTGOING);
         children.add(branchEditReservation);
-        TreeItem<String> branchViewReservation = new TreeItem<>(LEAF_INCOMING);
-        children.add(branchViewReservation);
         rootReservations.getChildren().addAll(children);
         rootChildren.add(rootReservations);
         
