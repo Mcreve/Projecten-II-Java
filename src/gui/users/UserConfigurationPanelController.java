@@ -11,6 +11,7 @@ import domain.users.Lector;
 import domain.users.Manager;
 import domain.users.User;
 import java.io.IOException;
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +20,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -73,20 +75,29 @@ public class UserConfigurationPanelController extends GridPane implements IObser
 
     @FXML
     private void delete(ActionEvent event) {
-        
+        try{
         User deletedUser = domainController.deleteAdmin(domainController.getCurrentUser());
         updateLabels(deletedUser);
+        lblInfo.setText("Admin verwijderd");
+        clearInfoLabel();
+        }
+        catch(Exception e)
+        {
+            lblInfo.setText(e.getMessage());
+        }
         
     }
     @FXML
     private void reset(ActionEvent event){
         updateLabels(null);
         domainController.setCurrentUser(null);
+        lblInfo.setText(null);
     }
 
     @FXML
     private void edit(ActionEvent event) {
-       
+     
+        try{
        User user = domainController.getCurrentUser();
        user.setFirstName(txtFirstName.getText());
        user.setLastName(txtName.getText());
@@ -102,6 +113,13 @@ public class UserConfigurationPanelController extends GridPane implements IObser
          Lector downgradedManager =   (Lector) domainController.removeAdmin(user);
            updateLabels(downgradedManager);
        }
+       lblInfo.setText("Aanpassingen doorgevoerd");
+       clearInfoLabel();
+        }
+        catch(Exception e)
+        {
+            lblInfo.setText(e.getMessage());
+        }
        
        
     }
@@ -111,8 +129,16 @@ public class UserConfigurationPanelController extends GridPane implements IObser
     private void add(ActionEvent event) {
         
       
-        Manager manager = (Manager) domainController.createAdmin(txtEmail.getText(),txtFirstName.getText(), txtName.getText());
+        try{
+            Manager manager = (Manager) domainController.createAdmin(txtEmail.getText(),txtFirstName.getText(), txtName.getText());
         updateLabels(manager);
+        lblInfo.setText("Admin aangemakt");
+        clearInfoLabel();
+        }
+        catch(Exception e)
+        {
+            lblInfo.setText(e.getMessage());
+        }
        
         
     }
@@ -144,8 +170,14 @@ public class UserConfigurationPanelController extends GridPane implements IObser
            adminCheckBox.setSelected(user instanceof Manager);
            domainController.setCurrentUser(user);
             }
+        }
+       private void clearInfoLabel(){
+       PauseTransition delay = new PauseTransition(Duration.millis(4000));
+       delay.setOnFinished( ev -> lblInfo.setText(null) );
+       delay.play();
+       }
           
 }   
-    }
+    
 
 

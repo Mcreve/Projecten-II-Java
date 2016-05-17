@@ -377,7 +377,8 @@ return new FilteredList<>(FXCollections.observableList(getUsers().stream().filte
         return newManager;
     }
     public User makeAdmin(User user){
-        
+        currentUser = user;
+        if(getReservationsFromUser() == null){
         if(user instanceof Lector){
         userCatalog.deleteEntity(user);
         user = new Manager(user);
@@ -388,24 +389,38 @@ return new FilteredList<>(FXCollections.observableList(getUsers().stream().filte
         }
         notifyObservers();
         return user;
-        
+        }
+        else{
+        throw new IllegalArgumentException("Deze gebruiker heeft nog openstaande reservaties en kan niet verwijderd worden");
+        }
     }
     public User removeAdmin(User user){
-        
+        currentUser = user;
+        if(getReservationsFromUser() == null){
         userCatalog.deleteEntity(user);
         Lector downGradedUser = new Lector();
         downGradedUser.setEmailAddress(user.getEmailAddress());
         downGradedUser.setFirstName(user.getFirstName());
         downGradedUser.setLastName(user.getLastName());
         userCatalog.addEntity(downGradedUser);
+        currentUser = null;
         return downGradedUser;
-        
+        }
+        else{
+        throw new IllegalArgumentException("Deze gebruiker heeft nog openstaande reservaties en kan niet verwijderd worden");
+        }
         
 }
     public User deleteAdmin(User user){
+        currentUser = user;
+        if(getReservationsFromUser() == null){
         userCatalog.deleteEntity(user);
-        return null;
-        
+        currentUser = null;
+       return null;
+        }
+        else{
+            throw new IllegalArgumentException("Deze gebruiker heeft nog openstaande reservaties en kan niet verwijderd worden");
+        }
     }
     
     public void deleteReservation()

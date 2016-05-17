@@ -67,6 +67,7 @@ public class UserTablePanelController extends UserTableViewPanelController imple
     private void selectActiveUser(MouseEvent event) {
 
         domainController.setCurrentUser(getTableView().getSelectionModel().getSelectedItem());
+        
 
     }
 

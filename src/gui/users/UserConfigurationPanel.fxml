@@ -20,6 +20,7 @@
     <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
       <RowConstraints vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
@@ -38,7 +39,7 @@
             <Insets right="15.0" top="10.0" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="lblInfo" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+      <Label fx:id="lblInfo" prefHeight="17.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
          <opaqueInsets>
             <Insets right="15.0" />
          </opaqueInsets>
@@ -53,12 +54,12 @@
             <Insets left="5.0" />
          </GridPane.margin>
       </CheckBox>
-      <Button fx:id="btnDelete" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#delete" prefHeight="30.0" prefWidth="80.0" text="Verwijderen" GridPane.columnIndex="1" GridPane.rowIndex="5">
+      <Button fx:id="btnDelete" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#delete" prefHeight="30.0" prefWidth="80.0" text="Verwijderen" GridPane.columnIndex="1" GridPane.rowIndex="6">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="btnEdit" layoutX="157.0" layoutY="354.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#edit" prefHeight="30.0" prefWidth="80.0" text="Wijzigen" GridPane.columnIndex="1" GridPane.rowIndex="5">
+      <Button fx:id="btnEdit" layoutX="157.0" layoutY="354.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#edit" prefHeight="30.0" prefWidth="80.0" text="Wijzigen" GridPane.columnIndex="1" GridPane.rowIndex="6">
          <GridPane.margin>
             <Insets left="125.0" />
          </GridPane.margin>
@@ -68,7 +69,7 @@
             <Insets right="10.0" />
          </GridPane.margin>
       </Label>
-      <Button fx:id="btnAdd" layoutX="316.0" layoutY="354.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#add" prefHeight="30.0" prefWidth="80.0" text="Toevoegen" GridPane.columnIndex="1" GridPane.rowIndex="5">
+      <Button fx:id="btnAdd" layoutX="316.0" layoutY="354.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#add" prefHeight="30.0" prefWidth="80.0" text="Toevoegen" GridPane.columnIndex="1" GridPane.rowIndex="6">
          <GridPane.margin>
             <Insets left="225.0" />
          </GridPane.margin>
@@ -78,6 +79,6 @@
             <Insets right="15.0" />
          </GridPane.margin>
       </Label>
-      <Button fx:id="btnReset" layoutX="282.0" layoutY="354.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#reset" prefHeight="30.0" prefWidth="80.0" text="Reset" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+      <Button fx:id="btnReset" layoutX="282.0" layoutY="354.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#reset" prefHeight="30.0" prefWidth="80.0" text="Reset" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
    </children>
 </fx:root>
