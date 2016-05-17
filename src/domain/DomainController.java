@@ -174,7 +174,7 @@ return new FilteredList<>(FXCollections.observableList(getUsers().stream().filte
      * @return a {@link FilteredList} with all {@link Reservation reservations} from the {@link User} currently marked as selected
      */
     public FilteredList<Reservation> getReservationsFromUser(){
-        if(currentUser == null)
+        if(!getReservationsByUser().containsKey(currentUser))
             return null;
         return new FilteredList<>(FXCollections.observableList(getReservationsByUser().get(currentUser)));
     }
@@ -331,7 +331,7 @@ return new FilteredList<>(FXCollections.observableList(getUsers().stream().filte
     public void setCurrentReservation(Reservation reservation) {
         
         this.currentReservation = reservation;
-     //   notifyObservers();
+        notifyObservers();
     }
     
     /**
@@ -408,10 +408,13 @@ return new FilteredList<>(FXCollections.observableList(getUsers().stream().filte
         
     }
     
-    public Reservation deleteReservation(Reservation reservation)
+    public void deleteReservation()
     {
-        reservationCatalog.deleteEntity(reservation);
-        return null;
+        reservationCatalog.deleteEntity(currentReservation);
+        currentReservation = null;
+        if(getReservationsFromUser() == null)
+            currentUser = null;
+        notifyObservers();
     }
 
     
@@ -423,13 +426,14 @@ return new FilteredList<>(FXCollections.observableList(getUsers().stream().filte
      * @param returnDate The date the {@link LearningUtility} should be returned
      * @param amount The amount of items that are reserved for this reservation
      */
-    public void editReservation(String daysBlocked, Date returnDate, int amount, int amountReturned) {
-        currentReservation.setDateWanted(returnDate);
+    public void editReservation(String daysBlocked, Date pickUpdate, Date returnDate, int amount, int amountReturned) {
+        currentReservation.setDateWanted(pickUpdate);
+        currentReservation.setReturnDate(returnDate);
         currentReservation.setAmount(amount);
         currentReservation.setDaysBlocked(daysBlocked);
         currentReservation.setAmountReturned(amountReturned);
         reservationCatalog.updateEntity(currentReservation);
-
+        notifyObservers();
     }
 
     /**
@@ -1071,6 +1075,10 @@ return new FilteredList<>(FXCollections.observableList(getUsers().stream().filte
     @Override
     public void addObserver(IObserver observer) {
         observers.add(observer);
+    }
+    
+    public void removeObserver(IObserver observer){
+        observers.remove(observer);
     }
 
     /**

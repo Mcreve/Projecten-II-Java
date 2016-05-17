@@ -16,18 +16,6 @@
               <MenuItem fx:id="menuClose" mnemonicParsing="false" onAction="#close" text="Afsluiten" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Beheer">
-            <items>
-              <MenuItem fx:id="menuLearningUtilities" mnemonicParsing="false" onAction="#updateTreeview" text="Leermiddelen" />
-                  <MenuItem fx:id="menuReservations" mnemonicParsing="false" onAction="#updateTreeview" text="Reservaties" />
-                  <MenuItem fx:id="menuManagers" mnemonicParsing="false" onAction="#updateTreeview" text="Beheerders" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="About">
-            <items>
-              <MenuItem fx:id="menuAbout" mnemonicParsing="false" onAction="#showAbout" text="About" />
-            </items>
-          </Menu>
         </menus>
       </MenuBar>
    </top>

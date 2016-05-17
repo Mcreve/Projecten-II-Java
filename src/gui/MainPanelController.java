@@ -18,10 +18,12 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -37,7 +39,7 @@ public class MainPanelController extends BorderPane {
     private final String LEAF_ADD = "Toevoegen";
     private final String LEAF_EDIT = "Aanpassen";
     private final String LEAF_IMPORT = "Importeren";
-    private final String LEAF_OUTGOING = "Uitgaand";
+    private final String LEAF_OUTGOING = "Beheren";
     private final String LEAF_INCOMING = "Binnenkomend";
 
 
@@ -45,14 +47,6 @@ public class MainPanelController extends BorderPane {
     private MenuItem menuLogout;
     @FXML
     private MenuItem menuClose;
-    @FXML
-    private MenuItem menuLearningUtilities;
-    @FXML
-    private MenuItem menuReservations;
-    @FXML
-    private MenuItem menuManagers;
-    @FXML
-    private MenuItem menuAbout;
     @FXML
     private TreeView<String> treeView;
     
@@ -100,8 +94,6 @@ public class MainPanelController extends BorderPane {
         TreeItem<String> rootReservations = new TreeItem<>(BRANCH_RESERVATIONS);
         TreeItem<String> branchEditReservation = new TreeItem<>(LEAF_OUTGOING);
         children.add(branchEditReservation);
-        TreeItem<String> branchViewReservation = new TreeItem<>(LEAF_INCOMING);
-        children.add(branchViewReservation);
         rootReservations.getChildren().addAll(children);
         rootChildren.add(rootReservations);
         
@@ -131,6 +123,9 @@ public class MainPanelController extends BorderPane {
 
     @FXML
     private void logout(ActionEvent event) {
+        Stage stage = (Stage) treeView.getScene().getWindow();
+        stage.setScene(new Scene(new LoginPanelController(domainController)));
+        stage.show();
     }
 
     @FXML
@@ -138,14 +133,6 @@ public class MainPanelController extends BorderPane {
         Platform.exit();
     }
 
-    @FXML
-    private void updateTreeview(ActionEvent event) 
-    {
-    }
-
-    @FXML
-    private void showAbout(ActionEvent event) {
-    }
 
     private void setRightScreen(String branch, String leaf) {
 

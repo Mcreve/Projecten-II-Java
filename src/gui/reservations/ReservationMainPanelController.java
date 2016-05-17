@@ -34,7 +34,7 @@ public class ReservationMainPanelController extends GridPane {
         ReservationEditPanelController reservationEditPanelController = new ReservationEditPanelController(domainController,reservationTableViewController);
         this.add(reservationTableViewController, 1, 1);
         this.add(reservationEditPanelController , 1, 2);
-        reservationTableViewController.setEditPanel(reservationEditPanelController);
+        //reservationTableViewController.setEditPanel(reservationEditPanelController);
 
         setNextPickupDate();
     }

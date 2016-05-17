@@ -74,7 +74,8 @@ public class ReservationEditPanelController extends GridPane implements IObserve
     @FXML
     private void edit(ActionEvent event) {
         Date pickUpDate = Date.from(datePickerPickupDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        domainController.editReservation(null, pickUpDate,Integer.parseInt(txtLoanedOut.getText()),Integer.parseInt(txtReturned.getText()));
+        Date returnDate = Date.from(datePickerReturnDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        domainController.editReservation(null, pickUpDate,returnDate,Integer.parseInt(txtLoanedOut.getText()),Integer.parseInt(txtReturned.getText()));
     }
 
     @Override
@@ -90,21 +91,28 @@ public class ReservationEditPanelController extends GridPane implements IObserve
         c.setTime(r.getDateWanted());
         int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
         int daysTillFriday = Calendar.FRIDAY - dayOfWeek;
+        LocalDate returnDate;
         
-        LocalDate returnDate = pickUpDate.plusDays(daysTillFriday);
+        if(r.getReturnDate() == null)
+            returnDate = pickUpDate.plusDays(daysTillFriday);
+        else
+            returnDate = r.getReturnDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         
         datePickerReturnDate.setValue(returnDate);
         txtLoanedOut.setText(Integer.toString(r.getAmount()));
         txtReturned.setText(Integer.toString(r.getAmountReturned()));
+        } else {
+            txtLoanedOut.setText(null);
+            txtReturned.setText(null);
+            datePickerPickupDate.setValue(null);
+            datePickerReturnDate.setValue(null);
         }
     }
 
     @FXML
     private void delete(ActionEvent event) {
-        Reservation r = domainController.getCurrentReservation();
-        domainController.deleteReservation(r);
-        reservationTableViewController.update();
-        domainController.notifyObservers();
+        //Reservation r = domainController.getCurrentReservation();
+        domainController.deleteReservation();
         //Item gets deleted from DB (see website / C#) But the view won't update yet.
         //Any Idea's how to fix this?
     }
